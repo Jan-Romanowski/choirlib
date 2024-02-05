@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chór Katedralny im. Ks. Alfreda Hoffmana w Siedlcach</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'content/css/main.css' %}">
+</head>
+
+
+<body>
+    <!-- <div class="bg-dark sticky-top content-header">
+        <ul class="nav nav-pills main-container">
+            <li class="nav-item">
+              <img class="m-0 p-0" src="{% static 'content/img/logo_light.svg' %}" width="90px" alt="SVG Image">
+            </li>
+            <li class="nav-item nav-text-item">
+                <a class="nav-link" aria-current="page" href="#">Chór Katedralny</a>
+              </li>
+            <li class="nav-item nav-text-item">
+              <a class="nav-link " aria-current="page" href="#">Zarząd Chóru</a>
+            </li>
+            <li class="nav-item nav-text-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">O chórze</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Dyrygent</a></li>
+                <li><a class="dropdown-item" href="#">II Dyrygent</a></li>
+                <li><a class="dropdown-item" href="#">Ks. A. Hoffmann</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Historia chóru</a></li>
+              </ul>
+            </li>
+            <li class="nav-item nav-text-item">
+              <a class="nav-link" href="#">Kontakt</a>
+            </li>
+            <li class="nav-item nav-text-item">
+              <a class="nav-link active bg-success" href="#" tabindex="-1" aria-disabled="true">Zaloguj</a>
+            </li>
+          </ul>
+    </div> -->
+
+
+    <div class="sticky-top content-header">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <img class="m-0 p-0" src="{% static 'content/img/logo_dark.svg' %}" width="75px" alt="SVG Image">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Chór Katedralny</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Zarząd Chóru</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        O chórze
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Dyrygent</a></li>
+                      <li><a class="dropdown-item" href="#">II Dyrygent</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#">Ks. A. Hoffmann</a></li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link disabled">Kontakt</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link btn btn-outline-success" href="#" tabindex="-1" aria-disabled="true">Zaloguj</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+    </div>
+    
+
+    <div class="main-container">
+        {% block body %}
+        {% endblock %}
+    </div>
+</body>
+</html>
