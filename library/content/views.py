@@ -1,10 +1,33 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 
-# Главная страница
-def index(request): 
+
+def index(request):
     return render(request, 'content/index.html')
 
-# Zarząd Chóru
+
 def managers(request):
     return render(request, 'content/managers.html')
+
+
+def news(request):
+    return render(request, 'content/news.html')
+
+
+def contact(request):
+    return render(request, 'content/contact.html')
+
+
+def conductor(request):
+    return render(request, 'content/conductor.html')
+
+
+def viceConductor(request):
+    return render(request, 'content/viceConductor.html')
+
+
+def history(request):
+    return render(request, 'content/history.html')
+
+
+def hoffman(request):
+    return render(request, 'content/hoffman.html')
