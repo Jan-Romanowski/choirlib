@@ -30,22 +30,6 @@ body{
     font-size: 18px;
     height: 100vh;
     width: 100%;
-
-    background-size: cover; /* чтобы изображение заполняло весь фон */
-    background-repeat: no-repeat; /* чтобы изображение не повторялось */
-    background-position: center top; /* центрируем изобра
-}
-
-.overlay{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.about{
-    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
 }
 
 

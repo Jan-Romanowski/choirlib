@@ -1,5 +1,6 @@
 {% extends 'content/template.html' %}
 
+{% load static %}
 {% block body %}
 
     <div class="container-fluid">
@@ -8,8 +9,13 @@
         </h1>
     </div>
 
-    <div class="container-fluid bg-light p-5">
-        <h1 class="text-center mb-5">O nas</h1>
+    <div class="container-fluid">
+        <img src="{% static 'content/img/tlo.jpg' %}" width="100%"/>
+    </div>
+
+    <div class="container-fluid">
+        <div class="cont bg-light p-5 ">
+             <h1 class="text-center mb-5">O nas</h1>
         <p align="justify">
             Chór Katedralny im ks. Alfreda Hoffmana jest zespołem, który wyrasta
             z niemalże stuletniej tradycji chóralnej kościoła pod wezwaniem Niepokalanego Poczęcia
@@ -33,6 +39,7 @@
         <p align="justify">
             Od 1999 r. chór prowadzi ks. Michał Szulik, którego asystentką od 2014 r. jest Izabela Kiryluk.
         </p>
+        </div>
     </div>
 
 {% endblock %}
