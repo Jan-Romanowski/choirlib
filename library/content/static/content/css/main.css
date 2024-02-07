@@ -14,6 +14,18 @@
 
 @media screen and (min-width: 1200px){
     .main-container{
+        width: 75%;
+    }
+}
+
+@media screen and (min-width: 1400px){
+    .main-container{
+        width: 70%;
+    }
+}
+
+@media screen and (min-width: 1650px){
+    .main-container{
         width: 65%;
     }
 }
@@ -27,9 +39,40 @@
 
 body{
     font-weight: 480;
-    font-size: 18px;
+    font-size: 19px;
     height: 100vh;
     width: 100%;
+    font-family: 'Roboto', sans-serif;
 }
 
+h1{
+    font-weight: bold;
+}
+
+
+@media screen and (max-width: 650px){
+    .imgManagers{
+        border-radius:
+        width: 100%;
+        height: 100%;
+        max-width: 140px;
+        max-height: 186.44px;
+    }
+}
+
+@media screen and (min-width: 650px){
+    .imgManagers{
+        border-radius:
+        width: 100%;
+        height: 100%;
+        max-width: 180px;
+        max-height: 239.72px;
+    }
+}
+
+.custom-card:hover{
+    cursor: pointer;
+    transition: 1s;
+    transform: scale(1.05);
+}
 

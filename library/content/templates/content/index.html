@@ -3,19 +3,19 @@
 {% load static %}
 {% block body %}
 
-    <div class="container-fluid">
-        <h1 class="text-center mt-5 mb-5">
-            Chór Katedralny im. ks. Alfreda Hoffmana <br>w Siedlcach
-        </h1>
-    </div>
+<div class="container-fluid">
+    <h1 class="text-center mt-5 mb-5">
+        Chór Katedralny im. ks. Alfreda Hoffmana <br>w Siedlcach
+    </h1>
+</div>
 
-    <div class="container-fluid">
-        <img src="{% static 'content/img/tlo.jpg' %}" width="100%"/>
-    </div>
+<div class="container-fluid">
+    <img src="{% static 'content/img/tlo.jpg' %}" width="100%"/>
+</div>
 
-    <div class="container-fluid">
-        <div class="cont bg-light p-5 ">
-             <h1 class="text-center mb-5">O nas</h1>
+<div class="container-fluid">
+    <div class="shadow-lg p-2 p-md-2 p-lg-3 p-xl-5">
+        <h1 class="text-center mb-5">O nas</h1>
         <p align="justify">
             Chór Katedralny im ks. Alfreda Hoffmana jest zespołem, który wyrasta
             z niemalże stuletniej tradycji chóralnej kościoła pod wezwaniem Niepokalanego Poczęcia
@@ -39,8 +39,73 @@
         <p align="justify">
             Od 1999 r. chór prowadzi ks. Michał Szulik, którego asystentką od 2014 r. jest Izabela Kiryluk.
         </p>
-        </div>
     </div>
+</div>
+
+<div class="container-fluid mt-5">
+    <div class="row gx-0 justify-content-between">
+        <h1 class="mb-5 mt-5 text-center">Zarząd Chóru</h1>
+        <div class="card custom-card col-sm-12 col-md-12 col-lg-12 col-xl-5 mb-5 shadow-lg border-0 rounded overflow-hidden">
+            <div class="container row p-0 justify-content-center">
+                <div class="col-6">
+                    <img class="float-lg-start imgManagers" alt='Jerzy Myszkowski' title='Jerzy Myszkowski'
+                         src="{% static 'content/img/prezes.jpg' %}">
+                </div>
+                <div class="col-6 p-sm-0 p-md-1 p-lg-2">
+                    <span class="fs-sm-6 fs-md-5 fs-4">Prezes Zarządu<br></span>
+                    <span class="fs-sm-6 fs-md-5 fs-4">Jerzy Myszkowski<br></span>
+                    <span class="fs-sm-8 fs-md-7 fs-6">Bas<br></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card custom-card col-sm-12 col-md-12 col-lg-12 col-xl-5 mb-5 shadow-lg border-0 rounded overflow-hidden">
+            <div class="container row p-0 justify-content-center">
+                <div class="col-6">
+                    <img class="float-start imgManagers" alt='Martyna Jurzyk' title='Martyna Jurzyk'
+                         src="{% static 'content/img/wicePrezes.jpg' %}">
+                </div>
+                <div class="col-6 p-sm-0 p-md-1 p-lg-2">
+                    <span class="fs-sm-6 fs-md-5 fs-4">Zastępca Prezesa Zarządu<br></span>
+                    <span class="fs-sm-6 fs-md-5 fs-4">Martyna Jurzyk<br></span>
+                    <span class="fs-sm-6 fs-md-6 fs-6">Alt<br></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card custom-card col-sm-12 col-md-12 col-lg-12 col-xl-5 mb-5 shadow-lg border-0 rounded overflow-hidden">
+            <div class="container row p-0 justify-content-center">
+                <div class="col-6">
+                    <img class="float-start imgManagers" alt='Michał Kiryluk' title='Michał Kiryluk'
+                         src="{% static 'content/img/sekretarz.jpg' %}">
+                </div>
+                <div class="col-6 p-sm-0 p-md-1 p-lg-2">
+                    <span class="fs-sm-6 fs-md-5 fs-4">Sekretarz Zarządu<br></span>
+                    <span class="fs-sm-6 fs-md-5 fs-4">Michał Kiryluk<br></span>
+                    <span class="fs-sm-6 fs-md-6 fs-6">Tenor<br></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card custom-card col-sm-12 col-md-12 col-lg-12 col-xl-5 mb-5 shadow-lg border-0 rounded overflow-hidden">
+            <div class="container row p-0 justify-content-center">
+                <div class="col-6">
+                    <img class="float-start imgManagers" alt='Maria Stańczuk' title='Maria Stańczuk' height="240px"
+                         src="{% static 'content/img/skarbnik.jpg' %}"
+                         style="object-fit: cover; width:180px;">
+                </div>
+                <div class="col-6 p-sm-0 p-md-1 p-lg-2">
+                    <span class="fs-sm-6 fs-md-5 fs-4">Skarbnik Zarządu<br></span>
+                    <span class="fs-sm-6 fs-md-5 fs-4">Maria Stańczuk<br></span>
+                    <span class="fs-sm-6 fs-md-6 fs-6">Alt<br></span>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
 
 {% endblock %}
 

@@ -1,5 +1,70 @@
 {% extends 'content/template.html' %}
 
+{% load static %}
 {% block body %}
-Zarzad choru
+
+<div class="container-fluid row justify-content-between">
+
+    <h2 class="mb-5 mt-5 text-center">Zarząd Chóru</h2>
+
+    <div class="card col-sm-12 col-md-12 col-lg-12 col-xl-5 mb-5 shadow-lg border-0 rounded overflow-hidden">
+        <div class="container row p-0 justify-content-center">
+            <div class="col-sm-11 col-md-6 p-0">
+                <img class="float-start imgManagers" alt='Jerzy Myszkowski' title='Jerzy Myszkowski'
+                     src="{% static 'content/img/prezes.jpg' %}">
+            </div>
+            <div class="col-sm-11 col-md-6">
+                <p class="px-1 fs-4">Prezes Zarządu<br></p>
+                <p class="px-1 fs-3">Jerzy Myszkowski</p>
+                <p class="px-1 fs-6">Bas</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card col-sm-12 col-md-12 col-lg-12 col-xl-5 mb-5 shadow-lg border-0 rounded overflow-hidden">
+        <div class="container row p-0 justify-content-center">
+            <div class="col-sm-11 col-md-6 p-0">
+                <img class="float-start imgManagers" alt='Martyna Jurzyk' title='Martyna Jurzyk'
+                     src="{% static 'content/img/wicePrezes.jpg' %}">
+            </div>
+            <div class="col-sm-11 col-md-6">
+                <p class="px-1 fs-4">Zastępca Prezesa Zarządu<br></p>
+                <p class="px-1 fs-3">Martyna Jurzyk</p>
+                <p class="px-1 fs-6">Alt</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card col-sm-12 col-md-12 col-lg-12 col-xl-5 mb-5 shadow-lg border-0 rounded overflow-hidden">
+        <div class="container row p-0 justify-content-center">
+            <div class="col-sm-11 col-md-6 p-0">
+                <img class="float-start imgManagers" alt='Michał Kiryluk' title='Michał Kiryluk'
+                     src="{% static 'content/img/sekretarz.jpg' %}">
+            </div>
+            <div class="col-sm-11 col-md-6">
+                <p class="px-1 fs-4">Sekretarz Zarządu<br></p>
+                <p class="px-1 fs-3">Michał Kiryluk</p>
+                <p class="px-1 fs-6">Tenor</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card col-sm-12 col-md-12 col-lg-12 col-xl-5 mb-5 shadow-lg border-0 rounded overflow-hidden">
+        <div class="container row p-0 justify-content-center">
+            <div class="col-sm-11 col-md-6 p-0">
+                <img class="float-start imgManagers" alt='Maria Stańczuk' title='Maria Stańczuk' height="240px"
+                     src="{% static 'content/img/skarbnik.jpg' %}"
+                     style="object-fit: cover; width:180px;">
+            </div>
+            <div class="col-sm-11 col-md-6">
+                <p class="px-1 fs-4">Skarbnik Zarządu<br></p>
+                <p class="px-1 fs-3">Maria Stańczuk</p>
+                <p class="px-1 fs-6">Alt</p>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
 {% endblock %}
