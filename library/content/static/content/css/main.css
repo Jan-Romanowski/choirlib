@@ -76,13 +76,14 @@ h1{
     transform: scale(1.05);
 }
 
-
 .rank{
     font-size: 1.2rem;
 }
+
 .managerName{
     font-size: 1.15rem;
 }
+
 .voiceGroup{
     font-size: 1rem;
 }
