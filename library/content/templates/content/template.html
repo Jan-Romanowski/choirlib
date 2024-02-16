@@ -26,7 +26,7 @@
 
                     if (target) {
                         window.scrollTo({
-                            top: target.offsetTop - 100, // Учитываем высоту header'а
+                            top: target.offsetTop - 100,
                             behavior: 'smooth'
                         });
                     }
@@ -52,7 +52,7 @@
                             <a class="nav-link" href="{% url 'news' %}">Aktualności</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#managers">Zarząd Chóru</a>
+                            <a class="nav-link" href="{% url 'managers' %}">Zarząd Chóru</a>
                         </li>
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
