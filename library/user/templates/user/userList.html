@@ -1,0 +1,25 @@
+{% extends 'content/template.html' %}
+
+{% load static %}
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+    <h2>Actual Users:</h2>
+    <table>
+        {% for el in users %}
+        <tr>
+            <td>{{ el.name }}</td>
+            <td>{{ el.surname }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+
+{% endblock %}

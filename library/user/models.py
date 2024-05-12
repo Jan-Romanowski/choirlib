@@ -1,11 +1,13 @@
 from django.db import models
 
 
-class User(models.Model):
+class Users(models.Model):
+
     name = models.CharField('name', max_length=25)
     surname = models.CharField('surname', max_length=25)
     email = models.CharField('email', max_length=30)
     password = models.CharField('password', max_length=51)
+    rank = models.CharField('rank', max_length=10)
     date = models.DateTimeField('regDate')
 
     def __str__(self):
@@ -14,4 +16,3 @@ class User(models.Model):
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
-
