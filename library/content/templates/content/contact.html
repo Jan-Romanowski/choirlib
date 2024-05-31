@@ -1,9 +1,20 @@
 {% extends 'content/template.html' %}
 
 {% block body %}
-Contact fasfsad fsdafasd
-fasd
-gsdagasdg
-asdg asdg
- asdg asdg asdg asdg asd
+<form>
+   <div class="mb-3">
+    <label for="exampleInputUserName" class="form-label">Imie i Nazwisko</label>
+    <input type="username" class="form-control" id="exampleInputUserName">
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <div id="emailHelp" class="form-text">Nigdy nie udostępnimy Twojego adresu e-mail nikomu innemu.</div>
+  </div>
+  <div class="mb-3">
+    <label for="exampleFormControlTextarea1" class="form-label">Treść wiadomości</label>
+    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Wyślij wiadomość</button>
+</form>
 {% endblock %}
