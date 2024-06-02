@@ -1,4 +1,4 @@
- from django.db import models
+from django.db import models
 
 
 class Composition(models.Model):
@@ -15,6 +15,8 @@ class Composition(models.Model):
     class Meta:
         verbose_name = 'Произведение'
         verbose_name_plural = 'Произведения'
+
+
 class Feedback(models.Model):
     username = models.CharField('username', max_length=45)
     email = models.EmailField('email')
@@ -22,3 +24,7 @@ class Feedback(models.Model):
 
     def __str__(self):
         return self.username
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
