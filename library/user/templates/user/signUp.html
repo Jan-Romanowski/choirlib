@@ -1,0 +1,99 @@
+{% extends 'content/template.html' %}
+
+{% load static %}
+{% block body %}
+
+<form class="row g-3 needs-validation" novalidate>
+  <h2 class="text-center mt-5">Rejestracja konta</h2>
+  <div class="col-md-4">
+    <label for="name" class="form-label">Imię</label>
+    <input type="text" class="form-control" id="name" name = "name" required>
+    <div class="valid-feedback">
+      Wygląda dobrze!
+    </div>
+    <div class="invalid-feedback">
+      Wygląda źle!
+    </div>
+  </div>
+  <div class="col-md-4">
+    <label for="surname" class="form-label">Nazwisko</label>
+    <input type="text" class="form-control" id="surname" name = "surname" required>
+    <div class="valid-feedback">
+      Wygląda dobrze!
+    </div>
+    <div class="invalid-feedback">
+      Wpisz nazwisko
+    </div>
+  </div>
+  <div class="col-md-4">
+    <label for="validationCustomUsername" class="form-label">Email</label>
+    <div class="input-group has-validation">
+      <span class="input-group-text" id="inputGroupPrepend">@</span>
+      <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+      <div class="valid-feedback">
+        Wygląda dobrze!
+      </div>
+      <div class="invalid-feedback">
+        Email ma być w postaci 'example@gmail.com'
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <label for="validationCustom03" class="form-label">Hasło</label>
+    <input type="text" class="form-control" id="validationCustom03" required>
+    <div class="invalid-feedback">
+      Wpisz hasło
+    </div>
+  </div>
+  <div class="col-md-6">
+    <label for="validationCustom03" class="form-label">Powtórz Hasło</label>
+    <input type="text" class="form-control" id="validationCustom03" required>
+    <div class="invalid-feedback">
+      Wpisz hasło
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+      <label class="form-check-label" for="invalidCheck">
+        Potwierdzam regulamin
+      </label>
+      <div class="invalid-feedback">
+        Musisz potwierdzić regulamin
+      </div>
+    </div>
+  </div>
+  <div class="col-12 text-center">
+    <button class="btn btn-outline-success" type="submit">Załóż konto</button>
+  </div>
+</form>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+
+(function () {
+  'use strict'
+
+  var forms = document.querySelectorAll('.needs-validation')
+
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+
+
+  });
+</script>
+{% endblock %}
