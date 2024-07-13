@@ -1,0 +1,27 @@
+{% extends 'content/template.html' %}
+
+{% load static %}
+{% block body %}
+<div class="w-50">
+  <form>
+    <div class="mb-3">
+        <h2 class="text-center mt-5">Zaloguj się</h2>
+      <label for="emailInput" class="form-label">Email</label>
+      <input type="email" class="form-control" id="emailInput" aria-describedby="emailHelp">
+      <div id="emailHelp" class="form-text">Nigdy nie udostępnimy Twojego adresu e-mail nikomu innemu.</div>
+    </div>
+    <div class="mb-3">
+      <label for="passwordInput" class="form-label">Hasło</label>
+      <input type="password" class="form-control" id="passwordInput">
+    </div>
+    <div class="mb-12 form-check text-center">
+      <a href="{% url 'signUp' %}">Załóż konto</a>
+    </div>
+    <div class="mb-12 form-check text-center mb-1">
+        <button type="submit" class="btn btn-outline-success">Zaloguj się</button>
+    </div>
+  </form>
+</div>
+
+
+{% endblock %}

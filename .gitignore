@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 
+
 # C extensions
 *.so
 
@@ -45,6 +46,7 @@ coverage.xml
 # Django stuff:
 *.log
 *.pot
+*.pyc
 
 # Sphinx documentation
 docs/_build/
@@ -59,3 +61,4 @@ parts
 src/*.egg-info
 lib
 lib64
+*.pyc
