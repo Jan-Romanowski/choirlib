@@ -1,14 +1,14 @@
 from django.db import models
+from datetime import datetime
 
 
 class Users(models.Model):
-
     name = models.CharField('name', max_length=25)
     surname = models.CharField('surname', max_length=25)
     email = models.CharField('email', max_length=30)
     password = models.CharField('password', max_length=51)
-    rank = models.CharField('rank', max_length=10)
-    date = models.DateTimeField('regDate')
+    rank = models.CharField('rank', max_length=10, default='user')
+    date = models.CharField('createDate', max_length=20, default=datetime.now())
 
     def __str__(self):
         return self.name

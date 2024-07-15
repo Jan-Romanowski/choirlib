@@ -16,10 +16,10 @@ def userList(request):
 def signUp(request):
     error = ''
     if request.method == 'POST':
-        form = UsersForm(request)
+        form = UsersForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('')
+            return redirect('/')
         else:
             error = 'Пошёл нахуй быдло'
 
