@@ -58,10 +58,12 @@
             </div>
         </nav>
 
-        <div class="container main-container d-flex justify-content-center align-items-center">
+        <div class="container main-container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
                 {% block body %}
                 {% endblock %}
         </div>
+
+        {% include 'content/footer.html' %}
     </div>
 
     {% block extra_js %}{% endblock %}
