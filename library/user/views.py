@@ -19,7 +19,7 @@ def signUp(request):
         form = UsersForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('/user/signIn')
         else:
             error = 'Пошёл нахуй быдло'
 
