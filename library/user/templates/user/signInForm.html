@@ -7,30 +7,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LOGIN FORM</title>
+    <title>Sign In</title>
 </head>
 <body>
-<div class="row justify-content-center">
-    <div class="col-6">
-        <form>
-            <h2 class="mt-5 text-center">Zaloguj się</h2>
-            <div class="mb-3">
-                <label for="emailInput" class="form-label">Email</label>
-                <input type="email" class="form-control" id="emailInput" aria-describedby="emailHelp">
-                <div id="emailHelp" class="form-text">Nigdy nie udostępnimy Twojego adresu e-mail osobom trzecim.</div>
-            </div>
-            <div class="mb-3">
-                <label for="passwordInput" class="form-label">Hasło</label>
-                <input type="password" class="form-control" id="passwordInput">
-            </div>
-            <div class="mb-3">
-                <a href="{% url 'signUp' %}">Załóż konto</a>
-            </div>
-            <button type="submit" class="btn btn-primary">Zaloguj</button>
-        </form>
-    </div>
-</div>
+    <h2>Sign In</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if error_message %}
+        <p>{{ error_message }}</p>
+        {% endif %}
+        <button type="submit">Sign In</button>
+        <div class="mb-3">
+            <a href="{% url 'signUp' %}">Załóż konto</a>
+        </div>
+    </form>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
 </body>
 </html>
+
 
 {% endblock %}

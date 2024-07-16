@@ -1,9 +1,10 @@
-from .models import Users
+from .models import User
+from django import forms
 from django.forms import ModelForm, TextInput, EmailInput, PasswordInput
 
-class UsersForm(ModelForm):
+class SignUpForm(ModelForm):
     class Meta:
-        model = Users
+        model = User
         fields = ['email', 'name', 'surname', 'password']
 
         labels = {
@@ -31,6 +32,30 @@ class UsersForm(ModelForm):
                 'placeholder': 'Haslo123'
             }),
         }
+
+class SignInForm(ModelForm):
+    class Meta:
+        model = User
+
+        username = forms.EmailField(label='Email', max_length=100)
+
+
+        fields = ['email', 'password']
+
+        labels = {
+            'email': 'Email',
+            'password': 'Hasło'
+        }
+
+        widgets = {
+            'email': EmailInput(attrs={
+                'class': 'form-control'
+            }),
+            'password': PasswordInput(attrs={
+                'class': 'form-control'
+            }),
+        }
+
 
         # name = models.CharField('name', max_length=25)
         # surname = models.CharField('surname', max_length=25)
