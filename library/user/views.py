@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, authenticate
 from .forms import SignInForm, SignUpForm
 
 def index(request):
@@ -28,21 +28,15 @@ def signIn(request):
     if request.method == 'POST':
         form = SignInForm(request.POST)
         if form.is_valid():
-            # Получение данных пользователя из формы
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            # Аутентификация пользователя
-            user = authenticate(request, username=email, password=password)
+            user = authenticate(email=email, password=password)
             if user is not None:
-                # Вход пользователя
                 login(request, user)
-                # Перенаправление на страницу после успешной авторизации
-                return redirect('success_page')
+                return redirect('/')  # Перенаправление на домашнюю страницу после успешного входа
             else:
-                # Обработка ошибки аутентификации
-                # Например, вывод сообщения об ошибке
-                return render(request, 'user/signInForm.html', {'form': form, 'error_message': 'Invalid credentials'})
+                form.add_error(None, 'Неверные учетные данные')
     else:
         form = SignInForm()
-    
+
     return render(request, 'user/signInForm.html', {'form': form})

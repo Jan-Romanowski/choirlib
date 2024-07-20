@@ -1,5 +1,6 @@
 from .models import User
 from django import forms
+from django.contrib.auth import login, authenticate
 from django.forms import ModelForm, TextInput, EmailInput, PasswordInput
 
 class SignUpForm(ModelForm):
@@ -33,28 +34,20 @@ class SignUpForm(ModelForm):
             }),
         }
 
-class SignInForm(ModelForm):
-    class Meta:
-        model = User
+class SignInForm(forms.Form):
+    email = forms.EmailField(label='Email', max_length=100)
+    password = forms.CharField(widget=forms.PasswordInput, label='Hasło')
 
-        username = forms.EmailField(label='Email', max_length=100)
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get('email')
+        password = cleaned_data.get('password')
 
-
-        fields = ['email', 'password']
-
-        labels = {
-            'email': 'Email',
-            'password': 'Hasło'
-        }
-
-        widgets = {
-            'email': EmailInput(attrs={
-                'class': 'form-control'
-            }),
-            'password': PasswordInput(attrs={
-                'class': 'form-control'
-            }),
-        }
+        # Проверьте учетные данные пользователя
+        if email and password:
+            user = authenticate(email=email, password=password)
+            if user is None:
+                raise forms.ValidationError("Неверные учетные данные")
 
 
         # name = models.CharField('name', max_length=25)
