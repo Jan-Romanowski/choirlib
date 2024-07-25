@@ -14,7 +14,7 @@ def signUp(request):
             form.save()
             return redirect('/user/signIn')
         else:
-            error = 'Пошёл нахуй быдло'
+            error = 'Coś poszło nie tak'
 
     form = SignUpForm()
     data = {
@@ -33,9 +33,10 @@ def signIn(request):
             user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('/')  # Перенаправление на домашнюю страницу после успешного входа
+                
+                return redirect('/')
             else:
-                form.add_error(None, 'Неверные учетные данные')
+                form.add_error(None, 'Nieprawidłowe dane do logowania')
     else:
         form = SignInForm()
 
