@@ -7,28 +7,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sign In</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
 <body>
-    <form method="post">
-        <h2 class="mt-5 text-center">Zaloguj się</h2>
-        {% csrf_token %}
-        {{ form.as_p }}
-        {% if error_message %}
-        <p>{{ error_message }}</p>
-        {% endif %}
-        <div class="text-center">
-            <button class="btn btn-outline-success mt-2" type="submit">Zaloguj</button>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 col-sm-8 col-12">
+                <h2 class="mt-5 text-center">Zaloguj się</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    {% if error_message %}
+                        <p class="text-danger">{{ error_message }}</p>
+                    {% endif %}
+                    <div class="text-center">
+                        <button class="btn btn-outline-success mt-2" type="submit">Zaloguj</button>
+                    </div>
+                    <div class="mb-3 text-center">
+                        <a href="{% url 'signUp' %}">Załóż konto</a>
+                    </div>
+                </form>
+                {% if error %}
+                    <p class="text-danger">{{ error }}</p>
+                {% endif %}
+            </div>
         </div>
-        <div class="mb-3 text-center">
-            <a href="{% url 'signUp' %}">Załóż konto</a>
-        </div>
-    </form>
-    {% if error %}
-        <p>{{ error }}</p>
-    {% endif %}
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>
-
 
 {% endblock %}

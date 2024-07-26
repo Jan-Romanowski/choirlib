@@ -35,24 +35,27 @@ class SignUpForm(ModelForm):
         }
 
 class SignInForm(forms.Form):
-    email = forms.EmailField(label='Email', max_length=100)
-    password = forms.CharField(widget=forms.PasswordInput, label='Hasło')
+    email = forms.EmailField(
+        label='Email', 
+        max_length=100,
+        widget=EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'example@example.com'
+        })
+    )
+    password = forms.CharField(
+        widget=PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Haslo123'
+        }),
+        label='Hasło'
+    )
 
     def clean(self):
         cleaned_data = super().clean()
         email = cleaned_data.get('email')
         password = cleaned_data.get('password')
-
-        # Проверьте учетные данные пользователя
         if email and password:
             user = authenticate(email=email, password=password)
             if user is None:
                 raise forms.ValidationError("Неверные учетные данные")
-
-
-        # name = models.CharField('name', max_length=25)
-        # surname = models.CharField('surname', max_length=25)
-        # email = models.CharField('email', max_length=30)
-        # password = models.CharField('password', max_length=51)
-        # rank = models.CharField('rank', max_length=10)
-        # date = models.DateTimeField('regDate')
