@@ -5,30 +5,35 @@ from django.forms import ModelForm, TextInput, EmailInput, PasswordInput
 class CompositionForm(ModelForm):
     class Meta:
         model = Composition
-        fields = ['email', 'name', 'surname', 'password']
+        fields = ['name', 'author', 'number', 'folder', 'note']
 
         labels = {
-            'email': 'Email',
-            'name': 'Imię',
-            'surname': 'Nazwisko',
-            'password': 'Hasło',
+            'name': 'Nazwa',
+            'author': 'Autor',
+            'number': 'Numer',
+            'folder': 'Teczka',
+            'note': 'Notatki'
         }
 
         widgets = {
-            'email': EmailInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'example@example.com'
-            }),
             'name': TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Wpisz imię'
+                'placeholder': 'Ich will'
             }),
-            'surname': TextInput(attrs={
+            'Autor': TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Wpisz nazwisko'
+                'placeholder': 'Rammstein'
             }),
-            'password': PasswordInput(attrs={
+            'number': TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Haslo123'
+                'placeholder': 'Numer utworu'
+            }),
+            'folder': TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': ''
+            }),
+            'note': TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Notatki'
             }),
         }
