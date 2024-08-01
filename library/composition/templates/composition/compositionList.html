@@ -76,7 +76,7 @@
                     {% for composition in compositions %}
                     <tr>
                         <td>{{ composition.number }}</td>
-                        <td><a href="{% url 'detailsComposition' id=composition.number %}">{{ composition.name }}</a><br>
+                        <td><a href="{% url 'detailsComposition' id=composition.id %}">{{ composition.name }}</a><br>
                             <small style="font-size: 82%;">{{ composition.author }}</small>
                         
                         </td>

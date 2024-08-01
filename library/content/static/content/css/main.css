@@ -43,3 +43,16 @@ h1{
 a{
     text-decoration: none;
 }
+
+.toast-success {
+    background-color: #d7ffe1;
+}
+.toast-error {
+    background-color: #f8d7da;
+}
+.toast-warning {
+    background-color: #fff3cd;
+}
+.toast-info {
+    background-color: #d1ecf1;
+}

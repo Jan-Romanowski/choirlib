@@ -5,12 +5,11 @@ from django.forms import ModelForm, TextInput, EmailInput, PasswordInput
 class CompositionForm(ModelForm):
     class Meta:
         model = Composition
-        fields = ['name', 'author', 'number', 'folder', 'note']
+        fields = ['name', 'author', 'folder', 'note']
 
         labels = {
             'name': 'Nazwa',
             'author': 'Autor',
-            'number': 'Numer',
             'folder': 'Teczka',
             'note': 'Notatki'
         }
@@ -20,13 +19,9 @@ class CompositionForm(ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Ich will'
             }),
-            'Autor': TextInput(attrs={
+            'author': TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Rammstein'
-            }),
-            'number': TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Numer utworu'
             }),
             'folder': TextInput(attrs={
                 'class': 'form-control',

@@ -14,6 +14,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    
+
     <link rel="stylesheet" href="{% static 'content/css/main.css' %}">
 </head>
 
@@ -87,9 +91,55 @@
         </nav>
 
         <div class="container main-container align-items-center" style="min-height: 90vh; width: 100%">
-                {% block body %}
-                {% endblock %}
+
+            <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+                {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                        <div class="toast toast-success" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+                    {% elif message.tags == 'error' %}
+                        <div class="toast toast-error" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+                    {% elif message.tags == 'warning' %}
+                        <div class="toast toast-warning" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+                    {% else %}
+                        <div class="toast toast-info" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+                    {% endif %}
+                        <div class="toast-header">
+                            <img class="m-0 p-0" src="{% static 'content/img/logo_dark.svg' %}" width="30px" alt="Chór Katedralny">
+
+                            {% if message.tags == 'success' %}
+                                <strong class="me-auto">Sukces!</strong>
+                            {% elif message.tags == 'error' %}
+                                <strong class="me-auto">Nie powiodło się..</strong>
+                            {% elif message.tags == 'warning' %}
+                                <strong class="me-auto">Uwaga</strong>
+                            {% else %}
+                                <strong class="me-auto">Uwaga</strong>
+                            {% endif %}
+                            <small class="text-body-secondary">{% now "Y-m-d H:i:s" %}</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Zamknij"></button>
+                        </div>
+                        <div class="toast-body">
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+                    var toastList = toastElList.map(function (toastEl) {
+                        return new bootstrap.Toast(toastEl)
+                    })
+                    toastList.forEach(toast => toast.show())
+                });
+            </script>
+
+            {% block body %}
+            {% endblock %}
         </div>
+
+
 
         {% include 'content/footer.html' %}
     </div>

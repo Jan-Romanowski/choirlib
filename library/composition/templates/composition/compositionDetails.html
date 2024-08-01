@@ -3,16 +3,46 @@
 {% load static %}
 {% block body %}
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'listComposition' %}">Utwory</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ composition.name }}</li>
-    </ol>
+<div class="pt-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'listComposition' %}">Utwory</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ composition.name }}</li>
+        </ol>
     </nav>
+</div>
+
 
 <h2 class="text-center">{{ composition.name }}</h1>
 <p><strong>Autor:</strong> {{ composition.author }}</p>
 <p><strong>Teczka:</strong> {{ composition.folder }}</p>
 <p><strong>Numer:</strong> {{ composition.number }}</p>
+<p><strong>Notatki:</strong> {{ composition.note }}</p>
+
+<a href="{% url 'editComposition' pk=composition.id %}" class="btn btn-outline-primary">Edycja utworu</a>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Usuń utwór
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body"> 
+            Napewno chcesz usunąć utwór <b>{{ composition.name }}</b> ? Skasują się również wszystkie pdf-y i nagrania do tego utworu i nie da się tego wszystkiego przywrócić.
+        </div>
+        <div class="modal-footer">
+            <a href="{% url 'deleteComposition' pk=composition.id %}" class="btn btn-outline-danger w-25">Tak</a>
+           <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Nie</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}

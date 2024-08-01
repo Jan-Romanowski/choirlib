@@ -3,7 +3,8 @@ from . import views
 
 urlpatterns = [
     path('list', views.index, name='listComposition'),
-    path('edit', views.editComposition, name='editComposition'),
     path('create', views.editComposition, name='createComposition'),
+    path('edit/<int:pk>/', views.editComposition, name='editComposition'),
     path('details/<int:id>/', views.detailsComposition, name='detailsComposition'),
+    path('delete/<int:pk>/', views.deleteComposition, name='deleteComposition'),
 ]
