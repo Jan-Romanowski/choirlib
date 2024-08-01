@@ -1,8 +1,16 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Composition
 from .forms import CompositionForm
 
 def index(request):
-    return render(request, 'composition/compositionList.html')
+    compositions = Composition.objects.all()
+    return render(request, 'composition/compositionList.html', {'compositions': compositions})
+
+
+def detailsComposition(request, id):
+    composition = get_object_or_404(Composition, id=id)
+    return render(request, 'composition/compositionDetails.html', {'composition': composition})
+
 
 def editComposition(request):
     error = ''
@@ -10,7 +18,7 @@ def editComposition(request):
         form = CompositionForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/composition/list')
+            return redirect('listComposition')
         else:
             error = 'Coś poszło nie tak'
 
@@ -21,8 +29,3 @@ def editComposition(request):
     }
 
     return render(request, 'composition/compositionForm.html', data)
-
-def  detailsComposition(request):
-    return render(request, 'composition/compositionDetails.html')
-
-

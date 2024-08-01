@@ -1,0 +1,18 @@
+{% extends 'content/template.html' %}
+
+{% load static %}
+{% block body %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'listComposition' %}">Utwory</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ composition.name }}</li>
+    </ol>
+    </nav>
+
+<h2 class="text-center">{{ composition.name }}</h1>
+<p><strong>Autor:</strong> {{ composition.author }}</p>
+<p><strong>Teczka:</strong> {{ composition.folder }}</p>
+<p><strong>Numer:</strong> {{ composition.number }}</p>
+
+{% endblock %}
