@@ -17,6 +17,7 @@
 <p><strong>Autor:</strong> {{ composition.author }}</p>
 <p><strong>Teczka:</strong> {{ composition.folder }}</p>
 <p><strong>Numer:</strong> {{ composition.number }}</p>
+<p><strong>Utworzono:</strong> {{ composition.date_joined }}</p>
 <p><strong>Notatki:</strong> {{ composition.note }}</p>
 
 <a href="{% url 'editComposition' pk=composition.id %}" class="btn btn-outline-primary">Edycja utworu</a>
@@ -31,7 +32,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Potwierdź akcję</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body"> 

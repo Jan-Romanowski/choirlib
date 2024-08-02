@@ -3,7 +3,7 @@ from django.contrib import messages
 from .models import Composition
 from .forms import CompositionForm
 
-def index(request):
+def listComposition(request):
     compositions = Composition.objects.all()
     return render(request, 'composition/compositionList.html', {'compositions': compositions})
 

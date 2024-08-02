@@ -1,11 +1,12 @@
 from django.db import models
 from django.utils import timezone
+from folder.models import Folder
 
 class Composition(models.Model):
     name = models.CharField('name', max_length=45)
     author = models.CharField('author', max_length=35)
     number = models.PositiveIntegerField(unique=True)
-    folder = models.CharField('folder', max_length=10)
+    folder = models.ForeignKey(Folder, related_name='compositions', on_delete=models.SET_NULL, null=True, blank=True)
     isActual = models.BooleanField('isActual', default=False)
     note = models.CharField('note', max_length=250, null=True, blank=True) # Может быть нулём + можно ничего не вписывать в форме
     date_joined = models.DateTimeField(default=timezone.now)

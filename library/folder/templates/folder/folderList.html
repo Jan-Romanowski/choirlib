@@ -1,0 +1,168 @@
+{% extends 'content/template.html' %}
+
+{% load static %}
+{% block body %}
+
+<div class="row justify-content-center">
+    <div class="container-fluid">
+        <h2 class="text-center mt-3 mb-4">Teczki</h2>
+        <form>
+            <div class="row justify-content-center mb-3">
+                <div class="col-6 col-md-2 mt-1 mb-1">
+                    <a class="btn w-75 btn-outline-success" href="{% url 'createFolder' %}" role="button">Nowa teczka</a>
+                </div>
+
+                <div class="col-6 col-md-2 mt-1 mb-1">
+                    <a class="btn w-75 btn-outline-primary" data-bs-toggle="collapse" href="#searchFilters" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        Filtry
+                    </a>
+                </div>
+
+                <div class="col-12 col-md-8 mt-1 mb-1">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Jakiś tam utwór.." aria-label="Searchline" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-primary" type="button" id="button-addon2">Szukaj</button>
+                        </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row justify-content-between g-3">
+        {% for folder in folders %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card shadow-lg">
+                <div class="card-img-top" style="background-color: {{ folder.colour|default_if_none:'#CCCCCC' }};">
+                    {{ folder.name }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ folder.name }}</h5>
+                    <p class="card-text">{{ folder.note }}</p>
+                    
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#detailModal{{ folder.id }}">
+                        Szczegóły
+                    </button>
+                    <!-- Detail Modal -->
+                    <div class="modal fade" id="detailModal{{ folder.id }}" tabindex="-1" aria-labelledby="detailModal{{ folder.id }}Label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="card-img-top w-100" style="background-color: {{ folder.colour|default_if_none:'#CCCCCC' }};">
+                                    <h4 class="toPrint">{{ folder.name }}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <h3 class="toPrint">{{ folder.name }}</h3>
+                                    <p><b>Opis: </b>{{ folder.note }}</p>
+                                    <p class="d-inline-flex gap-1">
+                                        <button class="btn btn-outline-primary position-relative" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                          Utwory
+                                          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+                                            {{ folder.compositions.all|length }}
+                                            <span class="visually-hidden">unread messages</span>
+                                        </button>
+                                    </p>
+                                    <div class="collapse" id="collapseExample">
+                                        <div class="card card-body">
+                                            <table class="table table-hover">
+                                                {% for composition in folder.compositions.all %}
+                                                <tr>
+                                                    <td><a href="{% url 'detailsComposition' id=composition.id %}">{{ composition.name }}</a><br>
+                                                        <small style="font-size: 82%;">{{ composition.author }}</small>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="{% url 'editFolder' pk=folder.id %}" class="btn btn-outline-primary w-25">Edytuj</a>
+                                    <button type="button" class="btn btn-outline-danger w-25" data-bs-toggle="modal" data-bs-target="#deleteFolder{{ folder.id }}" data-bs-hide="#detailModal{{ folder.id }}">Usuń</button>
+                                    <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Zamknij</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Delete Confirmation Modal -->
+                    <div class="modal fade" id="deleteFolder{{ folder.id }}" tabindex="-1" aria-labelledby="deleteFolder{{ folder.id }}Label" aria-hidden="true" data-bs-backdrop="static">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteFolder{{ folder.id }}Label">Usunięcie teczki</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Napewno chcesz usunąć teczkę <b>{{ folder.name }}</b>? Utwory znajdujące się w tej teczce zostaną zapisane jako <b>Bez teczki</b>.
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="{% url 'deleteFolder' pk=folder.id %}" class="btn btn-outline-danger w-25">Tak</a>
+                                    <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Nie</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+        .card-img-top {
+            min-height: 80px;
+            width: 100%;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+        .toPrint {
+            /* Цвет текста будет установлен динамически */
+        }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function getTextColor(backgroundColor) {
+            let r = parseInt(backgroundColor.substring(1, 3), 16);
+            let g = parseInt(backgroundColor.substring(3, 5), 16);
+            let b = parseInt(backgroundColor.substring(5, 7), 16);
+
+            let brightness = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+
+            return brightness > 0.5 ? '#000000' : '#FFFFFF';
+        }
+
+        var cards = document.querySelectorAll('.card-img-top');
+        cards.forEach(function (card) {
+            let backgroundColor = getComputedStyle(card).backgroundColor;
+            let hexColor = rgbToHex(backgroundColor);
+            card.style.color = getTextColor(hexColor);
+        });
+
+        var modals = document.querySelectorAll('.modal-header');
+        modals.forEach(function (modal) {
+            let backgroundColor = getComputedStyle(modal).backgroundColor;
+            let hexColor = rgbToHex(backgroundColor);
+            modal.querySelector('.toPrint').style.color = getTextColor(hexColor);
+        });
+
+        function rgbToHex(rgb) {
+            let rgbArray = rgb.match(/\d+/g);
+            return `#${(1 << 24 | (parseInt(rgbArray[0]) << 16) | (parseInt(rgbArray[1]) << 8) | parseInt(rgbArray[2])).toString(16).slice(1).toUpperCase()}`;
+        }
+    });
+</script>
+
+{% endblock %}

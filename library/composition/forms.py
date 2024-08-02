@@ -1,6 +1,7 @@
-from .models import Composition
 from django import forms
-from django.forms import ModelForm, TextInput, EmailInput, PasswordInput
+from folder.models import Folder
+from .models import Composition
+from django.forms import ModelForm, TextInput
 
 class CompositionForm(ModelForm):
     class Meta:
@@ -23,12 +24,10 @@ class CompositionForm(ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Rammstein'
             }),
-            'folder': TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': ''
-            }),
             'note': TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Notatki'
             }),
         }
+
+        folder = forms.ModelChoiceField(queryset=Folder.objects.all(), required=False, empty_label="Wybierz teczkę")

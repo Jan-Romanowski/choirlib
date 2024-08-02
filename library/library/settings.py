@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'composition',
     'content',
     'user',
+    'folder',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
