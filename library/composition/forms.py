@@ -1,6 +1,6 @@
 from django import forms
 from folder.models import Folder
-from .models import Composition
+from .models import Composition, CompositionFile
 from django.forms import ModelForm, TextInput
 
 class CompositionForm(ModelForm):
@@ -31,3 +31,8 @@ class CompositionForm(ModelForm):
         }
 
         folder = forms.ModelChoiceField(queryset=Folder.objects.all(), required=False, empty_label="Wybierz teczkę")
+
+class UploadFileForm(forms.ModelForm):
+    class Meta:
+        model = CompositionFile
+        fields = ['file', 'file_type']

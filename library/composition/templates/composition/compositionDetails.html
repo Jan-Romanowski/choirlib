@@ -1,7 +1,12 @@
 {% extends 'content/template.html' %}
-
+{% load extras %}
 {% load static %}
+
 {% block body %}
+
+<!-- Include Plyr CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3/dist/plyr.css" />
+<script src="https://cdn.jsdelivr.net/npm/plyr@3/dist/plyr.js"></script>
 
 <div class="pt-2">
     <nav aria-label="breadcrumb">
@@ -12,8 +17,7 @@
     </nav>
 </div>
 
-
-<h2 class="text-center">{{ composition.name }}</h1>
+<h2 class="text-center">{{ composition.name }}</h2>
 <p><strong>Autor:</strong> {{ composition.author }}</p>
 <p><strong>Teczka:</strong> {{ composition.folder }}</p>
 <p><strong>Numer:</strong> {{ composition.number }}</p>
@@ -25,48 +29,105 @@
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Usuń utwór
-  </button>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Potwierdź akcję</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body"> 
-            Napewno chcesz usunąć utwór <b>{{ composition.name }}</b> ? Skasują się również wszystkie pdf-y i nagrania do tego utworu i nie da się tego wszystkiego przywrócić.
-        </div>
-        <div class="modal-footer">
-            <a href="{% url 'deleteComposition' pk=composition.id %}" class="btn btn-outline-danger w-25">Tak</a>
-           <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Nie</button>
-        </div>
-      </div>
-    </div>
-  </div>
+</button>
 
-  <div class="container-fluid mt-3">
-    <h4>Pliki</h4>
-    <hr>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <td>
-            #
-          </td>
-          <td>
-            Nazwa
-          </td>
-          <td>
-            Akcje
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        
-      </tbody>
-    </table>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Potwierdź akcję</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"> 
+                Napewno chcesz usunąć utwór <b>{{ composition.name }}</b>? Skasują się również wszystkie pdf-y и nagrania do tego utworu и не да се tego wszystkiego przywrócić.
+            </div>
+            <div class="modal-footer">
+                <a href="{% url 'deleteComposition' pk=composition.id %}" class="btn btn-outline-danger w-25">Tak</a>
+                <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Nie</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="{% url 'uploadFilesComposition' composition_id=composition.id %}" class="btn btn-outline-success">Wgraj pliki</a>
+
+<!-- Files Table -->
+<div class="container mt-5">
+  <h3>Pliki:</h3>
+  <div class="table-responsive">
+      <table class="table">
+          <thead>
+              <tr>
+                  <th scope="col">Nazwa</th>
+                  <th scope="col">Player</th>
+                  <th scope="col">Typ</th>
+                  <th scope="col">Akcja</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for file in composition.files.all %}
+              <tr>
+                  <td><a href="{{ file.file.url }}">{{ file.file.name|get_filename_without_extension }}</a></td>
+                  <td>
+                      {% if file.file.url|slice:"-4:" == '.mp3' %}
+                      <div class="plyr__audio-wrapper">
+                          <audio id="player{{ forloop.counter }}" controls>
+                              <source src="{{ file.file.url }}" type="audio/mpeg">
+                              Your browser does not support the audio element.
+                          </audio>
+                      </div>
+                      {% elif file.file.url|slice:"-4:" == '.wav' %}
+                      <div class="plyr__audio-wrapper">
+                          <audio id="player{{ forloop.counter }}" controls>
+                              <source src="{{ file.file.url }}" type="audio/wav">
+                              Your browser does not support the audio element.
+                          </audio>
+                      </div>
+                      {% endif %}
+                  </td>
+                  <td>
+                      {% if file.file.url|slice:"-4:" == '.mp3' %}
+                      Audio MP3
+                      {% elif file.file.url|slice:"-4:" == '.pdf' %}
+                      PDF
+                      {% elif file.file.url|slice:"-4:" == '.wav' %}
+                      Audio WAV
+                      {% else %}
+                      {{ file.file.url|slice:"-4:" }}
+                      {% endif %}
+                  </td>
+                  <td>
+                      {% if file.file.url|slice:"-4:" == '.pdf' %}
+                      <a href="{{ file.file.url }}" class="btn btn-outline-primary" target="_blank">
+                          Pobierz
+                      </a>
+                      {% else %}
+                      <a href="{{ file.file.url }}" class="btn btn-outline-secondary" download>
+                          Pobierz
+                      </a>
+                      {% endif %}
+                  </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
   </div>
+</div>
+
+<!-- Initialize Plyr -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const players = Plyr.setup('audio');
+    });
+</script>
+
+<style>
+    /* Дополнительные стили для адаптивности таблицы */
+  .table-responsive {
+      overflow-x: auto;
+  }
+
+</style>
 
 {% endblock %}

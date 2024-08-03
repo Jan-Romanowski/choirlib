@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Composition
-from .forms import CompositionForm
+from .models import Composition, CompositionFile
+from .forms import CompositionForm, UploadFileForm
 
 def listComposition(request):
     compositions = Composition.objects.all()
@@ -52,3 +52,24 @@ def deleteComposition(request, pk):
         messages.error(request, f'Niestaty nie udało się usunąć utwór "{composition_name}": {str(e)}')
 
     return redirect('listComposition')
+
+def upload_files(request, composition_id):
+    composition = Composition.objects.get(id=composition_id)
+    
+    if request.method == 'POST':
+        files = request.FILES.getlist('file')
+        file_type = request.POST.get('file_type')
+        
+        for f in files:
+            CompositionFile.objects.create(
+                composition=composition,
+                file=f,
+                file_type=file_type
+            )
+        
+        messages.success(request, 'Plik pomyślnie wgrany.')
+        return redirect('detailsComposition', id=composition_id)
+    else:
+        form = UploadFileForm()
+    
+    return render(request, 'composition/compositionUploadFiles.html', {'form': form, 'composition': composition})

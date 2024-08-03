@@ -103,7 +103,7 @@
                             <small style="font-size: 82%;">{{ composition.author }}</small>
                         </td>
                         <td>
-                            {{ composition.folder|default:"Bez teczki" }}
+                            <b>{{ composition.folder|default:"Bez teczki" }}</b>
                         </td>
 
                         {% if composition.isActual == True %}
