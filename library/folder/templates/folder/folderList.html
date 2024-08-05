@@ -56,14 +56,14 @@
                                     <h3 class="toPrint">{{ folder.name }}</h3>
                                     <p><b>Opis: </b>{{ folder.note }}</p>
                                     <p class="d-inline-flex gap-1">
-                                        <button class="btn btn-outline-primary position-relative" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                        <button class="btn btn-outline-primary position-relative" type="button" data-bs-toggle="collapse" data-bs-target="#folder{{ folder.id }}" aria-expanded="false" aria-controls="collapseExample">
                                           Utwory
                                           <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
                                             {{ folder.compositions.all|length }}
                                             <span class="visually-hidden">unread messages</span>
                                         </button>
                                     </p>
-                                    <div class="collapse" id="collapseExample">
+                                    <div class="collapse" id="folder{{ folder.id }}">
                                         <div class="card card-body">
                                             <table class="table table-hover">
                                                 {% for composition in folder.compositions.all %}
