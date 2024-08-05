@@ -39,8 +39,6 @@ def editComposition(request, pk=None):
 
     return render(request, 'composition/compositionForm.html', {'form': form})
 
-
-
 def deleteComposition(request, pk):
     composition = get_object_or_404(Composition, pk=pk)
     composition_name = composition.name  # сохранить имя для уведомления
@@ -53,7 +51,7 @@ def deleteComposition(request, pk):
 
     return redirect('listComposition')
 
-def upload_files(request, composition_id):
+def uploadFiles(request, composition_id):
     composition = Composition.objects.get(id=composition_id)
     
     if request.method == 'POST':
@@ -73,3 +71,16 @@ def upload_files(request, composition_id):
         form = UploadFileForm()
     
     return render(request, 'composition/compositionUploadFiles.html', {'form': form, 'composition': composition})
+
+def deleteCompositionFile(request, id):
+    file = get_object_or_404(CompositionFile, id=id)
+    composition_id = file.composition.id
+    
+    try:
+        file.file.delete()
+        file.delete()
+        messages.success(request, 'Plik pomyślnie usunięty.')
+    except Exception as e:
+        messages.error(request, f'Nie dało się usunąć pliku: {e}')
+    
+    return redirect('detailsComposition', id=composition_id)
