@@ -9,6 +9,5 @@ urlpatterns = [
     path('delete/<int:pk>/', views.deleteComposition, name='deleteComposition'),
     path('composition/<int:composition_id>/upload/', views.uploadFiles, name='uploadFilesComposition'),
     path('compositionFile/delete/<int:id>/', views.deleteCompositionFile, name='deleteFileComposition'),
-
-
+    path('composition/<int:id>/toggleActual/', views.checkAsActual, name='toggleActual'),
 ]

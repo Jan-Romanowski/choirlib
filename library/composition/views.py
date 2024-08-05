@@ -84,3 +84,12 @@ def deleteCompositionFile(request, id):
         messages.error(request, f'Nie dało się usunąć pliku: {e}')
     
     return redirect('detailsComposition', id=composition_id)
+
+
+def checkAsActual(request, id):
+    composition = get_object_or_404(Composition, id=id)
+    composition.isActual = not composition.isActual
+    composition.save()
+    messages.success(request, f'Utwór "{composition.name}" zaznaczony jako {"Aktualny" if composition.isActual else "Nieaktualny"}.')
+    return redirect('listComposition')
+
