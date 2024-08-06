@@ -2,10 +2,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Composition, CompositionFile
 from .forms import CompositionForm, UploadFileForm
+from django.core.paginator import Paginator
 
 def listComposition(request):
-    compositions = Composition.objects.all()
-    return render(request, 'composition/compositionList.html', {'compositions': compositions})
+    composition_list = Composition.objects.all()
+    paginator = Paginator(composition_list, 10)  # Показывать 10 произведений на странице
+
+    page_number = request.GET.get('page')  # Получение номера страницы из GET-параметра
+    page_obj = paginator.get_page(page_number)  # Получение объекта страницы
+
+    return render(request, 'composition/compositionList.html', {'page_obj': page_obj})
 
 
 def detailsComposition(request, id):
@@ -16,10 +22,10 @@ def detailsComposition(request, id):
 def editComposition(request, pk=None):
     if pk:
         composition = get_object_or_404(Composition, pk=pk)
-        action = 'update'  # Действие — обновление
+        action = 'update'
     else:
         composition = None
-        action = 'add'  # Действие — добавление
+        action = 'add'
 
     if request.method == 'POST':
         form = CompositionForm(request.POST, instance=composition)
@@ -37,11 +43,11 @@ def editComposition(request, pk=None):
     else:
         form = CompositionForm(instance=composition)
 
-    return render(request, 'composition/compositionForm.html', {'form': form})
+    return render(request, 'composition/compositionForm.html', {'form': form, 'pk': pk})
 
 def deleteComposition(request, pk):
     composition = get_object_or_404(Composition, pk=pk)
-    composition_name = composition.name  # сохранить имя для уведомления
+    composition_name = composition.name
 
     try:
         composition.delete()

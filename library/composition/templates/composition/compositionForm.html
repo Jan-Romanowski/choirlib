@@ -7,6 +7,9 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'listComposition' %}">Utwory</a></li>
+            {% if pk != None %}
+            <li class="breadcrumb-item"><a href="{% url 'detailsComposition' id=pk %}">{{ form.name.value }}</a></li>
+            {% endif %}
             <li class="breadcrumb-item active" aria-current="page">Formularz utworu</li>
         </ol>
     </nav>
@@ -15,7 +18,13 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-6 col-md-8 col-sm-10 col-12">
-            <h2 class="mt-5 text-center">Dane utworu</h2>
+            <h2 class="mt-5 text-center">
+                {% if pk != None %}
+                    Edycja utworu {{ form.name.value }}
+                {% else %}
+                    Dane nowegu utworu
+                {% endif %}
+            </h2>
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
