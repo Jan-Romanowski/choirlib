@@ -4,10 +4,10 @@ from . import views
 urlpatterns = [
     path('list', views.listComposition, name='listComposition'),
     path('create', views.editComposition, name='createComposition'),
-    path('edit/<int:pk>/', views.editComposition, name='editComposition'),
+    path('edit/<int:id>/', views.editComposition, name='editComposition'),
     path('details/<int:id>/', views.detailsComposition, name='detailsComposition'),
-    path('delete/<int:pk>/', views.deleteComposition, name='deleteComposition'),
-    path('composition/<int:composition_id>/upload/', views.uploadFiles, name='uploadFilesComposition'),
-    path('compositionFile/delete/<int:id>/', views.deleteCompositionFile, name='deleteFileComposition'),
-    path('composition/<int:id>/toggleActual/', views.checkAsActual, name='toggleActual'),
+    path('delete/<int:id>/', views.deleteComposition, name='deleteComposition'),
+    path('uploadFile/<int:id>/', views.uploadFiles, name='uploadFilesComposition'),
+    path('deleteFile/<int:id>/', views.deleteCompositionFile, name='deleteFileComposition'),
+    path('toggleActual/<int:id>/', views.checkAsActual, name='toggleActual'),
 ]

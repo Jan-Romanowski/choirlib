@@ -1,5 +1,5 @@
 from django import forms
-from .models import News
+from .models import News, NewsFile
 from django.forms import ModelForm, TextInput
 
 class NewsForm(ModelForm):
@@ -22,3 +22,8 @@ class NewsForm(ModelForm):
                 'placeholder': 'Jakiś tam tekst'
             }),
         }
+
+class UploadFileForm(forms.ModelForm):
+    class Meta:
+        model = NewsFile
+        fields = ['file', 'file_type']

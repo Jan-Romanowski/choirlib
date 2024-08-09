@@ -1,0 +1,74 @@
+{% extends 'content/template.html' %}
+{% load static %}
+
+{% block body %}
+
+<div class="pt-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'listNews' %}">Aktualności</a></li>
+            <li class="breadcrumb-item active text-truncate" style="width: 200px;" aria-current="page">{{ news.title }}</li>
+        </ol>
+    </nav>
+</div>
+
+<h2 class="text-center">{{ news.title }}</h2>
+<p> {{ news.text }}</p>
+
+<a href="{% url 'editNews' id=news.id %}" class="btn btn-outline-primary">Edycja</a>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+    Usuń
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="deleteModalLabel">Potwierdź akcję</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"> 
+                Napewno chcesz usunąć post <b>{{ news.title }}</b>? Skasują się również wszystkie zdjęcia do tego utworu i nie da się tego wszystkiego przywrócić.
+            </div>
+            <div class="modal-footer">
+                <a href="{% url 'deleteNews' id=news.id %}" class="btn btn-outline-danger w-25">Tak</a>
+                <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Nie</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Files Table -->
+<div class="container mt-5">
+  <h3>Pliki:</h3>
+  <div class="table-responsive">
+
+  </div>
+</div>
+
+<style>
+    /* Дополнительные стили для адаптивности таблицы */
+  .table-responsive {
+      overflow-x: auto;
+      min-height: 300px;
+  }
+
+  .custom-dropdown-menu {
+    position: absolute;
+    z-index: 1050; /* Ensure it's above other elements */
+    top: 100%; /* Adjust to position it below the button */
+    left: 0;
+    transform: translateY(0); /* Remove translate to ensure it stays in place */
+}
+
+.btn-group {
+    position: relative; /* Ensure the dropdown is positioned relative to the button */
+}
+
+
+</style>
+
+{% endblock %}

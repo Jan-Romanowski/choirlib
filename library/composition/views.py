@@ -13,9 +13,9 @@ def detailsComposition(request, id):
     return render(request, 'composition/details.html', {'composition': composition})
 
 
-def editComposition(request, pk=None):
-    if pk:
-        composition = get_object_or_404(Composition, pk=pk)
+def editComposition(request, id=None):
+    if id:
+        composition = get_object_or_404(Composition, id=id)
         action = 'update'
     else:
         composition = None
@@ -37,10 +37,10 @@ def editComposition(request, pk=None):
     else:
         form = CompositionForm(instance=composition)
 
-    return render(request, 'composition/form.html', {'form': form})
+    return render(request, 'composition/form.html', {'form': form, 'composition': composition})
 
-def deleteComposition(request, pk):
-    composition = get_object_or_404(Composition, pk=pk)
+def deleteComposition(request, id):
+    composition = get_object_or_404(Composition, id=id)
     composition_name = composition.name  # сохранить имя для уведомления
 
     try:
@@ -51,8 +51,8 @@ def deleteComposition(request, pk):
 
     return redirect('listComposition')
 
-def uploadFiles(request, composition_id):
-    composition = Composition.objects.get(id=composition_id)
+def uploadFiles(request, id):
+    composition = Composition.objects.get(id=id)
     
     if request.method == 'POST':
         files = request.FILES.getlist('file')
@@ -66,7 +66,7 @@ def uploadFiles(request, composition_id):
             )
         
         messages.success(request, 'Plik pomyślnie wgrany.')
-        return redirect('detailsComposition', id=composition_id)
+        return redirect('detailsComposition', id=id)
     else:
         form = UploadFileForm()
     

@@ -7,6 +7,9 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'listNews' %}">Aktualności</a></li>
+            {% if news != None %}
+            <li class="breadcrumb-item"><a href="{% url 'detailsNews' id=news.id %}">{{ news.title }}</a></li>
+            {% endif %}
             <li class="breadcrumb-item active" aria-current="page">Formularz aktualności</li>
         </ol>
     </nav>

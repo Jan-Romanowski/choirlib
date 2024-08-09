@@ -7,6 +7,9 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'listComposition' %}">Utwory</a></li>
+            {% if composition != None %}
+            <li class="breadcrumb-item"><a href="{% url 'detailsComposition' id=composition.id %}">{{ composition.name }}</a></li>
+            {% endif %}
             <li class="breadcrumb-item active" aria-current="page">Formularz utworu</li>
         </ol>
     </nav>

@@ -3,23 +3,24 @@
 {% load static %}
 {% block body %}
 
-<a href="{% url 'createPost' %}">Nowy post</a>
-
 <div class="row justify-content-center">
     <div class="container-fluid">
         <h2 class="text-center mt-3 mb-4">Aktualności</h2>
+        <a href="{% url 'createNews' %}">Nowy post</a>
+          <div class="row d-flex justify-content-center">
             {% for post in news %}
 
-            <div class="card" style="width: 18rem;">
+            <div class="card col-sm-12 col-md-5 col-lg-5 col-xl-3 m-3">
                 <img src="..." class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title">{{ post.title }}</h5>
                   <p class="card-text">{{ post.text }}</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                  <a href="{% url 'detailsNews' id=post.id %}" class="btn btn-outline-primary">Szczegóły</a>
                 </div>
               </div>
 
             {% endfor %}
+          </div>
     </div>
 </div>
 

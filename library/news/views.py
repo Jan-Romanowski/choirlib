@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import News
-from .forms import NewsForm
+from .forms import NewsForm, NewsFile, UploadFileForm
 
 def listNews(request):
     news = News.objects.all()
@@ -13,34 +13,34 @@ def detailsNews(request, id):
     return render(request, 'news/details.html', {'news': news})
 
 
-def editNews(request, pk=None):
-    if pk:
-        post = get_object_or_404(News, pk=pk)
+def editNews(request, id=None):
+    if id:
+        news = get_object_or_404(News, id=id)
         action = 'update'
     else:
-        post = None
+        news = None
         action = 'add'
 
     if request.method == 'POST':
-        form = NewsForm(request.POST, instance=post)
+        form = NewsForm(request.POST, instance=news)
         if form.is_valid():
             new_post = form.save()
             if action == 'add':
                 messages.success(request, f'Post {new_post.title} został pomyślnie opublikowany.')
             else:
-                messages.success(request, f'Post {new_post.name} został pomyślnie zaktualizowany.')
+                messages.success(request, f'Post {new_post.title} został pomyślnie zaktualizowany.')
         
             return redirect('listNews')
         else:
             messages.error(request, 'Coś poszło nie tak')
     else:
-        form = NewsForm(instance=post)
+        form = NewsForm(instance=news)
 
-    return render(request, 'news/form.html', {'form': form})
+    return render(request, 'news/form.html', {'form': form, 'news': news})
 
 
-def deleteNews(request, pk):
-    news = get_object_or_404(News, pk=pk)
+def deleteNews(request, id):
+    news = get_object_or_404(News, id=id)
     news_title = news.title
 
     try:
@@ -51,9 +51,8 @@ def deleteNews(request, pk):
 
     return redirect('listNews')
 
-
-def uploadFiles(request, news_id):
-    news = News.objects.get(id=news_id)
+def uploadFiles(request, id):
+    news = News.objects.get(id=id)
     
     if request.method == 'POST':
         files = request.FILES.getlist('file')
@@ -66,9 +65,9 @@ def uploadFiles(request, news_id):
                 file_type=file_type
             )
         
-        messages.success(request, 'Plik pomyślnie wgrany.')
-        return redirect('detailsComposition', id=news_id)
+        messages.success(request, 'Plik(i) pomyślnie wgrany.')
+        return redirect('detailsNews', id=id)
     else:
         form = UploadFileForm()
     
-    return render(request, 'composition/uploadFiles.html', {'form': form, 'composition': composition})
+    return render(request, 'news/uploadFiles.html', {'form': form, 'news': news})

@@ -24,7 +24,7 @@
 <p><strong>Utworzono:</strong> {{ composition.date_joined }}</p>
 <p><strong>Notatki:</strong> {{ composition.note }}</p>
 
-<a href="{% url 'editComposition' pk=composition.id %}" class="btn btn-outline-primary">Edycja utworu</a>
+<a href="{% url 'editComposition' id=composition.id %}" class="btn btn-outline-primary">Edycja utworu</a>
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -43,14 +43,14 @@
                 Napewno chcesz usunąć utwór <b>{{ composition.name }}</b>? Skasują się również wszystkie pdf-y и nagrania do tego utworu и не да се tego wszystkiego przywrócić.
             </div>
             <div class="modal-footer">
-                <a href="{% url 'deleteComposition' pk=composition.id %}" class="btn btn-outline-danger w-25">Tak</a>
+                <a href="{% url 'deleteComposition' id=composition.id %}" class="btn btn-outline-danger w-25">Tak</a>
                 <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Nie</button>
             </div>
         </div>
     </div>
 </div>
 
-<a href="{% url 'uploadFilesComposition' composition_id=composition.id %}" class="btn btn-outline-success">Wgraj pliki</a>
+<a href="{% url 'uploadFilesComposition' id=composition.id %}" class="btn btn-outline-success">Wgraj pliki</a>
 
 <!-- Files Table -->
 <div class="container mt-5">

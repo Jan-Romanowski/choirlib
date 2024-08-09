@@ -1,0 +1,50 @@
+{% extends 'content/template.html' %}
+
+{% load static %}
+{% block body %}
+
+<div class="pt-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'listNews' %}">Utwory</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'detailsNews' id=composition.id %}">{{ composition.name }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Upload Files</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12 col-12">
+            <h2 class="mt-5 mb-3 text-center">Formualrz do wgrywania plików do utworu {{ composition.name }}</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="file" class="form-label">Wybierz pliki:</label>
+                    <input type="file" id="file" name="file" multiple class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="file_type" class="form-label">Typ pliku:</label>
+                    <select id="file_type" name="file_type" class="form-select">
+                        <option value="mp3">MP3</option>
+                        <option value="wav">WAV</option>
+                        <option value="pdf">PDF</option>
+                    </select>
+                </div>
+                {% if error_message %}
+                    <p class="text-danger text-center">{{ error_message }}</p>
+                {% endif %}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-outline-success mt-2">Wgraj</button>
+                </div>
+            </form>
+            {% if error %}
+                <p class="text-danger text-center">{{ error }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+{% endblock %}
