@@ -1,0 +1,26 @@
+{% extends 'content/template.html' %}
+
+{% load static %}
+{% block body %}
+
+<a href="{% url 'createPost' %}">Nowy post</a>
+
+<div class="row justify-content-center">
+    <div class="container-fluid">
+        <h2 class="text-center mt-3 mb-4">Aktualności</h2>
+            {% for post in news %}
+
+            <div class="card" style="width: 18rem;">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">{{ post.title }}</h5>
+                  <p class="card-text">{{ post.text }}</p>
+                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+              </div>
+
+            {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

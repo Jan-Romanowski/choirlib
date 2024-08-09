@@ -14,7 +14,6 @@ class Composition(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.number:
-            # Генерация нового номера
             max_number = Composition.objects.all().order_by('-number').first()
             self.number = (max_number.number + 1) if max_number else 1
         super().save(*args, **kwargs)

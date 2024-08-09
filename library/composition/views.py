@@ -5,21 +5,21 @@ from .forms import CompositionForm, UploadFileForm
 
 def listComposition(request):
     compositions = Composition.objects.all()
-    return render(request, 'composition/compositionList.html', {'compositions': compositions})
+    return render(request, 'composition/list.html', {'compositions': compositions})
 
 
 def detailsComposition(request, id):
     composition = get_object_or_404(Composition, id=id)
-    return render(request, 'composition/compositionDetails.html', {'composition': composition})
+    return render(request, 'composition/details.html', {'composition': composition})
 
 
 def editComposition(request, pk=None):
     if pk:
         composition = get_object_or_404(Composition, pk=pk)
-        action = 'update'  # Действие — обновление
+        action = 'update'
     else:
         composition = None
-        action = 'add'  # Действие — добавление
+        action = 'add'
 
     if request.method == 'POST':
         form = CompositionForm(request.POST, instance=composition)
@@ -37,7 +37,7 @@ def editComposition(request, pk=None):
     else:
         form = CompositionForm(instance=composition)
 
-    return render(request, 'composition/compositionForm.html', {'form': form})
+    return render(request, 'composition/form.html', {'form': form})
 
 def deleteComposition(request, pk):
     composition = get_object_or_404(Composition, pk=pk)
@@ -70,7 +70,7 @@ def uploadFiles(request, composition_id):
     else:
         form = UploadFileForm()
     
-    return render(request, 'composition/compositionUploadFiles.html', {'form': form, 'composition': composition})
+    return render(request, 'composition/uploadFiles.html', {'form': form, 'composition': composition})
 
 def deleteCompositionFile(request, id):
     file = get_object_or_404(CompositionFile, id=id)
