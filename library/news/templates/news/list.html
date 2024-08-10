@@ -11,10 +11,14 @@
             {% for post in news %}
 
             <div class="card col-sm-12 col-md-5 col-lg-5 col-xl-3 m-3">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
+                {% for file in post.files.all %}
+                    {% if file.is_main %}
+                    <img src="{{ file.file.url }}" class="card-img-top object-fit-cover border rounded" alt="{{ file.get_file_type_display }}">
+                    {% endif %}
+                {% endfor %}
+                <div class="card-body" >
                   <h5 class="card-title">{{ post.title }}</h5>
-                  <p class="card-text">{{ post.text }}</p>
+                  <p class="card-text text-truncate">{{ post.text }}</p>
                   <a href="{% url 'detailsNews' id=post.id %}" class="btn btn-outline-primary">Szczegóły</a>
                 </div>
               </div>

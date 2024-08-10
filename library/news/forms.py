@@ -26,4 +26,4 @@ class NewsForm(ModelForm):
 class UploadFileForm(forms.ModelForm):
     class Meta:
         model = NewsFile
-        fields = ['file', 'file_type']
+        fields = ['file']

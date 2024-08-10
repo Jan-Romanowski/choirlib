@@ -35,4 +35,4 @@ class CompositionForm(ModelForm):
 class UploadFileForm(forms.ModelForm):
     class Meta:
         model = CompositionFile
-        fields = ['file', 'file_type']
+        fields = ['file']

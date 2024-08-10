@@ -16,6 +16,7 @@
 <p> {{ news.text }}</p>
 
 <a href="{% url 'editNews' id=news.id %}" class="btn btn-outline-primary">Edycja</a>
+<a href="{% url 'uploadFilesNews' id=news.id %}" class="btn btn-outline-success">Wgraj pliki</a>
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
@@ -41,10 +42,55 @@
     </div>
 </div>
 
+{% if news.isActual %}
+<a href="{% url 'toggleActualNews' id=news.id %}" class="btn btn-primary float-end">Aktuale</a>
+{% else %}
+<a href="{% url 'toggleActualNews' id=news.id %}" class="btn btn-outline-primary float-end">Aktuale</a>
+{% endif %}
+<a href="#" class="btn btn-outline-primary float-end mx-1 disabled">Opublikuj (Meta)</a>
+
 <!-- Files Table -->
 <div class="container mt-5">
   <h3>Pliki:</h3>
-  <div class="table-responsive">
+  <div class="row justify-content-center">
+
+    {% for file in news.files.all %}
+    <div class="card col-10 col-sm-10 col-md-6 col-lg-4 col-xl-4 m-2">
+        <img src="{{ file.file.url }}" alt="{{ file.get_file_type_display }}">
+        {% if file.is_main %}
+            <a href="#" class="btn btn-secondary disabled m-2">Główne zdjęcie</a>
+        {% else %}
+            <form method="post" action="{% url 'set_main_image' news_file_id=file.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-primary m-2 w-50">Ustaw jako główne</button>
+                <button type="button" class="btn btn-outline-danger m-2 w-25" data-bs-toggle="modal" data-bs-target="#deletePhoto{{ file.id }}">
+                    Usuń
+                </button>
+        
+                <!-- Modal -->
+                <div class="modal fade" id="deletePhoto{{ file.id }}" tabindex="-1" aria-labelledby="deletePhotoLabel{{ file.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="deletePhotoLabel{{ file.id }}">Potwierdź akcję</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body"> 
+                                Napewno chcesz usunąć to zdjęcie ?
+                            </div>
+                            <div class="modal-footer">
+                                <a href="{% url 'deleteFileNews' id=file.id %}" class="btn btn-outline-danger w-25">Tak</a>
+                                <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Nie</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </form>
+        {% endif %}
+            <!-- Button trigger modal -->
+        </div>
+    {% endfor %}
 
   </div>
 </div>

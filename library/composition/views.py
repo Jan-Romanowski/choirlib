@@ -44,7 +44,12 @@ def deleteComposition(request, id):
     composition_name = composition.name  # сохранить имя для уведомления
 
     try:
+        for file in composition.files.all():
+            file.file.delete()
+            file.delete()
+              
         composition.delete()
+
         messages.success(request, f'Utwór "{composition_name}" został pomyślnie usunięty.')
     except Exception as e:
         messages.error(request, f'Niestaty nie udało się usunąć utwór "{composition_name}": {str(e)}')
@@ -56,13 +61,14 @@ def uploadFiles(request, id):
     
     if request.method == 'POST':
         files = request.FILES.getlist('file')
-        file_type = request.POST.get('file_type')
         
         for f in files:
+            file_extension = f.name.split('.')[-1].lower()
+
             CompositionFile.objects.create(
                 composition=composition,
                 file=f,
-                file_type=file_type
+                file_type=file_extension
             )
         
         messages.success(request, 'Plik pomyślnie wgrany.')

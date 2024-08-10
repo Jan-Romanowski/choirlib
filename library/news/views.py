@@ -59,10 +59,12 @@ def uploadFiles(request, id):
         file_type = request.POST.get('file_type')
         
         for f in files:
+            file_extension = f.name.split('.')[-1].lower()
+
             NewsFile.objects.create(
                 news=news,
                 file=f,
-                file_type=file_type
+                file_type=file_extension
             )
         
         messages.success(request, 'Plik(i) pomyślnie wgrany.')
@@ -71,3 +73,48 @@ def uploadFiles(request, id):
         form = UploadFileForm()
     
     return render(request, 'news/uploadFiles.html', {'form': form, 'news': news})
+
+def set_main_image(news_file_id):
+    try:
+        news_file = NewsFile.objects.get(id=news_file_id)
+        news = news_file.news
+
+        NewsFile.objects.filter(news=news, is_main=True).update(is_main=False)
+
+        news_file.is_main = True
+        news_file.save()
+
+        return news.id
+    except NewsFile.DoesNotExist:
+        return False
+
+def set_main_image_view(request, news_file_id):
+    if request.method == 'POST':
+        success = set_main_image(news_file_id)
+        if success:
+            messages.success(request, 'Główne zdjęcie zostało ustawione pomyślnie.')
+        else:
+            messages.error(request, 'Nie udało się ustawić głównego zdjęcia.')
+    
+    return redirect('detailsNews', id=success)
+
+def checkAsActual(request, id):
+    news = get_object_or_404(News, id=id)
+    news.isActual = not news.isActual
+    news.save()
+    messages.success(request, f'Post "{news.title}" zaznaczony jako {"Aktualny" if news.isActual else "Nieaktualny"}.')
+    return redirect('detailsNews', id=id)
+
+def deleteNewsFile(request, id):
+    file = get_object_or_404(NewsFile, id=id)
+    news_id = file.news.id
+    
+    try:
+        file.file.delete()
+        file.delete()
+        messages.success(request, 'Plik pomyślnie usunięty.')
+    except Exception as e:
+        messages.error(request, f'Nie dało się usunąć pliku: {e}')
+    
+    return redirect('detailsNews', id=news_id)
+
