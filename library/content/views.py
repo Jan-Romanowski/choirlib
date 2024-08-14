@@ -1,8 +1,9 @@
 from django.shortcuts import render
-
+from news.models import News
 
 def index(request):
-    return render(request, 'content/index.html')
+    news = News.objects.filter(isActual=True)
+    return render(request, 'content/index.html', {'news': news})
 
 
 def managers(request):

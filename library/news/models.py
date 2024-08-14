@@ -10,14 +10,13 @@ class News(models.Model):
     date_joined = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         verbose_name = 'News'
         verbose_name_plural = 'News'
 
 def news_file_path(instance, filename):
-    # Сохраняем файлы по пути: news/id_post/имя_файла
     return os.path.join('news', str(instance.news.id), filename)
 
 
