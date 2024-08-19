@@ -19,7 +19,9 @@
                 <div class="card-body" >
                   <h5 class="card-title">{{ post.title }}</h5>
                   <p class="card-text text-truncate">{{ post.text }}</p>
-                  <a href="{% url 'detailsNews' id=post.id %}" class="btn btn-outline-primary">Szczegóły</a>
+                  <a href="{% url 'detailsNews' id=post.id %}" class="btn btn-outline-primary">Ustawienia</a>
+                  <a href="{% url 'showPost' id=post.id %}" class="btn btn-outline-primary">Szczegóły</a>
+                
                 </div>
               </div>
 

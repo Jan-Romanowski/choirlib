@@ -2,10 +2,23 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Composition, CompositionFile
 from .forms import CompositionForm, UploadFileForm
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 def listComposition(request):
+    query = request.GET.get('q')
     compositions = Composition.objects.all()
-    return render(request, 'composition/list.html', {'compositions': compositions})
+    
+    if query:
+        compositions = compositions.filter(
+            Q(name__icontains=query) | Q(author__icontains=query)
+        )
+
+    paginator = Paginator(compositions, 3)  # Показывать 10 произведений на странице
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'composition/list.html', {'page_obj': page_obj, 'compositions': page_obj.object_list})
 
 
 def detailsComposition(request, id):

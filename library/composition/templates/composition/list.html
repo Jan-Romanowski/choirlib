@@ -6,7 +6,7 @@
 <div class="row justify-content-center">
     <div class="container-fluid">
         <h2 class="text-center mt-3 mb-4">Utwory</h2>
-        <form>
+        <form method="GET" action="{% url 'listComposition' %}">
             <div class="row justify-content-center mb-3">
                 <div class="col-6 col-md-2 mt-1 mb-1">
                     <a class="btn w-75 btn-outline-success" href="{% url 'createComposition' %}" role="button">Nowy utwór</a>
@@ -20,8 +20,8 @@
 
                 <div class="col-12 col-md-8 mt-1 mb-1">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Jakiś tam utwór.." aria-label="Searchline" aria-describedby="button-addon2">
-                        <button class="btn btn-outline-primary" type="button" id="button-addon2">Szukaj</button>
+                        <input type="text" name="q" placeholder="Search by title or author" value="{{ request.GET.q }}">
+                        <button type="submit">Szukaj</button>
                         </div>
                 </div>
 
@@ -122,11 +122,32 @@
 
                     {% endif %}
                 </tr>
+                {% empty %}
+                    <p>Nie znaleziono utworów</p>
                 {% endfor %}
             </tbody>
             
         </table>
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?q={{ request.GET.q }}&page=1">&laquo; first</a>
+                    <a href="?q={{ request.GET.q }}&page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+        
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+        
+                {% if page_obj.has_next %}
+                    <a href="?q={{ request.GET.q }}&page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?q={{ request.GET.q }}&page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
     </div>
 </div>
+
+
 
 {% endblock %}

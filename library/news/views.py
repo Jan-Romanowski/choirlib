@@ -44,12 +44,17 @@ def deleteNews(request, id):
     news_title = news.title
 
     try:
+        for file in news.files.all():
+            file.file.delete()
+            file.delete()
+
         news.delete()
         messages.success(request, f'Post "{news_title}" został pomyślnie usunięty.')
     except Exception as e:
         messages.error(request, f'Niestaty nie udało się usunąć post "{news_title}": {str(e)}')
 
     return redirect('listNews')
+
 
 def uploadFiles(request, id):
     news = News.objects.get(id=id)
@@ -118,3 +123,6 @@ def deleteNewsFile(request, id):
     
     return redirect('detailsNews', id=news_id)
 
+def showPost(request, id):
+    news = get_object_or_404(News, id=id)
+    return render(request, 'news/post.html', {'news': news})

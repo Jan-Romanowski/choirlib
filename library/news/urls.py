@@ -11,4 +11,5 @@ urlpatterns = [
     path('deleteFile/<int:id>/', views.deleteNewsFile, name='deleteFileNews'),
     path('setMainPicture/<int:news_file_id>/', views.set_main_image_view, name='set_main_image'),
     path('toggleActual/<int:id>/', views.checkAsActual, name='toggleActualNews'),
+    path('show/<int:id>/', views.showPost, name='showPost'),
 ]

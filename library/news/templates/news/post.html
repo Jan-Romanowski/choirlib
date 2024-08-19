@@ -1,0 +1,61 @@
+{% extends 'content/template.html' %}
+{% load static %}
+
+{% block body %}
+
+<div class="pt-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'listNews' %}">Aktualności</a></li>
+            <li class="breadcrumb-item active text-truncate" style="width: 200px;" aria-current="page">{{ news.title }}</li>
+        </ol>
+    </nav>
+</div>
+
+<h2 class="text-center">{{ news.title }}</h2>
+
+<div class="container-fluid">
+    <div class="p-2 p-md-2 p-lg-3 p-xl-5">
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                {% for file in news.files.all %}
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-label="Slide {{ forloop.counter }}"></button>
+                {% endfor %}
+            </div>
+
+            <div class="carousel-inner">
+                {% for file in news.files.all %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img src="{{ file.file.url }}" class="d-block w-100 fixed-img" alt="{{ news.title }}">
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<p> {{ news.text }}</p>
+
+<style>
+    .carousel-inner {
+    height: 500px; /* Установите желаемую высоту для карусели */
+}
+
+.fixed-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Задает, как изображение должно вписываться в указанные размеры */
+}
+
+</style>
+
+{% endblock %}
