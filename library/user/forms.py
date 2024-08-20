@@ -58,4 +58,4 @@ class SignInForm(forms.Form):
         if email and password:
             user = authenticate(email=email, password=password)
             if user is None:
-                raise forms.ValidationError("Неверные учетные данные")
+                raise forms.ValidationError("Nieprawidłowe dane do logowania.")

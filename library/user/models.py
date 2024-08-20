@@ -22,8 +22,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
-    is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)  # Добавляем это поле
     date_joined = models.DateTimeField(default=timezone.now)
 
     # Custom fields for roles
@@ -37,3 +37,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+    
+    class Meta:
+        permissions = [
+            ("can_view_files", "Ma dostęp do przeglądania plików"),
+            ("can_edit_compositions", "Ma dostęp do edycji utworów"),
+            ("can_edit_folders", "Ma dostęp do edycji teczek"),
+            ("can_edit_news", "Ma dostęp do edycji aktualności")
+        ]

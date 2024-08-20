@@ -17,10 +17,10 @@ def detailsFolder(request, id):
 def editFolder(request, pk=None):
     if pk:
         folder = get_object_or_404(Folder, pk=pk)
-        action = 'update'  # Действие — обновление
+        action = 'update'
     else:
         folder = None
-        action = 'add'  # Действие — добавление
+        action = 'add'
 
     if request.method == 'POST':
         form = FolderForm(request.POST, instance=folder)
