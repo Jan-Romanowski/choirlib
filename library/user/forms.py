@@ -2,6 +2,7 @@ from .models import User
 from django import forms
 from django.contrib.auth import login, authenticate
 from django.forms import ModelForm, TextInput, EmailInput, PasswordInput
+from django.contrib.auth.models import Permission
 
 class SignUpForm(ModelForm):
     class Meta:
@@ -59,3 +60,24 @@ class SignInForm(forms.Form):
             user = authenticate(email=email, password=password)
             if user is None:
                 raise forms.ValidationError("Nieprawidłowe dane do logowania.")
+            
+
+class UserPermissionsForm(forms.ModelForm):
+    user_permissions = forms.ModelMultipleChoiceField(
+        queryset=Permission.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Permissions"
+    )
+
+    class Meta:
+        model = User
+        fields = ['user_permissions']
+
+    def __init__(self, *args, **kwargs):
+        user_id = kwargs.pop('user_id', None)
+        super().__init__(*args, **kwargs)
+        if user_id:
+            user = User.objects.get(pk=user_id)
+            self.fields['user_permissions'].initial = user.user_permissions.all()
+

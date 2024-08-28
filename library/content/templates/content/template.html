@@ -91,7 +91,7 @@
                                    Witaj, {{ user.name }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="">Ustawienia</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'manageUsers' %}">Użytkownicy</a></li>
                                     <li>
                                         <form method="post" action="{% url 'logout' %}">
                                             {% csrf_token %}

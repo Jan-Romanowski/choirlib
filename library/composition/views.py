@@ -4,7 +4,9 @@ from .models import Composition, CompositionFile
 from .forms import CompositionForm, UploadFileForm
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import permission_required
 
+@permission_required('composition.can_edit_compositions', raise_exception=True)
 def listComposition(request):
     query = request.GET.get('q')
     compositions = Composition.objects.all()

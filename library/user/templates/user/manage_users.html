@@ -1,0 +1,29 @@
+{% extends 'content/template.html' %}
+
+{% load static %}
+{% block body %}
+
+<h2 class="mb-3 mt-3">Zarządzanie użytkownikami</h2>
+<div class="container-fluid w-100">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <td>#</td>
+                <td>Użytkownik</td>
+                <td>Email</td>
+                <td></td>
+            </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }} {{ user.surname }}</td>
+                <td>{{ user.email }}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
+{% endblock %}

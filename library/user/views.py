@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 from .forms import SignInForm, SignUpForm
 from django.contrib import messages
+from .models import User
+from .forms import UserPermissionsForm
 
 def index(request):
     return render(request, 'user/index.html')
@@ -27,7 +29,6 @@ def signUp(request):
     return render(request, 'user/signUpForm.html', {'form': form})
 
 
-
 def signIn(request):
     if request.method == 'POST':
         form = SignInForm(request.POST)
@@ -46,3 +47,13 @@ def signIn(request):
         form = SignInForm()
 
     return render(request, 'user/signInForm.html', {'form': form})
+
+
+def manageUsers(request):
+    users = User.objects.all()
+
+    context = {
+        'users': users,
+        'form': UserPermissionsForm(),
+    }
+    return render(request, 'user/manage_users.html', context)

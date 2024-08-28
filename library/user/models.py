@@ -22,13 +22,16 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)  # Добавляем это поле
-    date_joined = models.DateTimeField(default=timezone.now)
+    voice_type = models.CharField(max_length=10, default='null')
 
-    # Custom fields for roles
-    is_admin = models.BooleanField(default=False)
-    is_regular_user = models.BooleanField(default=True)
+    #Это поле используется для определения, имеет ли пользователь доступ к админ-панели Django (/admin). 
+    # Если значение is_staff установлено в True, пользователь сможет войти в админ-панель (если у него есть доступ).
+    is_staff = models.BooleanField(default=False)
+
+    # Поле Active определяет, активен ли пользователь. Если значение is_active установлено в False, 
+    # пользователь не сможет войти в систему, даже если его учетные данные верны.
+    is_active = models.BooleanField(default=True)    
+    date_joined = models.DateTimeField(default=timezone.now)
 
     objects = CustomUserManager()
 
@@ -37,11 +40,3 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-    
-    class Meta:
-        permissions = [
-            ("can_view_files", "Ma dostęp do przeglądania plików"),
-            ("can_edit_compositions", "Ma dostęp do edycji utworów"),
-            ("can_edit_folders", "Ma dostęp do edycji teczek"),
-            ("can_edit_news", "Ma dostęp do edycji aktualności")
-        ]
