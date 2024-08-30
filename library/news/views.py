@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 from .models import News
 from .forms import NewsForm, NewsFile, UploadFileForm
@@ -7,12 +8,18 @@ def listNews(request):
     news = News.objects.all()
     return render(request, 'news/list.html', {'news': news})
 
+def showPost(request, id):
+    news = get_object_or_404(News, id=id)
+    return render(request, 'news/post.html', {'news': news})
 
+# Jako Admin
+@permission_required('news.change_news', raise_exception=True)
 def detailsNews(request, id):
     news = get_object_or_404(News, id=id)
     return render(request, 'news/details.html', {'news': news})
 
-
+@permission_required('news.add_news', raise_exception=True)
+@permission_required('news.change_news', raise_exception=True)
 def editNews(request, id=None):
     if id:
         news = get_object_or_404(News, id=id)
@@ -38,7 +45,7 @@ def editNews(request, id=None):
 
     return render(request, 'news/form.html', {'form': form, 'news': news})
 
-
+@permission_required('news.delete_news', raise_exception=True)
 def deleteNews(request, id):
     news = get_object_or_404(News, id=id)
     news_title = news.title
@@ -55,7 +62,7 @@ def deleteNews(request, id):
 
     return redirect('listNews')
 
-
+@permission_required('news.add_newsfile', raise_exception=True)
 def uploadFiles(request, id):
     news = News.objects.get(id=id)
     
@@ -79,6 +86,7 @@ def uploadFiles(request, id):
     
     return render(request, 'news/uploadFiles.html', {'form': form, 'news': news})
 
+@permission_required('news.change_news', raise_exception=True)
 def set_main_image(news_file_id):
     try:
         news_file = NewsFile.objects.get(id=news_file_id)
@@ -93,6 +101,7 @@ def set_main_image(news_file_id):
     except NewsFile.DoesNotExist:
         return False
 
+@permission_required('news.change_news', raise_exception=True)
 def set_main_image_view(request, news_file_id):
     if request.method == 'POST':
         success = set_main_image(news_file_id)
@@ -103,6 +112,7 @@ def set_main_image_view(request, news_file_id):
     
     return redirect('detailsNews', id=success)
 
+@permission_required('news.change_news', raise_exception=True)
 def checkAsActual(request, id):
     news = get_object_or_404(News, id=id)
     news.isActual = not news.isActual
@@ -110,6 +120,7 @@ def checkAsActual(request, id):
     messages.success(request, f'Post "{news.title}" zaznaczony jako {"Aktualny" if news.isActual else "Nieaktualny"}.')
     return redirect('detailsNews', id=id)
 
+@permission_required('news.delete_newsfile', raise_exception=True)
 def deleteNewsFile(request, id):
     file = get_object_or_404(NewsFile, id=id)
     news_id = file.news.id
@@ -123,6 +134,4 @@ def deleteNewsFile(request, id):
     
     return redirect('detailsNews', id=news_id)
 
-def showPost(request, id):
-    news = get_object_or_404(News, id=id)
-    return render(request, 'news/post.html', {'news': news})
+

@@ -1,0 +1,33 @@
+{% load static %}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 50px;
+        background-color: #f2f2f2;
+    }
+    h1 {
+        font-size: 50px;
+        color: #333;
+    }
+    p {
+        font-size: 20px;
+        color: #666;
+    }
+    a{
+        text-decoration: none;
+    }
+</style>
+
+
+
+
+<div>
+    <img class="m-0 p-0" src="{% static 'content/img/logo_dark_with_text.svg' %}" width="400px" alt="Chór Katedralny">
+    <h1 class="pb-5">403 Forbidden</h1>
+</div>
+
+<p>Nie masz uprawnień, zgłoś problem do administratora.</p>
+<p><a href="{% url 'main' %}">Główna strona</a></p>
+

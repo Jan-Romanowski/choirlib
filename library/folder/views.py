@@ -1,5 +1,6 @@
 from django.db import IntegrityError
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 from .models import Folder
 from .forms import FolderForm
@@ -13,7 +14,8 @@ def detailsFolder(request, id):
     folder = get_object_or_404(Folder, id=id)
     return render(request, 'folder/folderDetails.html', {'folder': folder})
 
-
+@permission_required('folder.add_folder', raise_exception=True)
+@permission_required('folder.change_folder', raise_exception=True)
 def editFolder(request, pk=None):
     if pk:
         folder = get_object_or_404(Folder, pk=pk)
@@ -39,7 +41,7 @@ def editFolder(request, pk=None):
 
     return render(request, 'folder/folderForm.html', {'form': form})
 
-
+@permission_required('folder.delete_folder', raise_exception=True)
 def deleteFolder(request, pk):
     folder = get_object_or_404(Folder, pk=pk)
     folder_name = folder.name  # сохранить имя для уведомления

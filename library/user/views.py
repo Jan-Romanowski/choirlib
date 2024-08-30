@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth import login, authenticate
 from .forms import SignInForm, SignUpForm
 from django.contrib import messages
@@ -48,7 +49,7 @@ def signIn(request):
 
     return render(request, 'user/signInForm.html', {'form': form})
 
-
+@permission_required('user.change_user', raise_exception=True)
 def manageUsers(request):
     users = User.objects.all()
 

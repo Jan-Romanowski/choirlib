@@ -32,3 +32,6 @@ def history(request):
 
 def hoffman(request):
     return render(request, 'content/hoffman.html')
+
+def custom_permission_denied_view(request, exception):
+    return render(request, 'content/403.html', status=403)

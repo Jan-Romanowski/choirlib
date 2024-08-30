@@ -55,7 +55,14 @@
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                                 <li><a class="dropdown-item" href="{% url 'listComposition' %}">Utwory</a></li>
                                 <li><a class="dropdown-item" href="{% url 'listFolder' %}">Teczki</a></li>
+                                <li><a class="dropdown-item" href="#">Ustawienia</a></li>
                             </ul>
+                        </li>
+
+                        {% else %}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'listComposition' %}">Biblioteka</a>
                         </li>
 
                         {% endif %}

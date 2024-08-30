@@ -6,7 +6,6 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import permission_required
 
-@permission_required('composition.can_edit_compositions', raise_exception=True)
 def listComposition(request):
     query = request.GET.get('q')
     compositions = Composition.objects.all()
@@ -27,7 +26,8 @@ def detailsComposition(request, id):
     composition = get_object_or_404(Composition, id=id)
     return render(request, 'composition/details.html', {'composition': composition})
 
-
+@permission_required('composition.add_composition', raise_exception=True)
+@permission_required('composition.change_composition', raise_exception=True)
 def editComposition(request, id=None):
     if id:
         composition = get_object_or_404(Composition, id=id)
@@ -54,6 +54,8 @@ def editComposition(request, id=None):
 
     return render(request, 'composition/form.html', {'form': form, 'composition': composition})
 
+@permission_required('composition.delete_composition', raise_exception=True)
+@permission_required('composition.delete_compositionfile', raise_exception=True)
 def deleteComposition(request, id):
     composition = get_object_or_404(Composition, id=id)
     composition_name = composition.name  # сохранить имя для уведомления
@@ -71,6 +73,8 @@ def deleteComposition(request, id):
 
     return redirect('listComposition')
 
+
+@permission_required('composition.add_compositionfile', raise_exception=True)
 def uploadFiles(request, id):
     composition = Composition.objects.get(id=id)
     
@@ -93,6 +97,7 @@ def uploadFiles(request, id):
     
     return render(request, 'composition/uploadFiles.html', {'form': form, 'composition': composition})
 
+@permission_required('composition.delete_compositionfile', raise_exception=True)
 def deleteCompositionFile(request, id):
     file = get_object_or_404(CompositionFile, id=id)
     composition_id = file.composition.id
@@ -106,7 +111,7 @@ def deleteCompositionFile(request, id):
     
     return redirect('detailsComposition', id=composition_id)
 
-
+@permission_required('composition.change_composition', raise_exception=True)
 def checkAsActual(request, id):
     composition = get_object_or_404(Composition, id=id)
     composition.isActual = not composition.isActual

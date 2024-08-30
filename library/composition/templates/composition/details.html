@@ -24,8 +24,11 @@
 <p><strong>Utworzono:</strong> {{ composition.date_joined }}</p>
 <p><strong>Notatki:</strong> {{ composition.note }}</p>
 
+{% if perms.composition.change_composition %}
 <a href="{% url 'editComposition' id=composition.id %}" class="btn btn-outline-primary">Edycja utworu</a>
+{% endif %}
 
+{% if perms.composition.delete_composition %}
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Usuń utwór
@@ -49,12 +52,17 @@
         </div>
     </div>
 </div>
+{% endif %}
 
+{% if perms.composition.add_compositionfile %}
 <a href="{% url 'uploadFilesComposition' id=composition.id %}" class="btn btn-outline-success">Wgraj pliki</a>
+{% endif %}
 
 <!-- Files Table -->
 <div class="container mt-5">
   <h3>Pliki:</h3>
+  {% if user.is_authenticated %}
+  {% if perms.composition.view_compositionfile %}
   <div class="table-responsive">
       <table class="table">
           <thead>
@@ -132,13 +140,15 @@
                             </a>
                         </li>
                         {% endif %}
-
+                        {% if perms.composition.delete_compositionfile %}
                         <li><hr class="dropdown-divider"></li>
+
                         <li>
                             <a class="dropdown-item" href="{% url 'deleteFileComposition' file.id %}">
                                 Usuń
                             </a>
                         </li>
+                        {% endif %}
                         </ul>
                     </div>
 
@@ -148,6 +158,15 @@
           </tbody>
       </table>
   </div>
+  {% else %}
+  <p>Nie masz uprawnień do przeglądania plików. Skontaktuj się z administratorem żeby uzyskać uprawnienia.</p>
+  {% endif %}
+  {% else %}
+  <p>Dostęm do plików mają tylko zalogowane osoby posiadające odpowienie uprawnienia</p>
+  <div class="container">
+    <a href="{% url 'signIn' %}" class="btn btn-outline-success">Zaloguj</a>
+  </div>
+  {% endif %}
 </div>
 
 <!-- Initialize Plyr -->
