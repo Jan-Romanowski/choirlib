@@ -8,9 +8,11 @@
         <h2 class="text-center mt-3 mb-4">Teczki</h2>
         <form>
             <div class="row justify-content-center mb-3">
+                {% if perms.folder.add_folder %}
                 <div class="col-6 col-md-2 mt-1 mb-1">
                     <a class="btn w-75 btn-outline-success" href="{% url 'createFolder' %}" role="button">Nowa teczka</a>
                 </div>
+                {% endif %}
 
                 <div class="col-6 col-md-2 mt-1 mb-1">
                     <a class="btn w-75 btn-outline-primary" data-bs-toggle="collapse" href="#searchFilters" role="button" aria-expanded="false" aria-controls="collapseExample">
@@ -78,8 +80,12 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
+                                    {% if perms.folder.change_folder %}
                                     <a href="{% url 'editFolder' pk=folder.id %}" class="btn btn-outline-primary w-25">Edytuj</a>
+                                    {% endif %}
+                                    {% if perms.folder.delete_folder %}
                                     <button type="button" class="btn btn-outline-danger w-25" data-bs-toggle="modal" data-bs-target="#deleteFolder{{ folder.id }}" data-bs-hide="#detailModal{{ folder.id }}">Usuń</button>
+                                    {% endif %}
                                     <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Zamknij</button>
                                 </div>
                             </div>

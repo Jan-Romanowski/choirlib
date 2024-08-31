@@ -55,7 +55,12 @@
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                                 <li><a class="dropdown-item" href="{% url 'listComposition' %}">Utwory</a></li>
                                 <li><a class="dropdown-item" href="{% url 'listFolder' %}">Teczki</a></li>
+                                {% if perms.composition.change_composition %}
                                 <li><a class="dropdown-item" href="#">Ustawienia</a></li>
+                                {% endif %}
+                                {% if perms.user.change_user %}
+                                <li><a class="dropdown-item" href="{% url 'manageUsers' %}">Użytkownicy</a></li>
+                                {% endif %}
                             </ul>
                         </li>
 
@@ -98,7 +103,6 @@
                                    Witaj, {{ user.name }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="{% url 'manageUsers' %}">Użytkownicy</a></li>
                                     <li>
                                         <form method="post" action="{% url 'logout' %}">
                                             {% csrf_token %}
