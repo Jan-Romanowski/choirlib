@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth import login, authenticate
@@ -58,3 +59,31 @@ def manageUsers(request):
         'form': UserPermissionsForm(),
     }
     return render(request, 'user/manage_users.html', context)
+
+@permission_required('user.change_user', raise_exception=True)
+def detailsUser(request, id):
+    user = get_object_or_404(User, id=id)
+    return render(request, 'user/details.html', {'user': user})
+
+@permission_required('user.delete_user', raise_exception=True)
+def deleteUser(request, id):
+    user = get_object_or_404(User, id=id)
+    user_name = user.name  # сохранить имя для уведомления
+
+    try:      
+        user.delete()
+
+        messages.success(request, f'Konto "{user_name}" zostało pomyślnie usunięte.')
+    except Exception as e:
+        messages.error(request, f'Niestaty nie udało się usunąć konta "{user_name}": {str(e)}')
+
+    return redirect('manageUsers')
+
+@permission_required('user.change_user', raise_exception=True)
+def changeActive(request, id):
+    user = get_object_or_404(User, id=id)
+    user.is_active = not user.is_active
+    user.save()
+    messages.success(request, f'Konto "{user.name} {user.surname}" zaznaczone jako {"Aktywne" if user.is_active else "Nieaktywne"}.')
+    return redirect('detailsUser', id=id)
+

@@ -1,0 +1,152 @@
+{% extends 'content/template.html' %}
+
+{% load static %}
+{% block body %}
+
+<div class="pt-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'manageUsers' %}">Użytkownicy</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ user.name }} {{ user.surname }}</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="container-fluid">
+    <h2 class="text-center">{{ user.name }} {{ user.surname }}</h2>
+    <div class="container">
+
+    </div>
+    <p><strong>Email: </strong>{{ user.email }}</p>
+
+    <div class="card w-100">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    Aktywny
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-switch float-end">
+                        <input class="form-check-input" type="checkbox" role="switch" id="toggleActive" {% if user.is_active %} checked {% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="p-1" style="color: gray;">Jeżeli konto nie jest aktywne, użytkownik tego konta nie będzie mógł ani się zalogować ani wykonać żadnej innej
+        akcji w systemie. Przy próbie logowania będzie miał komunikat że dane logowania nie są prawidłowe.
+    </p>
+
+    <div class="card w-100">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    Dostęp do panelu admina
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-switch float-end">
+                        <input class="form-check-input" type="checkbox" role="switch" {% if user.is_staff %} checked {% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="p-1" style="color: gray;">Dostęp do panelu admina Django pod adresem 'chorkatedralnysiedlce.pl/admin'. Z tego panelu można zarządzać całym projektem.
+    </p>
+
+    <div class="card w-100">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    Superadmin
+                </div>
+                <div class="col-6">
+                    <div class="form-check form-switch float-end">
+                        <input class="form-check-input" type="checkbox" role="switch" {% if user.is_superuser %} checked {% endif %}>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="p-1" style="color: gray;">Superadmin nie potrzebuje uprawnień do żadnych akcji w projekcie. Jeżeli jest zaznaczony to ignoruje wszystkie warunki i ograniczenia.
+    </p>
+
+    <div class="card w-100">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    Głos
+                </div>
+                <div class="col-6">
+                    <div class="float-end">
+                        
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Dyrygent</option>
+                            <option value="1">Sopran</option>
+                            <option value="2">Alt</option>
+                            <option value="3">Tenor</option>
+                            <option value="3">Bas</option>
+                        </select>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="p-1" style="color: gray;">Superadmin nie potrzebuje uprawnień do żadnych akcji w projekcie. Jeżeli jest zaznaczony to ignoruje wszystkie warunki i ograniczenia.
+    </p>
+
+
+    <p><strong>Data rejestracji: </strong> {{ user.date_joined }}</p>
+</div>
+
+<div class="container-fluid">
+    {% if perms.user.delete_user %}
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+        Usuń konto
+    </button>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteUserModalLabel">Potwierdź akcję</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"> 
+                    Napewno chcesz usunąć konto <b>{{ user.name }} {{ user.surname }}</b>?
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'deleteUser' id=user.id %}" class="btn btn-outline-danger w-25">Tak</a>
+                    <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Nie</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .form-check-input {
+        width: 2.6em !important;
+        height: 1.3em;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkbox = document.getElementById('toggleActive');
+        if (checkbox) {
+            checkbox.addEventListener('change', function() {
+                console.log('Checkbox was clicked');
+                window.location.href = "{% url 'changeActive' id=user.id %}";
+            });
+        } else {
+            console.error('Checkbox not found!');
+        }
+    });
+</script>
+
+{% endblock %}

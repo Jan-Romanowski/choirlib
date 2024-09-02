@@ -86,7 +86,6 @@ def uploadFiles(request, id):
     
     return render(request, 'news/uploadFiles.html', {'form': form, 'news': news})
 
-@permission_required('news.change_news', raise_exception=True)
 def set_main_image(news_file_id):
     try:
         news_file = NewsFile.objects.get(id=news_file_id)
