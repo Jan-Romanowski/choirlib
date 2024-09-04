@@ -5,6 +5,7 @@ from django.contrib.auth import login, authenticate
 from .forms import SignInForm, SignUpForm
 from django.contrib import messages
 from .models import User
+from django.contrib.auth.models import Group
 from .forms import UserPermissionsForm
 
 def index(request):
@@ -87,3 +88,28 @@ def changeActive(request, id):
     messages.success(request, f'Konto "{user.name} {user.surname}" zaznaczone jako {"Aktywne" if user.is_active else "Nieaktywne"}.')
     return redirect('detailsUser', id=id)
 
+@permission_required('user.change_user', raise_exception=True)
+def changeAccessAdminPanel(request, id):
+    user = get_object_or_404(User, id=id)
+    user.is_staff = not user.is_staff
+    user.save()
+    messages.success(request, f'"{user.name} {user.surname}" {"ma dostęp" if user.is_staff else "nie ma dostępu"} do panelu admina.')
+    return redirect('detailsUser', id=id)
+
+@permission_required('user.change_user', raise_exception=True)
+def changeSuperadmin(request, id):
+    user = get_object_or_404(User, id=id)
+    user.is_superuser = not user.is_superuser
+    user.save()
+    messages.success(request, f'Konto"{user.name} {user.surname}" {"jest teraz" if user.is_superuser else "już nie jest"} superadminem.')
+    return redirect('detailsUser', id=id)
+
+@permission_required('user.change_user', raise_exception=True)
+def changeGroup(request, id, group):
+    user = get_object_or_404(User, id=id)
+    grp = Group.objects.get(name=group)
+    user.groups.set([grp])
+    
+    user.save()
+    messages.success(request, f'Użytkownik "{user.name} {user.surname}" został przypisany do nowej grupy.')
+    return redirect('detailsUser', id=id)

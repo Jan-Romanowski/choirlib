@@ -45,7 +45,7 @@
                 </div>
                 <div class="col-6">
                     <div class="form-check form-switch float-end">
-                        <input class="form-check-input" type="checkbox" role="switch" {% if user.is_staff %} checked {% endif %}>
+                        <input class="form-check-input" type="checkbox" role="switch" id="togglePanel" {% if user.is_staff %} checked {% endif %}>
                     </div>
                 </div>
             </div>
@@ -62,14 +62,50 @@
                 </div>
                 <div class="col-6">
                     <div class="form-check form-switch float-end">
-                        <input class="form-check-input" type="checkbox" role="switch" {% if user.is_superuser %} checked {% endif %}>
+                        <input class="form-check-input" type="checkbox" role="switch" id="toggleSuperAdmin" {% if user.is_superuser %} checked {% endif %}>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <p class="p-1" style="color: gray;">Superadmin nie potrzebuje uprawnień do żadnych akcji w projekcie. Jeżeli jest zaznaczony to ignoruje wszystkie warunki i ograniczenia.
+    <p class="p-1" style="color: gray;">Superadmin nie potrzebuje uprawnień do żadnych akcji w projekcie. Jeżeli jest zaznaczony to ignoruje wszystkie warunki i ograniczenia, w tym <strong>grupę</strong>.
     </p>
+
+
+    <div class="card w-100">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    Grupa
+                </div>
+                <div class="col-6">
+                    <div class="float-end">
+                        <select class="form-select" aria-label="group" id="selectGroup">
+                            <option value="guest" {% if user.groups.first.name == 'guest' %} selected {% endif %}>guest</option>
+                            <option value="user" {% if user.groups.first.name == 'user' %} selected {% endif %}>user</option>
+                            <option value="admin" {% if user.groups.first.name == 'admin' %} selected {% endif %}>admin</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="p-1" style="color: gray;">Grupy zawierają listy uprawnień dla użytkowników.
+        <ul style="color: gray;">
+            <li>
+                Grupa <strong>Gość</strong> to jest domyślna grupa która jest przypisana do każdej osoby która zakłada konto
+                w systemie. Użytkownicy tej grupy mają uprawnienia tylko dla logowania się.
+            </li>
+            <li>
+                Grupa <strong>Użytkownik</strong> to jest grupa dla chórzystów. Członkowie tej grupy mają uprawnienia dla przeglądania plików dla wszystkich utworów.
+            </li>
+            <li>
+                Grupa <strong>Administrator</strong> to jest grupa dla osób zarządzających systemem. Członkowie tej grupy mają uprawnienia do: dodawania, edycji, kasowania
+                dowolnych zasobów systemu. Prawie to samo co <strong>Superadmin</strong>, tylko Superadmin się różni tym że nigdy nie będzie miał żadnych ograniczeń.
+            </li>
+        </ul>
+    </p>
+    <br>
 
     <div class="card w-100">
         <div class="card-body">
@@ -79,22 +115,20 @@
                 </div>
                 <div class="col-6">
                     <div class="float-end">
-                        
                         <select class="form-select" aria-label="Default select example">
-                            <option selected>Dyrygent</option>
+                            <option selected>Gość</option>
                             <option value="1">Sopran</option>
                             <option value="2">Alt</option>
                             <option value="3">Tenor</option>
                             <option value="3">Bas</option>
+                            <option value="4">Dyrygent</option>
                         </select>
-                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <p class="p-1" style="color: gray;">Superadmin nie potrzebuje uprawnień do żadnych akcji w projekcie. Jeżeli jest zaznaczony to ignoruje wszystkie warunki i ograniczenia.
-    </p>
+    <p class="p-1" style="color: gray;">Na razie ta opcja do niczego nie służy. W przyszłości być może będzie powiązana z kalendarzem. </p>
 
 
     <p><strong>Data rejestracji: </strong> {{ user.date_joined }}</p>
@@ -137,7 +171,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const checkbox = document.getElementById('toggleActive');
+        const checkboxActive = document.getElementById('toggleActive');
         if (checkbox) {
             checkbox.addEventListener('change', function() {
                 console.log('Checkbox was clicked');
@@ -147,6 +181,63 @@
             console.error('Checkbox not found!');
         }
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxPanel = document.getElementById('togglePanel');
+        if (checkboxPanel) {
+            checkboxPanel.addEventListener('change', function() {
+                console.log('Checkbox was clicked');
+                window.location.href = "{% url 'changeAccessAdminPanel' id=user.id %}";
+            });
+        } else {
+            console.error('Checkbox not found!');
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxSuperAdmin = document.getElementById('toggleSuperAdmin');
+        if (checkboxSuperAdmin) {
+            checkboxSuperAdmin.addEventListener('change', function() {
+                console.log('Checkbox was clicked');
+                window.location.href = "{% url 'changeSuperadmin' id=user.id %}";
+            });
+        } else {
+            console.error('Checkbox not found!');
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const selectGroup = document.getElementById('selectGroup');
+    
+    if (selectGroup) {
+        selectGroup.addEventListener('change', function() {
+            const selectedValue = selectGroup.value;
+            let url = '';
+            
+            // Используйте switch для выбора URL в зависимости от значения
+            switch(selectedValue) {
+                case 'guest':
+                    url = "{% url 'changeGroup' id=user.id group='guest'%}";
+                    break;
+                case 'user':
+                url = "{% url 'changeGroup' id=user.id group='user'%}";
+                    break;
+                case 'admin':
+                url = "{% url 'changeGroup' id=user.id group='admin'%}";
+                    break;
+                default:
+                    console.error('Unknown option selected!');
+                    return;
+            }
+            
+            // Перенаправление на выбранный URL
+            window.location.href = url;
+        });
+    } else {
+        console.error('Select element not found!');
+    }
+});
+
 </script>
 
 {% endblock %}
