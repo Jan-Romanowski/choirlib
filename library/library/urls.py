@@ -25,6 +25,7 @@ urlpatterns = [
     path('composition/', include('composition.urls')),
     path('news', include('news.urls')),
     path('folder/', include('folder.urls')),
+    path('event/', include('event.urls')),
     path('', include('content.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

@@ -13,11 +13,11 @@ class NewsForm(ModelForm):
         }
 
         widgets = {
-                'title': TextInput(attrs={
+            'title': TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Jakiś tam nagłówek'
             }),
-            'text': TextInput(attrs={
+            'text': forms.Textarea(attrs={
                 'class': 'form-control',
                 'placeholder': 'Jakiś tam tekst'
             }),

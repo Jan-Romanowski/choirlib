@@ -88,7 +88,11 @@
                             </li>
                         </ul>
                         <li class="nav-item">
-                            <a class="nav-link" href="">Kalendarz</a>
+                            {% if current_year and current_month %}
+                            <a class="nav-link" href="{% url 'calendar' current_year current_month %}">Kalendarz</a>
+                            {% else %}
+                                <a class="nav-link" href="#">Kalendarz</a>  <!-- Ссылка или сообщение для случая, когда данные отсутствуют -->
+                            {% endif %}
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'contact' %}">Kontakt</a>

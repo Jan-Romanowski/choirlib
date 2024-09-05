@@ -24,9 +24,10 @@ class CompositionForm(ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Rammstein'
             }),
-            'note': TextInput(attrs={
+            'note': forms.Textarea(attrs={
                 'class': 'form-control',
-                'placeholder': 'Notatki'
+                'placeholder': 'Notatki',
+                'style' : 'height: 100px;'
             }),
         }
 
