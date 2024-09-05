@@ -172,8 +172,8 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const checkboxActive = document.getElementById('toggleActive');
-        if (checkbox) {
-            checkbox.addEventListener('change', function() {
+        if (checkboxActive) {
+            checkboxActive.addEventListener('change', function() {
                 console.log('Checkbox was clicked');
                 window.location.href = "{% url 'changeActive' id=user.id %}";
             });

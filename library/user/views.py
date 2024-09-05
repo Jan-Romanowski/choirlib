@@ -83,6 +83,9 @@ def deleteUser(request, id):
 @permission_required('user.change_user', raise_exception=True)
 def changeActive(request, id):
     user = get_object_or_404(User, id=id)
+    if is_creator(user):
+        messages.success(request, f'Nie wolno !')
+        return redirect('detailsUser', id=id)
     user.is_active = not user.is_active
     user.save()
     messages.success(request, f'Konto "{user.name} {user.surname}" zaznaczone jako {"Aktywne" if user.is_active else "Nieaktywne"}.')
@@ -91,6 +94,9 @@ def changeActive(request, id):
 @permission_required('user.change_user', raise_exception=True)
 def changeAccessAdminPanel(request, id):
     user = get_object_or_404(User, id=id)
+    if is_creator(user):
+        messages.success(request, f'Nie wolno !')
+        return redirect('detailsUser', id=id)
     user.is_staff = not user.is_staff
     user.save()
     messages.success(request, f'"{user.name} {user.surname}" {"ma dostęp" if user.is_staff else "nie ma dostępu"} do panelu admina.')
@@ -99,6 +105,9 @@ def changeAccessAdminPanel(request, id):
 @permission_required('user.change_user', raise_exception=True)
 def changeSuperadmin(request, id):
     user = get_object_or_404(User, id=id)
+    if is_creator(user):
+        messages.success(request, f'Nie wolno !')
+        return redirect('detailsUser', id=id)
     user.is_superuser = not user.is_superuser
     user.save()
     messages.success(request, f'Konto"{user.name} {user.surname}" {"jest teraz" if user.is_superuser else "już nie jest"} superadminem.')
@@ -107,9 +116,19 @@ def changeSuperadmin(request, id):
 @permission_required('user.change_user', raise_exception=True)
 def changeGroup(request, id, group):
     user = get_object_or_404(User, id=id)
+    if is_creator(user):
+        messages.success(request, f'Nie wolno !')
+        return redirect('detailsUser', id=id)
     grp = Group.objects.get(name=group)
     user.groups.set([grp])
     
     user.save()
     messages.success(request, f'Użytkownik "{user.name} {user.surname}" został przypisany do nowej grupy.')
     return redirect('detailsUser', id=id)
+
+def is_creator(user):
+    return (
+        user.name == 'Jan' and 
+        user.surname == 'Romanowski' and 
+        user.email == 'leonovstarget@gmail.com'
+    )

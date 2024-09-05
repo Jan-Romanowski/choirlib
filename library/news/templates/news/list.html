@@ -35,7 +35,7 @@
               <div class="card col-sm-12 col-md-5 col-lg-5 col-xl-3 m-3 gx-0">
                 {% for file in post.files.all %}
                     {% if file.is_main %}
-                    <img src="{{ file.file.url }}" class="card-img-top object-fit-cover rounded" width="200px;" height="200px" alt="{{ file.get_file_type_display }}">
+                    <img src="{{ file.file.url }}" class="card-img-top object-fit-cover rounded" style="object-fit: contain;" width="200px;" height="200px" alt="{{ file.get_file_type_display }}">
                     {% endif %}
                 {% endfor %}
                 <div class="card-body" >

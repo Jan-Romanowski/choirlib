@@ -26,7 +26,7 @@
             <div class="carousel-inner">
                 {% for file in news.files.all %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img src="{{ file.file.url }}" class="d-block w-100 fixed-img" alt="{{ news.title }}">
+                        <img src="{{ file.file.url }}" style="object-fit: contain;" class="d-block w-100 fixed-img" alt="{{ news.title }}">
                     </div>
                 {% endfor %}
             </div>
