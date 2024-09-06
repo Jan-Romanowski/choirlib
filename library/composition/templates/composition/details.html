@@ -22,7 +22,9 @@
 <p><strong>Teczka:</strong> {{ composition.folder }}</p>
 <p><strong>Numer:</strong> {{ composition.number }}</p>
 <p><strong>Utworzono:</strong> {{ composition.date_joined }}</p>
+{% if composition.note %}
 <p><strong>Notatki:</strong> {{ composition.note }}</p>
+{% endif %}
 
 {% if perms.composition.change_composition %}
 <a href="{% url 'editComposition' id=composition.id %}" class="btn btn-outline-primary">Edycja utworu</a>

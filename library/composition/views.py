@@ -5,6 +5,28 @@ from .forms import CompositionForm, UploadFileForm
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import permission_required
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def save_filters(request):
+    if request.method == 'POST':
+        only_actual = request.POST.get('onlyActual') == 'on'
+        only_with_files = request.POST.get('onlyWithFiles') == 'on'
+        only_without_files = request.POST.get('onlyWithoutFiles') == 'on'
+        only_without_folder = request.POST.get('onlyWithoutFolder') == 'on'
+
+        # Сохраните фильтры в сессии
+        request.session['filters'] = {
+            'onlyActual': only_actual,
+            'onlyWithFiles': only_with_files,
+            'onlyWithoutFiles': only_without_files,
+            'onlyWithoutFolder': only_without_folder,
+        }
+
+        return JsonResponse({'status': 'success'})
+
+    return JsonResponse({'status': 'error'}, status=400)
 
 def listComposition(request):
     query = request.GET.get('q')
@@ -14,6 +36,17 @@ def listComposition(request):
         compositions = compositions.filter(
             Q(name__icontains=query) | Q(author__icontains=query)
         )
+
+    filters = request.session.get('filters', {})
+    if filters.get('onlyActual'):
+        compositions = compositions.filter(isActual=True)
+    if filters.get('onlyWithFiles'):
+        compositions = compositions.filter()
+    if filters.get('onlyWithoutFiles'):
+        compositions = compositions.filter()
+    if filters.get('onlyWithoutFolder'):
+        compositions = compositions.filter()
+
 
     paginator = Paginator(compositions, 3)  # Показывать 10 произведений на странице
     page_number = request.GET.get('page')
