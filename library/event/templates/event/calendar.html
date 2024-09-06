@@ -51,7 +51,7 @@
     <h1 class="m-3">Kalendarz</h1>
     <div class="nav">
         <a href="{% url 'calendar' prev_month.year prev_month.month %}">← Poprzedni miesiąc</a>
-        <span>{{ current_month|date:"F Y" }}</span>
+        <h5>{{ current_month_object|date:"F Y" }}</h5>
         <a href="{% url 'calendar' next_month.year next_month.month %}">Kolejny miesiąc →</a>
     </div>
 </div>
@@ -63,7 +63,7 @@
 <div class="calendar">
     <!-- Дни недели -->
     {% for day in days_of_week %}
-        <div class="day-header"><strong>{{ day }}</strong></div>
+        <div class="day-header p-2"><strong>{{ day }}</strong></div>
     {% endfor %}
 
     <!-- Пустые ячейки для начала месяца -->
@@ -75,7 +75,6 @@
     {% for day in days_in_month %}
         <div class="day {% if day.date == today %}today{% endif %}" data-bs-toggle="modal" data-bs-target="#dayDetails{{ day.day }}">
             {{ day.day }}
-
             {% for event in day.events %}
                 <div class="event" style="background-color: {{ event.colour }};">
                     <div class="title">
@@ -94,7 +93,7 @@
                 <div class="modal-body p-2">
                     {% for event in day.events %}
                     <div class="event" style="background-color: {{ event.colour }};">
-                        <div class="title" style="padding-top: 10px;">
+                        <div class="title" style="padding-top: 10px; padding-left: 10px;">
                             <h5>{{ event.title }}</h5>
                         </div> 
                     </div>
@@ -146,13 +145,6 @@
             let backgroundColor = getComputedStyle(card).backgroundColor;
             let hexColor = rgbToHex(backgroundColor);
             card.style.color = getTextColor(hexColor);
-        });
-
-        var modals = document.querySelectorAll('.title');
-        modals.forEach(function (modal) {
-            let backgroundColor = getComputedStyle(modal).backgroundColor;
-            let hexColor = rgbToHex(backgroundColor);
-            modal.querySelector('.toPrint').style.color = getTextColor(hexColor);
         });
 
         function rgbToHex(rgb) {

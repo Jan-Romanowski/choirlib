@@ -29,7 +29,6 @@ def get_month(request, year, month):
     days_of_week = ["Pn", "Wt", "Śr", "Cz", "Pt", "So", "N"]
 
     context = {
-        'current_month': first_day_of_month,
         'days_in_month': days,
         'empty_days': range(start_day),
         'prev_month': first_day_of_month.replace(day=1) - timezone.timedelta(days=1),
@@ -37,6 +36,7 @@ def get_month(request, year, month):
         'days_of_week': days_of_week,
         'current_year': year,
         'current_month': month,
+        'current_month_object' : first_day_of_month,
         'today' : today
     }
     return render(request, 'event/calendar.html', context)
