@@ -28,6 +28,12 @@ def save_filters(request):
 
     return JsonResponse({'status': 'error'}, status=400)
 
+def search_compositions(request):
+    query = request.GET.get('query', '')
+    compositions = Composition.objects.filter(name__icontains=query)
+
+    return render(request, 'compositions_table.html', {'compositions': compositions})
+
 def listComposition(request):
     query = request.GET.get('q')
     compositions = Composition.objects.all()
@@ -37,18 +43,7 @@ def listComposition(request):
             Q(name__icontains=query) | Q(author__icontains=query)
         )
 
-    filters = request.session.get('filters', {})
-    if filters.get('onlyActual'):
-        compositions = compositions.filter(isActual=True)
-    if filters.get('onlyWithFiles'):
-        compositions = compositions.filter()
-    if filters.get('onlyWithoutFiles'):
-        compositions = compositions.filter()
-    if filters.get('onlyWithoutFolder'):
-        compositions = compositions.filter()
-
-
-    paginator = Paginator(compositions, 3)  # Показывать 10 произведений на странице
+    paginator = Paginator(compositions, 10)  # Показывать 10 произведений на странице
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
