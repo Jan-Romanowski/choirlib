@@ -14,9 +14,16 @@
                 </div>
                 {% endif %}
 
+                <div class="col-6 col-md-2 mt-1 mb-1">
+                    <div class="form-check form-switch">
+                        <label class="form-check-label" for="isActual">Tylko aktualne</label>
+                        <input class="form-check-input" type="checkbox" id="isActualCheckbox" name="isActual">
+                    </div>
+                </div>
+
                 <div class="col-12 col-md-8 mt-1 mb-1">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="query" id="searchInput" placeholder="Wyszukaj...">
+                        <input type="text" class="form-control" name="query" id="searchInput" value="{{ query|default:'' }}" placeholder="Wyszukaj...">
                     </div>
                 </div>
 
@@ -25,71 +32,65 @@
     </div>
 
     <div class="container-fluid w-100">
-        {% include 'composition/table.html' %}
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                {% if page_obj.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?q={{ request.GET.q }}&page=1" aria-label="First">
-                            <span aria-hidden="true">&laquo;&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?q={{ request.GET.q }}&page={{ page_obj.previous_page_number }}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">&laquo;&laquo;</span>
-                    </li>
-                    <li class="page-item disabled">
-                        <span class="page-link">&laquo;</span>
-                    </li>
-                {% endif %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Numer teczki">
+                    #
+                    </td>
         
-                <li class="page-item active">
-                    <span class="page-link">
-                        Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}
-                    </span>
-                </li>
+                    <td data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Numer teczki">
+                        Nazwa utworu
+                    </td>
+                    <td>
+                        Teczka
+                    </td>
+                    <td class="text-center"
+                    data-bs-toggle="tooltip" data-bs-placement="top"
+                    data-bs-custom-class="custom-tooltip"
+                    data-bs-title="Aktualne"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star-half" viewBox="0 0 16 16">
+                            <path d="M5.354 5.119 7.538.792A.516.516 0 0 1 8 .5c.183 0 .366.097.465.292l2.184 4.327 4.898.696A.537.537 0 0 1 16 6.32a.548.548 0 0 1-.17.445l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256a.52.52 0 0 1-.146.05c-.342.06-.668-.254-.6-.642l.83-4.73L.173 6.765a.55.55 0 0 1-.172-.403.58.58 0 0 1 .085-.302.513.513 0 0 1 .37-.245l4.898-.696zM8 12.027a.5.5 0 0 1 .232.056l3.686 1.894-.694-3.957a.565.565 0 0 1 .162-.505l2.907-2.77-4.052-.576a.525.525 0 0 1-.393-.288L8.001 2.223 8 2.226v9.8z"/>
+                        </svg>
+                </tr>
+            </thead>
         
-                {% if page_obj.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="?q={{ request.GET.q }}&page={{ page_obj.next_page_number }}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?q={{ request.GET.q }}&page={{ page_obj.paginator.num_pages }}" aria-label="Last">
-                            <span aria-hidden="true">&raquo;&raquo;</span>
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">&raquo;</span>
-                    </li>
-                    <li class="page-item disabled">
-                        <span class="page-link">&raquo;&raquo;</span>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-        
+            <tbody>
+                {% include 'composition/table.html' %}
+            </tbody>
+    
+        </table>
+            {% include 'composition/_pagination.html' %}
     </div>
 </div>
 
 <script>
-   document.getElementById('searchInput').addEventListener('input', function() {
-    const query = this.value;
+document.getElementById('searchInput').addEventListener('input', function() {
+    performSearch(1);  // При поиске всегда переходим на первую страницу
+});
+
+document.getElementById('isActualCheckbox').addEventListener('change', function() {
+    performSearch(1);  // При изменении состояния чекбокса также переходим на первую страницу
+});
+
+function performSearch(page = 1) {
+    const query = document.getElementById('searchInput').value;
+    const isActual = document.getElementById('isActualCheckbox').checked ? 1 : 0;
 
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `search/?query=${encodeURIComponent(query)}`, true);
+    xhr.open('GET', `/composition/search/?query=${encodeURIComponent(query)}&isActual=${isActual}&page=${page}`, true);
 
     xhr.onload = function() {
         if (xhr.status >= 200 && xhr.status < 400) {
-            // Обновляем содержимое таблицы
             document.querySelector('tbody').innerHTML = xhr.responseText;
+
+            // Обновляем пагинацию
+            const paginationHtml = xhr.getResponseHeader('X-Pagination');
+            if (paginationHtml) {
+                document.querySelector('.pagination').innerHTML = paginationHtml;
+                addPaginationEventListeners();
+            }
         } else {
             console.error('Ошибка при выполнении запроса.');
         }
@@ -100,7 +101,20 @@
     };
 
     xhr.send();
-});
+}
+
+function addPaginationEventListeners() {
+    document.querySelectorAll('.pagination a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const page = this.getAttribute('data-page');  // Получаем номер страницы из атрибута data-page
+            performSearch(page);
+        });
+    });
+}
+
+// Изначально добавляем обработчики для пагинации
+addPaginationEventListeners();
 
 </script>
 

@@ -6,33 +6,21 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import permission_required
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-
-@csrf_exempt
-def save_filters(request):
-    if request.method == 'POST':
-        only_actual = request.POST.get('onlyActual') == 'on'
-        only_with_files = request.POST.get('onlyWithFiles') == 'on'
-        only_without_files = request.POST.get('onlyWithoutFiles') == 'on'
-        only_without_folder = request.POST.get('onlyWithoutFolder') == 'on'
-
-        # Сохраните фильтры в сессии
-        request.session['filters'] = {
-            'onlyActual': only_actual,
-            'onlyWithFiles': only_with_files,
-            'onlyWithoutFiles': only_without_files,
-            'onlyWithoutFolder': only_without_folder,
-        }
-
-        return JsonResponse({'status': 'success'})
-
-    return JsonResponse({'status': 'error'}, status=400)
 
 def search_compositions(request):
     query = request.GET.get('query', '')
-    compositions = Composition.objects.filter(name__icontains=query)
+    is_actual = request.GET.get('isActual', '0')
+    page_number = request.GET.get('page', 1)
 
-    return render(request, 'compositions_table.html', {'compositions': compositions})
+    compositions = Composition.objects.filter(name__icontains=query)
+    
+    if is_actual == '1':
+        compositions = compositions.filter(isActual=True)
+
+    paginator = Paginator(compositions, 10)  # По 10 элементов на страницу
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'composition/table.html', {'compositions': compositions})
 
 def listComposition(request):
     query = request.GET.get('q')
@@ -43,7 +31,7 @@ def listComposition(request):
             Q(name__icontains=query) | Q(author__icontains=query)
         )
 
-    paginator = Paginator(compositions, 10)  # Показывать 10 произведений на странице
+    paginator = Paginator(compositions, 5)  # Показывать 5 произведений на странице
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     

@@ -10,6 +10,5 @@ urlpatterns = [
     path('uploadFile/<int:id>/', views.uploadFiles, name='uploadFilesComposition'),
     path('deleteFile/<int:id>/', views.deleteCompositionFile, name='deleteFileComposition'),
     path('toggleActual/<int:id>/', views.checkAsActual, name='toggleActual'),
-    path('search', views.search_compositions, name='search_compositions'),
-    path('save_filters', views.save_filters, name='save_filters'),
+    path('search/', views.search_compositions, name='search_compositions'),
 ]
