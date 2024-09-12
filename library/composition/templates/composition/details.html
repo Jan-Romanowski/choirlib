@@ -60,6 +60,21 @@
 <a href="{% url 'uploadFilesComposition' id=composition.id %}" class="btn btn-outline-success">Wgraj pliki</a>
 {% endif %}
 
+
+{% if perms.composition.change_composition %}
+    {% if composition.isActual %}
+        <a href="{% url 'toggleActual' composition.id %}" class="btn btn-primary">Aktualne</a>
+    {% else %}
+        <a href="{% url 'toggleActual' composition.id %}" class="btn btn-outline-primary">Aktualne</a>
+    {% endif %}
+{% else %}
+    {% if composition.isActual %}
+        <a href="#" class="btn btn-primary">Aktualne</a>    
+    {% else %}
+        <a href="#" class="btn btn-outline-primary">Aktualne</a>
+    {% endif %}
+{% endif %}
+
 <!-- Files Table -->
 <div class="container mt-5">
   <h3>Pliki:</h3>

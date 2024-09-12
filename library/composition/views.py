@@ -6,21 +6,42 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import permission_required
 from django.http import JsonResponse
+from django.template.loader import render_to_string
+from django.template import RequestContext
 
 def search_compositions(request):
     query = request.GET.get('query', '')
     is_actual = request.GET.get('isActual', '0')
     page_number = request.GET.get('page', 1)
 
-    compositions = Composition.objects.filter(name__icontains=query)
-    
+    compositions = Composition.objects.all()
+
+    # Фильтрация по запросу
+    if query:
+        compositions = compositions.filter(name__icontains=query)
+
+    # Фильтрация по актуальности
     if is_actual == '1':
         compositions = compositions.filter(isActual=True)
 
-    paginator = Paginator(compositions, 10)  # По 10 элементов на страницу
+    # Пагинация
+    paginator = Paginator(compositions, 5)  # Показывать 5 записей на страницу
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'composition/table.html', {'compositions': compositions})
+    # Создаем RequestContext для передачи прав пользователя
+    context = RequestContext(request, {
+        'compositions': page_obj.object_list,
+        'perms': request.user.get_all_permissions()  # или просто request.user.has_perm('app.permission')
+    })
+
+    # Рендерим содержимое таблицы и пагинации
+    compositions_html = render_to_string('composition/table.html', context.flatten())
+    pagination_html = render_to_string('composition/_pagination.html', {'page_obj': page_obj})
+
+    return JsonResponse({
+        'content': compositions_html,
+        'pagination': pagination_html
+    })
 
 def listComposition(request):
     query = request.GET.get('q')
@@ -35,7 +56,7 @@ def listComposition(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    return render(request, 'composition/list.html', {'page_obj': page_obj, 'compositions': page_obj.object_list})
+    return render(request, 'composition/list.html', {'page_obj': page_obj, 'compositions': page_obj.object_list, })
 
 
 def detailsComposition(request, id):
@@ -133,5 +154,5 @@ def checkAsActual(request, id):
     composition.isActual = not composition.isActual
     composition.save()
     messages.success(request, f'Utwór "{composition.name}" zaznaczony jako {"Aktualny" if composition.isActual else "Nieaktualny"}.')
-    return redirect('listComposition')
+    return redirect('detailsComposition', id=id)
 
