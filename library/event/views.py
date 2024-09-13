@@ -52,15 +52,21 @@ def calendar_view(request):
     return render(request, 'calendar.html', {'events': events})
 
 def day_events(request, year, month, day):
-    # Используем date_event для фильтрации событий
+
     selected_date = timezone.datetime(year, month, day).date()
     events = Event.objects.filter(date_event=selected_date)
 
     unique_colours = (Event.objects
                   .values('colour')              # Извлекаем только поле цвета
                   .distinct()                    # Убираем дубли
-                  .order_by('-date_event')        # Сортировка по дате (сначала самые новые)
-                  [:6])
+                  .order_by('-date_event')       # Сортировка по дате (сначала самые новые)
+                  [:20])
+    
+    savedColors = []
+    
+    for color in unique_colours:
+        if color not in savedColors:
+            savedColors.append(color)
 
     if request.method == 'POST':
         if 'delete_event' in request.POST:
@@ -84,6 +90,6 @@ def day_events(request, year, month, day):
         'date': selected_date,
         'events': events,
         'form': form,
-        'colors': unique_colours
+        'colors': savedColors
     }
-    return render(request, 'event/day_events.html', context)
+    return render(request, 'event/day_events.html',  context)

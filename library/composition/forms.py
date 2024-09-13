@@ -1,7 +1,7 @@
 from django import forms
 from folder.models import Folder
 from .models import Composition, CompositionFile
-from django.forms import ModelForm, TextInput
+from django.forms import ModelForm, Select, TextInput
 
 class CompositionForm(ModelForm):
     class Meta:
@@ -23,6 +23,9 @@ class CompositionForm(ModelForm):
             'author': TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Rammstein'
+            }),
+            'folder': Select(attrs={
+                'class': 'form-select'  # Используйте 'form-select' для стилизации select с Bootstrap
             }),
             'note': forms.Textarea(attrs={
                 'class': 'form-control',
