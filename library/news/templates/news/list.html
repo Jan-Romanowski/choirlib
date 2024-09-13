@@ -28,7 +28,7 @@
                   <div class="col-md-4">
                     {% for file in post.files.all %}
                     {% if file.is_main %}
-                    <img src="{{ file.file.url }}" class="img-fluid rounded-start" style="object-fit: contain;" width="200px;" height="200px" alt="{{ file.get_file_type_display }}">
+                    <img src="{{ file.file.url }}" class="img-fluid rounded-start w-100 h-100" style="object-fit: cover;" alt="{{ file.get_file_type_display }}">
                     {% endif %}
                 {% endfor %}
                   </div>
@@ -36,7 +36,9 @@
                     <div class="card-body">
                       <h5 class="card-title">{{ post.title }}</h5>
                       <p class="card-text text-truncate" style="max-height: 200px;">{{ post.text }}</p>
-                      <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                      <a href="{% url 'detailsNews' id=post.id %}" class="btn btn-outline-primary">Ustawienia</a>
+                      <a href="{% url 'showPost' id=post.id %}" class="btn btn-outline-secondary">Szczegóły</a>
+                      <p class="card-text"><small class="text-body-secondary">{{ post.date_joined }}</small></p>
                     </div>
                   </div>
                 </div>

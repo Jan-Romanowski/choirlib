@@ -117,7 +117,7 @@ def changeSuperadmin(request, id):
 def changeGroup(request, id, group):
     user = get_object_or_404(User, id=id)
     if is_creator(user):
-        messages.success(request, f'Nie wolno !')
+        messages.error(request, f'Nie wolno !')
         return redirect('detailsUser', id=id)
     grp = Group.objects.get(name=group)
     user.groups.set([grp])

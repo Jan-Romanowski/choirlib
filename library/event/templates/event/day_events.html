@@ -2,12 +2,30 @@
 
 {% block body %}
 
+<style>
+    .colorBox{
+        cursor: pointer;
+        width: 48px;
+        height: 40px;
+    }
+</style>
+
 <h2 class="text-center m-3">Wydarzenia na {{ date|date:"d F Y" }}</h2>
 
 <!-- Форма для добавления нового события -->
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+
+    {% if colors %}
+    <div class="row">
+        <label>Ostatnio użyte kolory:</label>
+        {% for color in colors %}
+        <div class="colorBox m-3" style="background-color: {{ color.colour }};" onclick="setColor(this)"></div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     <input type="submit" class="btn btn-outline-primary" value="Dodaj event">
 </form>
 <hr>
@@ -27,20 +45,23 @@
     {% endfor %}
 </ul>
 
-<!-- Замените ссылки на другие CDN, если предыдущие не работают -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.1.6/build/css/tempusdominus-bootstrap-4.min.css">
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.1.6/build/js/tempusdominus-bootstrap-4.min.js"></script>
-
-
 <script>
-        $(function () {
-            $('.timepicker').datetimepicker({
-                format: 'HH:mm',
-                stepping: 15 // Шаг времени
-            });
-        });
+    function setColor(element) {
+        const formPart = document.getElementById('clr');
+        const backgroundColor = window.getComputedStyle(element).backgroundColor;
+        console.log("Background color:", backgroundColor);
+        formPart.value = rgbToHex(backgroundColor);
+    }
+
+    function rgbToHex(rgb) {
+        var rgbArray = rgb.match(/\d+/g);
+        var r = parseInt(rgbArray[0]).toString(16).padStart(2, '0');
+        var g = parseInt(rgbArray[1]).toString(16).padStart(2, '0');
+        var b = parseInt(rgbArray[2]).toString(16).padStart(2, '0');
+        return `#${r}${g}${b}`;
+    }
 </script>
+
+
 
 {% endblock %}

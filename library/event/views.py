@@ -1,6 +1,7 @@
 # views.py
 import calendar
 from datetime import datetime, date
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Event
 from calendar import monthrange
@@ -50,17 +51,23 @@ def calendar_view(request):
     events = Event.objects.all().order_by('start_time')
     return render(request, 'calendar.html', {'events': events})
 
-
 def day_events(request, year, month, day):
     # Используем date_event для фильтрации событий
     selected_date = timezone.datetime(year, month, day).date()
     events = Event.objects.filter(date_event=selected_date)
+
+    unique_colours = (Event.objects
+                  .values('colour')              # Извлекаем только поле цвета
+                  .distinct()                    # Убираем дубли
+                  .order_by('-date_event')        # Сортировка по дате (сначала самые новые)
+                  [:6])
 
     if request.method == 'POST':
         if 'delete_event' in request.POST:
             event_id = request.POST.get('event_id')
             event = get_object_or_404(Event, id=event_id)
             event.delete()
+            messages.success(request, f'Wydarzenie pomyślnie usunięte.')
             return redirect('day_events', year=year, month=month, day=day)
         
         form = EventForm(request.POST)
@@ -68,6 +75,7 @@ def day_events(request, year, month, day):
             new_event = form.save(commit=False)
             new_event.date_event = selected_date  # Устанавливаем дату события
             new_event.save()
+            messages.success(request, f'Dodano nowe wydarzenie.')
             return redirect('day_events', year=year, month=month, day=day)
     else:
         form = EventForm()
@@ -76,5 +84,6 @@ def day_events(request, year, month, day):
         'date': selected_date,
         'events': events,
         'form': form,
+        'colors': unique_colours
     }
     return render(request, 'event/day_events.html', context)

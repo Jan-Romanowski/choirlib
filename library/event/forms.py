@@ -2,16 +2,9 @@
 
 from django import forms
 from .models import Event
-from django.forms import ModelForm, TextInput
+from django.forms import ModelForm, TextInput, TimeInput
 
 class EventForm(forms.ModelForm):
-    start_time = forms.TimeField(
-        widget=forms.TimeInput(attrs={'class': 'timepicker', 'placeholder': 'HH:MM'})
-    )
-    end_time = forms.TimeField(
-        widget=forms.TimeInput(attrs={'class': 'timepicker', 'placeholder': 'HH:MM'})
-    )
-
     class Meta:
         model = Event
         fields = ['title', 'description', 'start_time', 'end_time', 'colour']
@@ -37,6 +30,18 @@ class EventForm(forms.ModelForm):
             'colour': TextInput(attrs={
                 'type' : 'color',
                 'class': 'form-control form-control-color',
-                'placeholder': 'Kolor (w kalendarzu)'
+                'placeholder': 'Kolor (w kalendarzu)',
+                'id': 'clr'
             }),
+            'start_time': TimeInput(attrs={
+                'type': 'time',
+                'class': 'form-control w-25',
+                'placeholder': 'HH:MM',
+            }),
+            'end_time': TimeInput(attrs={
+                'type': 'time',
+                'class': 'form-control w-25',
+                'placeholder': 'HH:MM',
+            }),
+
         }

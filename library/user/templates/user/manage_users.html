@@ -11,7 +11,7 @@
                 <td>#</td>
                 <td>Użytkownik</td>
                 <td>Email</td>
-                <td></td>
+                <td>Grupa</td>
             </tr>
     </thead>
     <tbody>
@@ -20,7 +20,7 @@
                 <td>{{ user.id }}</td>
                 <td><a {% if user.is_active == False %} style="color:red;" {% endif %}  href="{% url 'detailsUser' id=user.id %}">{{ user.name }} {{ user.surname }}</a></td>
                 <td>{{ user.email }}</td>
-                <td></td>
+                <td>{{ user.groups.first.name }}</td>
             </tr>
         {% endfor %}
     </tbody>
