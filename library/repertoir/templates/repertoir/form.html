@@ -1,0 +1,39 @@
+
+{% extends 'content/template.html' %}
+
+{% load static %}
+{% block body %}
+
+<div class="pt-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'listRepertoirs' %}">Repertuar</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Formularz repertuaru</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-12">
+            <h2 class="mt-5 text-center">Rerertuar</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {% if error_message %}
+                    <p class="text-danger text-center">{{ error_message }}</p>
+                {% endif %}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-outline-success mt-2">Zapisz</button>
+                </div>
+            </form>
+            {% if error %}
+                <p class="text-danger text-center">{{ error }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+{% endblock %}

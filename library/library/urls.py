@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
     path('composition/', include('composition.urls')),
+    path('repertoir', include('repertoir.urls')),
     path('news', include('news.urls')),
     path('folder/', include('folder.urls')),
     path('event/', include('event.urls')),

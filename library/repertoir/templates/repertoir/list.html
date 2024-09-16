@@ -1,0 +1,64 @@
+{% extends 'content/template.html' %}
+
+{% load static %}
+{% block body %}
+
+<div class="row justify-content-center">
+    <div class="container-fluid">
+        <h2 class="text-center mt-3 mb-4">Repertuar</h2>
+        <div class="row justify-content-center mb-3">
+            {% if perms.repertoir.add_repertoir %}
+            <div class="col-6 col-md-2 mt-1 mb-1 text-center">
+                <a class="btn w-75 btn-outline-success" href="{% url 'addRepertoir' %}" role="button">Nowy repertuar</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="container col-sm-10 col-md-9 col-lg-8 p-3 mb-3 h-auto">
+       {% for repertoir in repertoirs %}
+        <div class="card anim shadow rounded mb-3">
+                <div class="card-header">
+                    {{ repertoir.title }}
+                </div>
+                <div class="card-body">
+                    {{ repertoir.text }}
+                </div>
+                <div class="card-footer">
+
+                    {% if perms.repertoir.delete_repertoir %}
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                        Usuń
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteModalLabel">Potwierdź akcję</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body"> 
+                                    Napewno chcesz usunąć repertuar <b>{{ repertoir.title }}</b>?
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="{% url 'deleteRepertoir' pk=repertoir.id %}" class="btn btn-outline-danger w-25">Tak</a>
+                                    <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Nie</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <a href="{% url 'editRepertoir' pk=repertoir.id %}" class="btn btn-primary">Edycja</a>
+                </div>
+            </div>
+       {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

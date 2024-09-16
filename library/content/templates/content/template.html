@@ -56,7 +56,7 @@
                                 <li><a class="dropdown-item" href="{% url 'listComposition' %}">Utwory</a></li>
                                 <li><a class="dropdown-item" href="{% url 'listFolder' %}">Teczki</a></li>
                                 {% if perms.composition.change_composition %}
-                                <li><a class="dropdown-item" href="#">Repertuar</a></li>
+                                <li><a class="dropdown-item" href="{% url 'listRepertoirs' %}">Repertuar</a></li>
                                 <li><a class="dropdown-item" href="#">Ustawienia</a></li>
                                 {% endif %}
                                 {% if perms.user.change_user %}
