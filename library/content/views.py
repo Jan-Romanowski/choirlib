@@ -3,11 +3,16 @@ from news.models import News
 from event.models import Event
 from datetime import date
 import random
-from django.db.models import Min
+from django.db.models import Q, Min
+from django.utils import timezone
 
 def index(request):
     news = list(News.objects.all())
-    closest_date = Event.objects.filter(date_event__gt=date.today()).aggregate(Min('date_event'))['date_event__min']
+    now = timezone.now()  # Текущее время
+    closest_date = Event.objects.filter(
+        Q(date_event__gt=now.date()) |  # Будущие события
+        Q(date_event=now.date(), start_time__gte=now.time())  # Сегодняшние, начиная с текущего времени
+    ).aggregate(Min('date_event'))['date_event__min']
 
     if closest_date:
         events = Event.objects.filter(date_event=closest_date).order_by('start_time')
@@ -16,6 +21,8 @@ def index(request):
     random.shuffle(news)
     return render(request, 'content/index.html', {'news': news, 'events': events, 'date': closest_date})
 
+def sandbox(request):
+    return render(request, 'content/bubbles.html')
 
 def managers(request):
     return render(request, 'content/managers.html')

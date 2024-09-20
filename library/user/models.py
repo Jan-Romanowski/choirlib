@@ -23,7 +23,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
     voice_type = models.CharField(max_length=10, default='null')
-
+    last_activity = models.DateTimeField(null=True, blank=True)
+    
     #Это поле используется для определения, имеет ли пользователь доступ к админ-панели Django (/admin). 
     # Если значение is_staff установлено в True, пользователь сможет войти в админ-панель (если у него есть доступ).
     is_staff = models.BooleanField(default=False)

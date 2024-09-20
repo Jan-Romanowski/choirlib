@@ -9,5 +9,6 @@ urlpatterns = [
     path('viceConductor', views.viceConductor, name='viceConductor'),
     path('hoffman', views.hoffman, name='hoffman'),
     path('history', views.history, name='history'),
+    path('sandbox', views.sandbox, name='sandbox'),
     path('contact', views.contact, name='contact'),
 ]

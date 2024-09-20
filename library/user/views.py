@@ -84,7 +84,7 @@ def deleteUser(request, id):
 def changeActive(request, id):
     user = get_object_or_404(User, id=id)
     if is_creator(user):
-        messages.success(request, f'Nie wolno !')
+        messages.error(request, f'Nie wolno !')
         return redirect('detailsUser', id=id)
     user.is_active = not user.is_active
     user.save()
@@ -95,7 +95,7 @@ def changeActive(request, id):
 def changeAccessAdminPanel(request, id):
     user = get_object_or_404(User, id=id)
     if is_creator(user):
-        messages.success(request, f'Nie wolno !')
+        messages.error(request, f'Nie wolno !')
         return redirect('detailsUser', id=id)
     user.is_staff = not user.is_staff
     user.save()
@@ -106,7 +106,7 @@ def changeAccessAdminPanel(request, id):
 def changeSuperadmin(request, id):
     user = get_object_or_404(User, id=id)
     if is_creator(user):
-        messages.success(request, f'Nie wolno !')
+        messages.error(request, f'Nie wolno !')
         return redirect('detailsUser', id=id)
     user.is_superuser = not user.is_superuser
     user.save()

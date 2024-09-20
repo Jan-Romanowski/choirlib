@@ -1,6 +1,7 @@
 {% extends 'content/template.html' %}
-
+{% load extras %}
 {% load static %}
+
 {% block body %}
 
 <h2 class="mb-3 mt-3 text-center">Zarządzanie użytkownikami</h2>
@@ -10,7 +11,7 @@
             <tr>
                 <td>#</td>
                 <td>Użytkownik</td>
-                <td>Email</td>
+                <td>Aktywność</td>
                 <td>Grupa</td>
             </tr>
     </thead>
@@ -19,7 +20,7 @@
             <tr>
                 <td>{{ user.id }}</td>
                 <td><a {% if user.is_active == False %} style="color:red;" {% endif %}  href="{% url 'detailsUser' id=user.id %}">{{ user.name }} {{ user.surname }}</a></td>
-                <td>{{ user.email }}</td>
+                <td>{{ user.last_activity|activity_status }}</td>
                 <td>{{ user.groups.first.name }}</td>
             </tr>
         {% endfor %}

@@ -1,6 +1,7 @@
 {% extends 'content/template.html' %}
-
+{% load extras %}
 {% load static %}
+
 {% block body %}
 
 <div class="pt-2">
@@ -18,6 +19,7 @@
 
     </div>
     <p><strong>Email: </strong>{{ user.email }}</p>
+    <p><strong>Online: </strong>{{ user.last_activity|activity_status }}</p>
 
     <div class="card w-100">
         <div class="card-body">
