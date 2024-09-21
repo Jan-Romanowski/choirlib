@@ -4,6 +4,20 @@
 
 {% block body %}
 
+<style>
+    .online{
+        color:rgb(49, 224, 49);
+    }
+
+    .offline{
+        color: red;
+    }
+
+    .recently{
+        color: dimgray;
+    }
+</style>
+
 <h2 class="mb-3 mt-3 text-center">Zarządzanie użytkownikami</h2>
 <div class="container-fluid w-100">
     <table class="table table-hover">
@@ -20,7 +34,17 @@
             <tr>
                 <td>{{ user.id }}</td>
                 <td><a {% if user.is_active == False %} style="color:red;" {% endif %}  href="{% url 'detailsUser' id=user.id %}">{{ user.name }} {{ user.surname }}</a></td>
-                <td>{{ user.last_activity|activity_status }}</td>
+                
+                {% if user.last_activity|activity_status == 'online' %}
+                    <td class="online">{{ user.last_activity|activity_status }}</td>
+                {% elif user.last_activity|activity_status == 'offline' %}
+                    <td class="offline">{{ user.last_activity|activity_status }}</td>
+                {% else %}
+                    <td class="recently">{{ user.last_activity|activity_status }}</td>
+                {% endif %}
+
+                
+
                 <td>{{ user.groups.first.name }}</td>
             </tr>
         {% endfor %}
