@@ -12,91 +12,92 @@
     
     <div class="container-fluid">
         <div class="shadow-lg p-2 p-md-2 p-lg-3 p-xl-5 mb-3">
-          {% if events %}
-            <div class="container">
-                <h4 class="display-6">Najbliższe wydarzenia</h3>
-            </div>
-            <div class="container">
-                
-                <h5 class="display-8">{{ date }}</h5>
-            </div>
-        
-            {% for event in events %}
-            <div class="container">
-                <div class="p-3 rounded-2 bg-light">
-                    <h4>{{ event.title }}</h4>
-                    {{ event.description }}<br>
-                    <strong>{{ event.start_time }} - {{ event.end_time }}</strong><br>
+
+            {% if events %}
+            <div class="mb-3">
+                <div class="container">
+                    <h4 class="display-6">Najbliższe wydarzenia</h3>
                 </div>
-            </div>
-            {% endfor %}
-          {% endif %}
-        
-      
-        <div class="container mt-3">
-        <h3 class="display-6"><strong>Aktualności</strong></h3>
-        </div>
-    
-        <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel">
-            <!-- Индикаторы -->
-            <div class="carousel-indicators">
-                {% for post in news %}
-                <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %} bg-secondary" aria-current="{% if forloop.first %}true{% endif %}" aria-label="Slide {{ forloop.counter }}"></button>
-                {% endfor %}
-            </div>
-        
-            <div class="carousel-inner">
-                {% for post in news %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <div class="card mb-3 mx-1">
-                        <div class="row g-0 h-100">
-                            <div class="col-md-4" style="border-right: 1px solid #ccc; height: 200px;">
-                                {% for file in post.files.all %}
-                                    {% if file.is_main %}
-                                    <img src="{{ file.file.url }}" class="img-fluid rounded-start w-100 h-100" style="object-fit: cover;" alt="{{ file.get_file_type_display }}">
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                            <div class="col-md-8 justify-content-between">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ post.title }}</h5>
-                                    <p class="text-truncate">{{ post.text }}</p>
-                                </div>
-                                <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-end">
-                                    <a href="{% url 'showPost' id=post.id %}" class="btn btn-outline-secondary">Szczegóły</a>
-                                    <p class="card-text mb-0"><small class="text-body-secondary">{{ post.date_joined }}</small></p>
-                                </div>
-                            </div>
-                        </div>
+                <div class="container">
+                    
+                    <h5 class="display-8">{{ date }}</h5>
+                </div>
+            
+                {% for event in events %}
+                <div class="container">
+                    <div class="p-3 rounded-2 bg-light">
+                        <h4>{{ event.title }}</h4>
+                        {{ event.description }}<br>
+                        <strong>{{ event.start_time }} - {{ event.end_time }}</strong><br>
                     </div>
                 </div>
                 {% endfor %}
             </div>
-        </div>
+            {% endif %}
 
-        <div class="container">
-            <h4 class="display-6">O nas</h4>
-            <div class="row">
-                <div class="col-12">
-                    <p align="justify">
-                        Chór Katedralny im <a href="{% url 'hoffman' %}">ks. Alfreda Hoffmana</a> jest zespołem, który wyrasta
-                        z niemalże stuletniej tradycji chóralnej kościoła pod wezwaniem Niepokalanego Poczęcia
-                        Najświętszej Maryi Panny w Siedlcach.
-                        Głównym zadaniem Chóru Katedralnego im ks. Alfreda Hoffmana
-                        w Siedlcach jest służba liturgii podczas celebracji w kościele biskupim
-                        a także podczas większych uroczystości na terenie diecezji siedleckiej.<br><img class="mb-3" width="100%" src="{% static 'content/img/tlo.jpg' %}">
-                        W repertuarze zespołu, oprócz utworów liturgicznych znajdują się także utwory koncertowe,
-                        z którymi chór występował na terenie kraju a także
-                        w Niemczech, Włoszech, na Węgrzech, Ukrainie i Białorusi.<br>
-                        Chór ma w swoim repertuarze wiele kompozycji dyrygenta, <a href="{% url 'conductor' %}">ks. Michała Szulika</a>.
-                        Istotnym aspektem działalności chóru katedralnego jest praca wychowawcza
-                        i wspieranie rozwoju uzdolnionej muzycznie młodzieży.<br>
-                        Od 1999 r. chór prowadzi ks. Michał Szulik, którego asystentką od 2014 r. jest <a href="{% url 'viceConductor' %}">Izabela Kiryluk</a>.
-                    </p>
-                </div>
+            <div class="container mt-3">
+                <h3 class="display-6"><strong>Aktualności</strong></h3>
             </div>
-        </div>
-                   
+            
+                <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <!-- Индикаторы -->
+                    <div class="carousel-indicators">
+                        {% for post in news %}
+                        <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %} bg-secondary" aria-current="{% if forloop.first %}true{% endif %}" aria-label="Slide {{ forloop.counter }}"></button>
+                        {% endfor %}
+                    </div>
+                
+                    <div class="carousel-inner">
+                        {% for post in news %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="card mb-3 mx-1">
+                                <div class="row g-0 h-100">
+                                    <div class="col-md-4" style="border-right: 1px solid #ccc; height: 200px;">
+                                        {% for file in post.files.all %}
+                                            {% if file.is_main %}
+                                            <img src="{{ file.file.url }}" class="img-fluid rounded-start w-100 h-100" style="object-fit: cover;" alt="{{ file.get_file_type_display }}">
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-8 justify-content-between">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ post.title }}</h5>
+                                            <p class="text-truncate">{{ post.text }}</p>
+                                        </div>
+                                        <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-end">
+                                            <a href="{% url 'showPost' id=post.id %}" class="btn btn-outline-secondary">Szczegóły</a>
+                                            <p class="card-text mb-0"><small class="text-body-secondary">{{ post.date_joined }}</small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+    
+                <div class="container">
+                    <h4 class="display-6">O nas</h4>
+                    <div class="row">
+                        <div class="col-12">
+                            <p align="justify">
+                                Chór Katedralny im <a href="{% url 'hoffman' %}">ks. Alfreda Hoffmana</a> jest zespołem, który wyrasta
+                                z niemalże stuletniej tradycji chóralnej kościoła pod wezwaniem Niepokalanego Poczęcia
+                                Najświętszej Maryi Panny w Siedlcach.
+                                Głównym zadaniem Chóru Katedralnego im ks. Alfreda Hoffmana
+                                w Siedlcach jest służba liturgii podczas celebracji w kościele biskupim
+                                a także podczas większych uroczystości na terenie diecezji siedleckiej.<br><br><img class="mb-3" width="100%" src="{% static 'content/img/tlo.jpg' %}">
+                                W repertuarze zespołu, oprócz utworów liturgicznych znajdują się także utwory koncertowe,
+                                z którymi chór występował na terenie kraju a także
+                                w Niemczech, Włoszech, na Węgrzech, Ukrainie i Białorusi.<br>
+                                Chór ma w swoim repertuarze wiele kompozycji dyrygenta, <a href="{% url 'conductor' %}">ks. Michała Szulika</a>.
+                                Istotnym aspektem działalności chóru katedralnego jest praca wychowawcza
+                                i wspieranie rozwoju uzdolnionej muzycznie młodzieży.<br>
+                                Od 1999 r. chór prowadzi ks. Michał Szulik, którego asystentką od 2014 r. jest <a href="{% url 'viceConductor' %}">Izabela Kiryluk</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
 </div>

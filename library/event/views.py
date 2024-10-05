@@ -1,12 +1,15 @@
 # views.py
 import calendar
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Event
 from calendar import monthrange
 from django.utils import timezone
 from .forms import EventForm
+from django.contrib.auth.decorators import permission_required
+from django.http import HttpResponse
+from datetime import datetime
 
 # views.py
 
@@ -18,7 +21,7 @@ def get_month(request, year, month):
     days = []
     for day in range(1, days_in_month + 1):
         current_date = date(year, month, day)
-        events = Event.objects.filter(date_event=current_date)
+        events = Event.objects.filter(date_event=current_date).order_by('start_time')
         days.append({
             'day': day,
             'date': current_date,
@@ -42,6 +45,7 @@ def get_month(request, year, month):
     }
     return render(request, 'event/calendar.html', context)
 
+@permission_required('event.deleve_event', raise_exception=True)
 def delete_event(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     event.delete()
@@ -51,10 +55,11 @@ def calendar_view(request):
     events = Event.objects.all().order_by('start_time')
     return render(request, 'calendar.html', {'events': events})
 
+@permission_required('event.change_event', raise_exception=True)
 def day_events(request, year, month, day):
 
     selected_date = timezone.datetime(year, month, day).date()
-    events = Event.objects.filter(date_event=selected_date)
+    events = Event.objects.filter(date_event=selected_date).order_by('start_time')
 
     unique_colours = (Event.objects
                   .values('colour')              # Извлекаем только поле цвета
@@ -80,8 +85,26 @@ def day_events(request, year, month, day):
         if form.is_valid():
             new_event = form.save(commit=False)
             new_event.date_event = selected_date  # Устанавливаем дату события
-            new_event.save()
-            messages.success(request, f'Dodano nowe wydarzenie.')
+            
+            # Проверяем, отмечен ли чекбокс 'cycle'
+            if 'cycle' in request.POST and request.POST.get('cycleDate'):
+                cycle_date_str = request.POST.get('cycleDate')
+                cycle_end_date = timezone.datetime.strptime(cycle_date_str, '%Y-%m-%d').date()
+
+                weekday = selected_date.weekday()
+
+                current_date = selected_date
+                while current_date <= cycle_end_date:
+                    new_event.pk = None
+                    new_event.date_event = current_date
+                    new_event.save()
+                    current_date += timedelta(days=7)
+
+                messages.success(request, f'Dodano cykliczne wydarzenie każdy tydzień do {cycle_end_date}.')
+            else:
+                new_event.save()
+                messages.success(request, f'Dodano nowe wydarzenie.')
+                
             return redirect('day_events', year=year, month=month, day=day)
     else:
         form = EventForm()
@@ -93,3 +116,26 @@ def day_events(request, year, month, day):
         'colors': savedColors
     }
     return render(request, 'event/day_events.html',  context)
+
+def export_events_to_ics(request):
+    events = Event.objects.all()
+    
+    # Создание содержимого файла iCalendar
+    ics_content = "BEGIN:VCALENDAR\n"
+    ics_content += "VERSION:2.0\n"
+    ics_content += "CALSCALE:GREGORIAN\n"
+
+    for event in events:
+        ics_content += "BEGIN:VEVENT\n"
+        ics_content += f"SUMMARY:{event.title}\n"
+        ics_content += f"DESCRIPTION:{event.description}\n"
+        ics_content += f"DTSTART;TZID=Europe/Warsaw:{event.date_event.strftime('%Y%m%d')}T{event.start_time.strftime('%H%M%S')}\n"
+        ics_content += f"DTEND;TZID=Europe/Warsaw:{event.date_event.strftime('%Y%m%d')}T{event.end_time.strftime('%H%M%S')}\n"
+        ics_content += "END:VEVENT\n"
+
+    ics_content += "END:VCALENDAR\n"
+
+    # Создание HTTP-ответа с содержимым файла iCalendar
+    response = HttpResponse(ics_content, content_type='text/calendar')
+    response['Content-Disposition'] = 'attachment; filename="events.ics"'
+    return response

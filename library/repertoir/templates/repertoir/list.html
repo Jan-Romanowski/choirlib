@@ -24,10 +24,12 @@
                     {{ repertoir.title }}
                 </div>
                 <div class="card-body">
-                    {{ repertoir.text }}
+                    {{ repertoir.text|linebreaksbr }}
                 </div>
                 <div class="card-footer">
-
+                    {% if perms.repertoir.change_repertoir %}
+                    <a href="{% url 'editRepertoir' pk=repertoir.id %}" class="btn btn-outline-primary">Edycja</a>
+                    {% endif %}
                     {% if perms.repertoir.delete_repertoir %}
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
@@ -53,8 +55,6 @@
                         </div>
                     </div>
                     {% endif %}
-
-                    <a href="{% url 'editRepertoir' pk=repertoir.id %}" class="btn btn-primary">Edycja</a>
                 </div>
             </div>
        {% endfor %}

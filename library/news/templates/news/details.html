@@ -13,7 +13,7 @@
 </div>
 
 <h2 class="text-center">{{ news.title }}</h2>
-<p> {{ news.text }}</p>
+<p> {{ news.text|linebreaksbr }}</p>
 
 <a href="{% url 'editNews' id=news.id %}" class="btn btn-outline-primary">Edycja</a>
 <a href="{% url 'uploadFilesNews' id=news.id %}" class="btn btn-outline-success">Wgraj pliki</a>

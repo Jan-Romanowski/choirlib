@@ -12,7 +12,6 @@
 
 <h2 class="text-center m-3">Wydarzenia na {{ date|date:"d F Y" }}</h2>
 
-<!-- Форма для добавления нового события -->
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
@@ -26,10 +25,24 @@
     </div>
     {% endif %}
 
-    <input type="submit" class="btn btn-outline-primary" value="Dodaj event">
+    <div class="form-check mt-3 mb-3">
+        <input class="form-check-input" type="checkbox" value="" name="cycle" id="cycle">
+        <label class="form-check-label" for="cycle">
+            Wydarzenie cykliczne w ten dzień tygodnia
+        </label>
+    </div>
+
+    <div class="form-check mt-3 mb-3">
+        <label class="form-check-label" for="cycleDate">
+            Data końcowa
+        </label>
+        <input class="form-control mt-2 w-25" type="date" value="" name="cycleDate" id="cycleDate">
+    </div>
+
+    <input type="submit" class="btn btn-outline-success" value="Dodaj wydarzenie">
 </form>
 <hr>
-<!-- Список событий с возможностью их удаления -->
+
 <ul>
     {% for event in events %}
         <li>
@@ -61,7 +74,4 @@
         return `#${r}${g}${b}`;
     }
 </script>
-
-
-
 {% endblock %}

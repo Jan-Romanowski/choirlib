@@ -4,7 +4,7 @@ from .forms import RepertoirForm
 from django.contrib import messages
 
 def listRepertoirs(request):
-    repertoirs = Repertoir.objects.all()
+    repertoirs = Repertoir.objects.all().order_by('-id')
     return render(request, 'repertoir/list.html', {'repertoirs': repertoirs})
 
 def editRepertoir(request, pk=None):

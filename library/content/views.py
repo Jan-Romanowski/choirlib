@@ -7,7 +7,7 @@ from django.db.models import Q, Min
 from django.utils import timezone
 
 def index(request):
-    news = list(News.objects.all())
+    news = list(News.objects.filter(isActual=True))
     now = timezone.now()  # Текущее время
     closest_date = Event.objects.filter(
         Q(date_event__gt=now.date()) |  # Будущие события

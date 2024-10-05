@@ -5,7 +5,7 @@ from .models import News
 from .forms import NewsForm, NewsFile, UploadFileForm
 
 def listNews(request):
-    news = News.objects.all()
+    news = News.objects.all().order_by('-date_joined')
     return render(request, 'news/list.html', {'news': news})
 
 def showPost(request, id):

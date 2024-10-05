@@ -56,22 +56,62 @@
     </div>
 </div>
 
-<!-- calendar.html -->
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Export Kalendarza
+</button>
 
-<!-- calendar.html -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Export Kalendarza</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <p>Aby zaimportować plik CSV do Kalendarza Google:
+            <ul>
+                <li>
+                    Otwórz Kalendarz Google.
+                </li>
+                <li>
+                    Kliknij przycisk "+" obok "Inne kalendarze".
+                </li>
+                <li>
+                    Wybierz "Importuj".
+                </li>
+                <li>
+                    Wybierz plik events.csv, który pobrałeś.
+                </li>
+                <li>
+                    Wybierz kalendarz, do którego chcesz zaimportować wydarzenia.
+                </li>
+                <li>
+                    Kliknij przycisk "Importuj".
+                </li>
+            </ul>
+            Teraz możesz łatwo eksportować wydarzenia ze strony Chóru w formacie iCalendar lub CSV i importować je do Kalendarza Google!
+           </p>
+        </div>
+        <div class="modal-footer">
+
+        <a href="{% url 'export_events' %}" class="btn btn-primary">Pobierz plik</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+        </div>
+    </div>
+    </div>
+</div>
 
 <div class="calendar">
-    <!-- Дни недели -->
     {% for day in days_of_week %}
         <div class="day-header p-2"><strong>{{ day }}</strong></div>
     {% endfor %}
 
-    <!-- Пустые ячейки для начала месяца -->
     {% for _ in empty_days %}
         <div class="day"></div>
     {% endfor %}
 
-    <!-- Дни месяца -->
     {% for day in days_in_month %}
         <div class="day {% if day.date == today %}today{% endif %}" data-bs-toggle="modal" data-bs-target="#dayDetails{{ day.day }}">
             {{ day.day }}
@@ -113,7 +153,9 @@
                     
                 </div>
                 <div class="modal-footer">
+                    {% if perms.event.add_event %}
                   <a href="{% url 'day_events' current_year current_month day.date.day %}" class="btn btn-secondary">Edycja</a>
+                    {% endif %}
                   <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Zamknij</button>
                 </div>
               </div>
@@ -122,10 +164,8 @@
     {% endfor %}
 </div>
 
-
-<!-- Добавьте форму для создания событий в модальном окне или отдельной странице -->
 <div id="event-modal" style="display:none;">
-    <!-- Здесь можно добавить форму для создания события -->
+    
 </div>
 
 <script>
