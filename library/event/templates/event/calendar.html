@@ -57,7 +57,7 @@
 </div>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Export Kalendarza
 </button>
 
@@ -96,7 +96,7 @@
         </div>
         <div class="modal-footer">
 
-        <a href="{% url 'export_events' %}" class="btn btn-primary">Pobierz plik</a>
+        <a href="{% url 'export_events' %}" class="btn btn-outline-success">Pobierz plik</a>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
         </div>
     </div>
@@ -154,9 +154,9 @@
                 </div>
                 <div class="modal-footer">
                     {% if perms.event.add_event %}
-                  <a href="{% url 'day_events' current_year current_month day.date.day %}" class="btn btn-secondary">Edycja</a>
+                  <a href="{% url 'day_events' current_year current_month day.date.day %}" class="btn btn-outline-primary">Edycja</a>
                     {% endif %}
-                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Zamknij</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
                 </div>
               </div>
             </div>

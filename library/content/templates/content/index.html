@@ -40,7 +40,6 @@
             </div>
             
                 <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <!-- Индикаторы -->
                     <div class="carousel-indicators">
                         {% for post in news %}
                         <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %} bg-secondary" aria-current="{% if forloop.first %}true{% endif %}" aria-label="Slide {{ forloop.counter }}"></button>
@@ -49,7 +48,7 @@
                 
                     <div class="carousel-inner">
                         {% for post in news %}
-                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <div class="carousel-item {% if forloop.first %}active{% endif %} pb-4">
                             <div class="card mb-3 mx-1">
                                 <div class="row g-0 h-100">
                                     <div class="col-md-4" style="border-right: 1px solid #ccc; height: 200px;">

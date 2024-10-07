@@ -22,7 +22,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
-    voice_type = models.CharField(max_length=10, default='null')
+    voice_type = models.CharField(max_length=10, default='guest')
     last_activity = models.DateTimeField(null=True, blank=True)
     
     #Это поле используется для определения, имеет ли пользователь доступ к админ-панели Django (/admin). 

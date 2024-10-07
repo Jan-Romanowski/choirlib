@@ -27,12 +27,12 @@
 {% endif %}
 
 {% if perms.composition.change_composition %}
-<a href="{% url 'editComposition' id=composition.id %}" class="btn btn-outline-primary">Edycja utworu</a>
+<a href="{% url 'editComposition' id=composition.id %}" class="btn btn-outline-primary mb-1">Edycja utworu</a>
 {% endif %}
 
 {% if perms.composition.delete_composition %}
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button" class="btn btn-outline-danger mb-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Usuń utwór
 </button>
 
@@ -57,15 +57,15 @@
 {% endif %}
 
 {% if perms.composition.add_compositionfile %}
-<a href="{% url 'uploadFilesComposition' id=composition.id %}" class="btn btn-outline-success">Wgraj pliki</a>
+<a href="{% url 'uploadFilesComposition' id=composition.id %}" class="btn btn-outline-success mb-1">Wgraj pliki</a>
 {% endif %}
 
 
 {% if perms.composition.change_composition %}
     {% if composition.isActual %}
-        <a href="{% url 'toggleActual' composition.id %}" class="btn btn-primary">Aktualne</a>
+        <a href="{% url 'toggleActual' composition.id %}" class="btn btn-primary mb-1">Aktualne</a>
     {% else %}
-        <a href="{% url 'toggleActual' composition.id %}" class="btn btn-outline-primary">Aktualne</a>
+        <a href="{% url 'toggleActual' composition.id %}" class="btn btn-outline-primary mb-1">Aktualne</a>
     {% endif %}
 {% else %}
     {% if composition.isActual %}
@@ -75,118 +75,90 @@
     {% endif %}
 {% endif %}
 
-<!-- Files Table -->
 <div class="container mt-5">
-  <h3>Pliki:</h3>
-  {% if user.is_authenticated %}
-  {% if perms.composition.view_compositionfile %}
-  <div class="table-responsive">
-      <table class="table">
-          <thead>
-              <tr>
-                  <th scope="col">Plik</th>
-                  <th scope="col">Player</th>
-                  <th scope="col">Akcja</th>
-              </tr>
-          </thead>
-          <tbody>
-              {% for file in composition.files.all %}
-              <tr>
-                  <td>
-                    {% if file.file.url|slice:"-4:" == '.mp3' %}
+    <h3>Pliki:</h3>
+    {% if user.is_authenticated %}
+    {% if perms.composition.view_compositionfile %}
+    <div class="files-container">
+        {% for file in composition.files.all %}
+        <div class="file-item mb-4">
+            <div class="file-actions">
+                <div class="btn-group">
+                    <div class="pt-2" style="margin-right: 10px;">
+                        {% if file.file.url|slice:"-4:" == '.mp3' %}
 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-filetype-mp3" viewBox="0 0 16 16">
-                      <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zm-4.911 9.67h-.443v-.609h.422a.7.7 0 0 0 .322-.073.56.56 0 0 0 .22-.2.5.5 0 0 0 .076-.284.49.49 0 0 0-.176-.392.65.65 0 0 0-.442-.15.7.7 0 0 0-.252.041.6.6 0 0 0-.193.112.5.5 0 0 0-.179.349H7.71q.009-.235.102-.437.094-.202.27-.352.176-.152.428-.237.255-.085.583-.088.418-.003.723.132.304.135.472.372a.9.9 0 0 1 .173.539.83.83 0 0 1-.12.478.96.96 0 0 1-.619.439v.041a1 1 0 0 1 .718.434.9.9 0 0 1 .144.521q.003.285-.117.507a1.1 1.1 0 0 1-.329.378q-.21.152-.486.234-.273.08-.583.08-.451 0-.77-.153a1.2 1.2 0 0 1-.487-.41 1.1 1.1 0 0 1-.178-.563h.726a.46.46 0 0 0 .106.258.7.7 0 0 0 .249.179 1 1 0 0 0 .357.067.9.9 0 0 0 .384-.076.6.6 0 0 0 .252-.217.56.56 0 0 0 .088-.319.56.56 0 0 0-.334-.522.8.8 0 0 0-.372-.079ZM.706 15.925v-2.66h.038l.952 2.16h.516l.946-2.16h.038v2.66h.715v-3.999h-.8l-1.14 2.596h-.026l-1.14-2.596H0v4zm5.458-3.999h-1.6v4h.792v-1.342h.803q.43 0 .732-.173.304-.177.463-.475a1.4 1.4 0 0 0 .161-.677q0-.374-.158-.677a1.2 1.2 0 0 0-.46-.477 1.4 1.4 0 0 0-.733-.179m.545 1.333a.8.8 0 0 1-.085.381.57.57 0 0 1-.237.24.8.8 0 0 1-.375.082h-.66v-1.406h.66q.328 0 .513.182.184.181.184.521"/>
-                    </svg>
-                    
-                    {% elif file.file.url|slice:"-4:" == '.pdf' %}
-                    
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-filetype-pdf" viewBox="0 0 16 16">
-                      <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zM1.6 11.85H0v3.999h.791v-1.342h.803q.43 0 .732-.173.305-.175.463-.474a1.4 1.4 0 0 0 .161-.677q0-.375-.158-.677a1.2 1.2 0 0 0-.46-.477q-.3-.18-.732-.179m.545 1.333a.8.8 0 0 1-.085.38.57.57 0 0 1-.238.241.8.8 0 0 1-.375.082H.788V12.48h.66q.327 0 .512.181.185.183.185.522m1.217-1.333v3.999h1.46q.602 0 .998-.237a1.45 1.45 0 0 0 .595-.689q.196-.45.196-1.084 0-.63-.196-1.075a1.43 1.43 0 0 0-.589-.68q-.396-.234-1.005-.234zm.791.645h.563q.371 0 .609.152a.9.9 0 0 1 .354.454q.118.302.118.753a2.3 2.3 0 0 1-.068.592 1.1 1.1 0 0 1-.196.422.8.8 0 0 1-.334.252 1.3 1.3 0 0 1-.483.082h-.563zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638z"/>
-                    </svg>
-
-                    {% elif file.file.url|slice:"-4:" == '.wav' %}
-                    
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-filetype-wav" viewBox="0 0 16 16">
-                      <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zM1.784 15.849l.741-2.789h.033l.74 2.789h.73l1.055-3.999h-.858l-.595 2.903h-.041l-.706-2.903H2.2l-.706 2.903h-.038l-.6-2.903H0l1.055 3.999zm3.715 0 .314-1.028h1.336l.313 1.028h.841L6.967 11.85h-.926L4.7 15.849h.8Zm1.002-3.234.49 1.617H5.977l.49-1.617H6.5Zm3.604 3.234h-.952L7.814 11.85h.917l.897 3.138h.038l.888-3.138h.879z"/>
-                    </svg>
-                    {% else %}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-text-fill" viewBox="0 0 16 16">
-                        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z"/>
-                      </svg>
-                    {% endif %}
-                    
-                    <a class="mx-3" href="#">{{ file.file.name|get_filename_without_extension }}</a>
-                </td>
-                  <td>
-                      {% if file.file.url|slice:"-4:" == '.mp3' %}
-                      <div class="plyr__audio-wrapper">
-                          <audio id="player{{ forloop.counter }}" controls>
-                              <source src="{{ file.file.url }}" type="audio/mpeg">
-                              Your browser does not support the audio element.
-                          </audio>
-                      </div>
-                      {% elif file.file.url|slice:"-4:" == '.wav' %}
-                      <div class="plyr__audio-wrapper">
-                          <audio id="player{{ forloop.counter }}" controls>
-                              <source src="{{ file.file.url }}" type="audio/wav">
-                              Your browser does not support the audio element.
-                          </audio>
-                      </div>
-                      {% endif %}
-                  </td>
-                  <td>
-                    <!-- Example single danger button -->
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
-                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
-                              </svg>
-                        </button>
-                        <ul class="dropdown-menu custom-dropdown-menu">
-                        <li>
-                            <a href="{{ file.file.url }}" class="dropdown-item" download="" target="_blank">
-                            Pobierz
-                            </a>
-                        </li>
-
-                        {% if file.file.url|slice:"-4:" == '.pdf' %}
-                        <li>
-                            <a href="{{ file.file.url }}" class="dropdown-item" target="_blank">
-                            Otwórz
-                            </a>
-                        </li>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-filetype-mp3" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zm-4.911 9.67h-.443v-.609h.422a.7.7 0 0 0 .322-.073.56.56 0 0 0 .22-.2.5.5 0 0 0 .076-.284.49.49 0 0 0-.176-.392.65.65 0 0 0-.442-.15.7.7 0 0 0-.252.041.6.6 0 0 0-.193.112.5.5 0 0 0-.179.349H7.71q.009-.235.102-.437.094-.202.27-.352.176-.152.428-.237.255-.085.583-.088.418-.003.723.132.304.135.472.372a.9.9 0 0 1 .173.539.83.83 0 0 1-.12.478.96.96 0 0 1-.619.439v.041a1 1 0 0 1 .718.434.9.9 0 0 1 .144.521q.003.285-.117.507a1.1 1.1 0 0 1-.329.378q-.21.152-.486.234-.273.08-.583.08-.451 0-.77-.153a1.2 1.2 0 0 1-.487-.41 1.1 1.1 0 0 1-.178-.563h.726a.46.46 0 0 0 .106.258.7.7 0 0 0 .249.179 1 1 0 0 0 .357.067.9.9 0 0 0 .384-.076.6.6 0 0 0 .252-.217.56.56 0 0 0 .088-.319.56.56 0 0 0-.334-.522.8.8 0 0 0-.372-.079ZM.706 15.925v-2.66h.038l.952 2.16h.516l.946-2.16h.038v2.66h.715v-3.999h-.8l-1.14 2.596h-.026l-1.14-2.596H0v4zm5.458-3.999h-1.6v4h.792v-1.342h.803q.43 0 .732-.173.304-.177.463-.475a1.4 1.4 0 0 0 .161-.677q0-.374-.158-.677a1.2 1.2 0 0 0-.46-.477 1.4 1.4 0 0 0-.733-.179m.545 1.333a.8.8 0 0 1-.085.381.57.57 0 0 1-.237.24.8.8 0 0 1-.375.082h-.66v-1.406h.66q.328 0 .513.182.184.181.184.521"/>
+                        </svg>
+                        
+                        {% elif file.file.url|slice:"-4:" == '.pdf' %}
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-filetype-pdf" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zM1.6 11.85H0v3.999h.791v-1.342h.803q.43 0 .732-.173.305-.175.463-.474a1.4 1.4 0 0 0 .161-.677q0-.375-.158-.677a1.2 1.2 0 0 0-.46-.477q-.3-.18-.732-.179m.545 1.333a.8.8 0 0 1-.085.38.57.57 0 0 1-.238.241.8.8 0 0 1-.375.082H.788V12.48h.66q.327 0 .512.181.185.183.185.522m1.217-1.333v3.999h1.46q.602 0 .998-.237a1.45 1.45 0 0 0 .595-.689q.196-.45.196-1.084 0-.63-.196-1.075a1.43 1.43 0 0 0-.589-.68q-.396-.234-1.005-.234zm.791.645h.563q.371 0 .609.152a.9.9 0 0 1 .354.454q.118.302.118.753a2.3 2.3 0 0 1-.068.592 1.1 1.1 0 0 1-.196.422.8.8 0 0 1-.334.252 1.3 1.3 0 0 1-.483.082h-.563zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638z"/>
+                        </svg>
+    
+                        {% elif file.file.url|slice:"-4:" == '.wav' %}
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-filetype-wav" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zM1.784 15.849l.741-2.789h.033l.74 2.789h.73l1.055-3.999h-.858l-.595 2.903h-.041l-.706-2.903H2.2l-.706 2.903h-.038l-.6-2.903H0l1.055 3.999zm3.715 0 .314-1.028h1.336l.313 1.028h.841L6.967 11.85h-.926L4.7 15.849h.8Zm1.002-3.234.49 1.617H5.977l.49-1.617H6.5Zm3.604 3.234h-.952L7.814 11.85h.917l.897 3.138h.038l.888-3.138h.879z"/>
+                        </svg>
+                        {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-text-fill" viewBox="0 0 16 16">
+                            <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z"/>
+                          </svg>
                         {% endif %}
-                        {% if perms.composition.delete_compositionfile %}
-                        <li><hr class="dropdown-divider"></li>
-
-                        <li>
-                            <a class="dropdown-item" href="{% url 'deleteFileComposition' file.id %}">
-                                Usuń
-                            </a>
-                        </li>
-                        {% endif %}
-                        </ul>
+                        {{ file.file.name|get_filename_without_extension }}
                     </div>
+                    
+                    <div class="file-actions">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-action" data-bs-toggle="dropdown" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                </svg>
+                            </button>
+                            <ul class="dropdown-menu custom-dropdown-menu">
+                                <li><a href="{{ file.file.url }}" class="dropdown-item" download>Pobierz</a></li>
+                                {% if file.file.url|slice:"-4:" == '.pdf' %}
+                                <li><a href="{{ file.file.url }}" class="dropdown-item" target="_blank">Otwórz</a></li>
+                                {% endif %}
+                                {% if perms.composition.delete_compositionfile %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'deleteFileComposition' file.id %}">Usuń</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
 
-                  </td>
-              </tr>
-              {% endfor %}
-          </tbody>
-      </table>
-  </div>
-  {% else %}
-  <p>Nie masz uprawnień do przeglądania plików. Skontaktuj się z administratorem żeby uzyskać uprawnienia.</p>
-  {% endif %}
-  {% else %}
-  <p>Dostęp do plików mają tylko zalogowane osoby posiadające odpowienie uprawnienia</p>
-  <div class="container">
-    <a href="{% url 'signIn' %}" class="btn btn-outline-success">Zaloguj</a>
-  </div>
-  {% endif %}
+            <!-- Плеер и кнопка действий -->
+            <div class="file-controls d-flex justify-content-between align-items-center">
+                {% if file.file.url|slice:"-4:" == '.mp3' or file.file.url|slice:"-4:" == '.wav' %}
+                <div class="audio-player">
+                    <audio controls>
+                        <source src="{{ file.file.url }}" type="{% if file.file.url|slice:"-4:" == '.mp3' %}audio/mpeg{% else %}audio/wav{% endif %}">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>Nie masz uprawnień do przeglądania plików. Skontaktuj się z administratorem żeby uzyskać uprawnienia.</p>
+    {% endif %}
+    {% else %}
+    <p>Dostęp do plików mają tylko zalogowane osoby posiadające odpowienie uprawnienia</p>
+    <div class="container">
+        <a href="{% url 'signIn' %}" class="btn btn-outline-success">Zaloguj</a>
+    </div>
+    {% endif %}
 </div>
 
-<!-- Initialize Plyr -->
+  
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const players = Plyr.setup('audio');
@@ -194,24 +166,70 @@
 </script>
 
 <style>
-    /* Дополнительные стили для адаптивности таблицы */
-  .table-responsive {
-      overflow-x: auto;
-      min-height: 300px;
-  }
-
-  .custom-dropdown-menu {
-    position: absolute;
-    z-index: 1050; /* Ensure it's above other elements */
-    top: 100%; /* Adjust to position it below the button */
-    left: 0;
-    transform: translateY(0); /* Remove translate to ensure it stays in place */
+.file-item {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
 }
 
-.btn-group {
-    position: relative; /* Ensure the dropdown is positioned relative to the button */
+.file-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
+.file-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.audio-player {
+    flex: 1;
+    min-width: 200px;
+}
+
+.file-actions {
+    flex-shrink: 0;
+    margin-left: 15px;
+}
+
+/* Для маленьких экранов */
+@media (max-width: 768px) {
+    .file-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .file-actions {
+        margin-top: 10px;
+        margin-left: 0;
+    }
+}
+
+.btn-action {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.btn-action svg {
+    fill: #007bff;
+    transition: fill 0.2s ease;
+}
+
+.btn-action:hover svg {
+    fill: #0056b3;
+}
+
+.custom-dropdown-menu {
+    min-width: 150px;
+}
 
 </style>
 

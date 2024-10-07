@@ -96,10 +96,10 @@
         <ul style="color: gray;">
             <li>
                 Grupa <strong>Gość</strong> to jest domyślna grupa która jest przypisana do każdej osoby która zakłada konto
-                w systemie. Użytkownicy tej grupy mają uprawnienia tylko dla logowania się.
+                w systemie. Użytkownicy tej grupy mają uprawnienia tylko do logowania się.
             </li>
             <li>
-                Grupa <strong>Użytkownik</strong> to jest grupa dla chórzystów. Członkowie tej grupy mają uprawnienia dla przeglądania plików dla wszystkich utworów.
+                Grupa <strong>Użytkownik</strong> to jest grupa dla chórzystów. Członkowie tej grupy mają uprawnienia do przeglądania plików wszystkich utworów.
             </li>
             <li>
                 Grupa <strong>Administrator</strong> to jest grupa dla osób zarządzających systemem. Członkowie tej grupy mają uprawnienia do: dodawania, edycji, kasowania
@@ -138,12 +138,10 @@
 
 <div class="container-fluid">
     {% if perms.user.delete_user %}
-    <!-- Button trigger modal -->
     <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
         Usuń konto
     </button>
     
-    <!-- Modal -->
     <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -215,8 +213,7 @@
         selectGroup.addEventListener('change', function() {
             const selectedValue = selectGroup.value;
             let url = '';
-            
-            // Используйте switch для выбора URL в зависимости от значения
+
             switch(selectedValue) {
                 case 'guest':
                     url = "{% url 'changeGroup' id=user.id group='guest'%}";
@@ -232,7 +229,6 @@
                     return;
             }
             
-            // Перенаправление на выбранный URL
             window.location.href = url;
         });
     } else {
