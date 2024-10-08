@@ -5,11 +5,12 @@ from django.forms import ModelForm, TextInput
 class NewsForm(ModelForm):
     class Meta:
         model = News
-        fields = ['title', 'text']
+        fields = ['title', 'text', 'date_joined']
 
         labels = {
             'title': 'Nagłówek',
             'text': 'Tekst',
+            'date_joined': 'Data',
         }
 
         widgets = {
@@ -21,6 +22,11 @@ class NewsForm(ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Jakiś tam tekst'
             }),
+            'date_joined': forms.DateInput(attrs={
+                'class': 'form-control mt-2 w-25',
+                'type': 'date'
+            })
+
         }
 
 class UploadFileForm(forms.ModelForm):

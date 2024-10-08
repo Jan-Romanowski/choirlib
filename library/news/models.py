@@ -7,7 +7,7 @@ class News(models.Model):
     title = models.CharField('title', max_length=200)
     text = models.CharField('text', max_length=3500)
     isActual = models.BooleanField('Is Actual', default=False)
-    date_joined = models.DateTimeField(default=timezone.now)
+    date_joined = models.DateField(default=timezone.now)
 
     def __str__(self):
         return self.title

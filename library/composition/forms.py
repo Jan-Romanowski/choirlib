@@ -18,11 +18,11 @@ class CompositionForm(ModelForm):
         widgets = {
             'name': TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Ich will'
+                'placeholder': 'Nazwa utworu'
             }),
             'author': TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Rammstein'
+                'placeholder': 'Autor'
             }),
             'folder': Select(attrs={
                 'class': 'form-select'  # Используйте 'form-select' для стилизации select с Bootstrap

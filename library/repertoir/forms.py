@@ -15,7 +15,7 @@ class RepertoirForm(forms.ModelForm):
         widgets = {
             'title': TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Rammstein'
+                'placeholder': 'Nazwa'
             }),
             'text': forms.Textarea(attrs={
                 'class': 'form-control',
