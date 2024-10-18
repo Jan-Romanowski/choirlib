@@ -19,7 +19,7 @@ def index(request):
     else:
         events = []
     random.shuffle(news)
-    return render(request, 'content/index.html', {'news': news, 'events': events, 'date': closest_date})
+    return render(request, 'content/index2.html', {'news': news, 'events': events, 'date': closest_date})
 
 def sandbox(request):
     return render(request, 'content/bubbles.html')
