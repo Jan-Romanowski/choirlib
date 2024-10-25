@@ -9,27 +9,26 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'library.settings')
 django.setup()
 
-from folder.models import Folder
+from repertoir.models import Repertoir
 
 def main():
-    csv_file_path = os.path.join(os.path.dirname(__file__), 'folder.csv')
+    csv_file_path = os.path.join(os.path.dirname(__file__), 'repertoire.csv')
 # "id_folder","name_folder","note"
     try:
         with open(csv_file_path, mode='r', encoding='utf-8') as csv_file:
             csv_reader = csv.DictReader(csv_file)  # Стандартный DictReader
             for row in csv_reader:
                 # Обработка возможных пустых значений
-                id = row.get('id_folder', 'N/A').strip()
-                name_folder = row.get('name_folder', 'N/A').strip()
+                title = row.get('header', 'N/A').strip()
+                text = row.get('text', 'N/A').strip()
 
-                folder = Folder(
-                    id=id,
-                    name=name_folder,
-                    colour='#ed9b2f'
+                repertoir = Repertoir(
+                    title=title,
+                    text=text
                 )
                 
                 # Сохранение объекта в базе данных
-                folder.save()
+                repertoir.save()
 
     except FileNotFoundError:
         print("CSV file not found.")

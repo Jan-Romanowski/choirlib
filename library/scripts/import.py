@@ -1,5 +1,16 @@
 import csv
 import os
+import sys
+import django
+from django.shortcuts import get_object_or_404
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'library.settings')
+django.setup()
+
+from folder.models import Folder
+from composition.models import Composition
 
 def main():
     csv_file_path = os.path.join(os.path.dirname(__file__), 'song.csv')
@@ -19,7 +30,19 @@ def main():
                 note = row.get('note', 'N/A').strip() if row.get('note') not in ('', 'NULL') else 'N/A'
                 views = row.get('views', 'N/A').strip()
 
-                print(f"ID: {id_song}, Song: {name_song}, Count: {count_p}, Author: {author}, Folder ID: {id_folder}, One Voice: {one_voice}, Actual: {actual}, Note: {note}, Views: {views}")
+                folderFromDB = get_object_or_404(Folder, id=id_folder)
+
+                composition = Composition(
+                    name=name_song,
+                    author=author,
+                    number=id_song,
+                    folder=folderFromDB,
+                    isActual=False
+                )
+                
+                # Сохранение объекта в базе данных
+                composition.save()
+
     except FileNotFoundError:
         print("CSV file not found.")
     except Exception as e:

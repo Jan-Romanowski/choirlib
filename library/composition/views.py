@@ -25,7 +25,7 @@ def search_compositions(request):
         compositions = compositions.filter(isActual=True)
 
     # Пагинация
-    paginator = Paginator(compositions, 5)  # Показывать 5 записей на страницу
+    paginator = Paginator(compositions, 25)  # Показывать 25 записей на страницу
     page_obj = paginator.get_page(page_number)
 
     # Создаем RequestContext для передачи прав пользователя
@@ -52,7 +52,7 @@ def listComposition(request):
             Q(name__icontains=query) | Q(author__icontains=query)
         )
 
-    paginator = Paginator(compositions, 5)  # Показывать 5 произведений на странице
+    paginator = Paginator(compositions, 25)  # Показывать 25 произведений на странице
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
