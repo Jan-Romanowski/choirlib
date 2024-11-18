@@ -1,0 +1,21 @@
+services:
+  web:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "9001:9000"  # Пробрасываем внешний порт 9001 на внутренний 9000
+    command: python manage.py runserver 0.0.0.0:9000  # Django будет слушать на порту 9000 внутри контейнера
+    environment:
+      - DJANGO_SETTINGS_MODULE=library.settings
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./static:/app/static
+      - ./media:/app/media
+    ports:
+      - "9090:80"  # Пробрасываем внешний порт 9090 на внутренний 80
+    depends_on:
+      - web
