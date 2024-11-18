@@ -156,7 +156,7 @@ def checkAsActual(request, id):
     return redirect('detailsComposition', id=id)
 
 def user_has_access(user):
-    return user.has_perm('composition.change_composition')
+    return user.has_perm('composition.view_composition_file')
 
 @permission_required('composition.view_composition_file', raise_exception=True)
 def download_composition_file(request, file_id):

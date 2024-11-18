@@ -11,6 +11,9 @@ from .forms import UserPermissionsForm
 def index(request):
     return render(request, 'user/index.html')
 
+def validateForm(request):
+
+    return 1
 
 def signUp(request):
     if request.method == 'POST':
@@ -24,7 +27,7 @@ def signUp(request):
         else:
             for field, errors in form.errors.items():
                 for error in errors:
-                    messages.error(request, f"{field}: {error}")
+                    messages.error(request, f"{error}")
 
     else:
         form = SignUpForm()

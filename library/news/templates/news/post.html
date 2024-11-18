@@ -49,6 +49,10 @@
     </div>
 </div>
 
+{% if perms.composition.add_composition %}
+<a href="{% url 'detailsNews' id=news.id %}" class="btn btn-outline-primary">Ustawienia</a>
+{% endif %}
+
 
 <style>
 .carousel-inner {
