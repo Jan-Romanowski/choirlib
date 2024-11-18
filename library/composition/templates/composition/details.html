@@ -118,9 +118,11 @@
                                 </svg>
                             </button>
                             <ul class="dropdown-menu custom-dropdown-menu">
-                                <li><a href="{{ file.file.url }}" class="dropdown-item" download>Pobierz</a></li>
+                                <li><a href="{% url 'download_composition_file' file.id %}" class="dropdown-item">Pobierz</a>
+                                </li>
                                 {% if file.file.url|slice:"-4:" == '.pdf' %}
-                                <li><a href="{{ file.file.url }}" class="dropdown-item" target="_blank">Otwórz</a></li>
+                                <li><a href="{% url 'download_composition_file' file.id %}" class="dropdown-item">Otwórz</a>
+                                </li>
                                 {% endif %}
                                 {% if perms.composition.delete_compositionfile %}
                                 <li><hr class="dropdown-divider"></li>
@@ -133,7 +135,7 @@
                 </div>
             </div>
 
-            <!-- Плеер и кнопка действий -->
+            <!-- Player -->
             <div class="file-controls d-flex justify-content-between align-items-center">
                 {% if file.file.url|slice:"-4:" == '.mp3' or file.file.url|slice:"-4:" == '.wav' %}
                 <div class="audio-player">

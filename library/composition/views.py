@@ -8,6 +8,10 @@ from django.contrib.auth.decorators import permission_required
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.template import RequestContext
+from django.http import FileResponse
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseForbidden
+from .models import CompositionFile
 
 def search_compositions(request):
     query = request.GET.get('query', '')
@@ -16,25 +20,20 @@ def search_compositions(request):
 
     compositions = Composition.objects.all()
 
-    # Фильтрация по запросу
     if query:
         compositions = compositions.filter(name__icontains=query)
 
-    # Фильтрация по актуальности
     if is_actual == '1':
         compositions = compositions.filter(isActual=True)
 
-    # Пагинация
-    paginator = Paginator(compositions, 25)  # Показывать 25 записей на страницу
+    paginator = Paginator(compositions, 25)
     page_obj = paginator.get_page(page_number)
 
-    # Создаем RequestContext для передачи прав пользователя
     context = RequestContext(request, {
         'compositions': page_obj.object_list,
-        'perms': request.user.get_all_permissions()  # или просто request.user.has_perm('app.permission')
+        'perms': request.user.get_all_permissions()
     })
 
-    # Рендерим содержимое таблицы и пагинации
     compositions_html = render_to_string('composition/table.html', context.flatten())
     pagination_html = render_to_string('composition/_pagination.html', {'page_obj': page_obj})
 
@@ -52,7 +51,7 @@ def listComposition(request):
             Q(name__icontains=query) | Q(author__icontains=query)
         )
 
-    paginator = Paginator(compositions, 25)  # Показывать 25 произведений на странице
+    paginator = Paginator(compositions, 25)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
@@ -95,7 +94,7 @@ def editComposition(request, id=None):
 @permission_required('composition.delete_compositionfile', raise_exception=True)
 def deleteComposition(request, id):
     composition = get_object_or_404(Composition, id=id)
-    composition_name = composition.name  # сохранить имя для уведомления
+    composition_name = composition.name
 
     try:
         for file in composition.files.all():
@@ -113,7 +112,7 @@ def deleteComposition(request, id):
 
 @permission_required('composition.add_compositionfile', raise_exception=True)
 def uploadFiles(request, id):
-    composition = Composition.objects.get(id=id)
+    composition = get_object_or_404(Composition, id=id)
     
     if request.method == 'POST':
         files = request.FILES.getlist('file')
@@ -155,4 +154,21 @@ def checkAsActual(request, id):
     composition.save()
     messages.success(request, f'Utwór "{composition.name}" zaznaczony jako {"Aktualny" if composition.isActual else "Nieaktualny"}.')
     return redirect('detailsComposition', id=id)
+
+def user_has_access(user):
+    return user.has_perm('composition.change_composition')
+
+@permission_required('composition.view_composition_file', raise_exception=True)
+def download_composition_file(request, file_id):
+    composition_file = get_object_or_404(CompositionFile, id=file_id)
+
+    file_path = composition_file.file.path
+    
+    try:
+        response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=composition_file.file.name)
+        return response
+    except FileNotFoundError:
+        messages.error(request, "Plik nie został znaleziony.")
+        return redirect('listComposition')
+
 
