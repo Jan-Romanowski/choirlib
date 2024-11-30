@@ -158,7 +158,7 @@ def checkAsActual(request, id):
 def user_has_access(user):
     return user.has_perm('composition.view_composition_file')
 
-@permission_required('composition_file.view_composition_file', raise_exception=True)
+@permission_required('composition.view_compositionfile', raise_exception=True)
 def download_composition_file(request, file_id):
     composition_file = get_object_or_404(CompositionFile, id=file_id)
 

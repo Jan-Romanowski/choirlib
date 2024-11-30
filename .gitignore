@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 
-library/db.sqlite3
+*.sqlite3
 
 # C extensions
 *.so
