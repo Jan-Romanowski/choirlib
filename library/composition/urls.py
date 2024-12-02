@@ -12,6 +12,4 @@ urlpatterns = [
     path('toggleActual/<int:id>/', views.checkAsActual, name='toggleActual'),
     path('search/', views.search_compositions, name='search_compositions'),
     path('composition/download/<int:file_id>/', views.download_composition_file, name='download_composition_file'),
-
-
 ]

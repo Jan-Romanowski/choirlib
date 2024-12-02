@@ -56,42 +56,47 @@ def calendar_view(request):
     return render(request, 'calendar.html', {'events': events})
 
 @permission_required('event.change_event', raise_exception=True)
-def day_events(request, year, month, day):
-
+def day_events_form(request, year, month, day):
     selected_date = timezone.datetime(year, month, day).date()
     events = Event.objects.filter(date_event=selected_date).order_by('start_time')
 
     unique_colours = (Event.objects
-                  .values('colour')              # Извлекаем только поле цвета
-                  .distinct()                    # Убираем дубли
-                  .order_by('-date_event')       # Сортировка по дате (сначала самые новые)
-                  [:20])
-    
+                      .values('colour')
+                      .distinct()
+                      .order_by('-date_event')[:20])
+
     savedColors = []
-    
     for color in unique_colours:
         if color not in savedColors:
             savedColors.append(color)
 
     if request.method == 'POST':
+        # Удаление события
         if 'delete_event' in request.POST:
             event_id = request.POST.get('event_id')
             event = get_object_or_404(Event, id=event_id)
             event.delete()
             messages.success(request, f'Wydarzenie pomyślnie usunięte.')
-            return redirect('day_events', year=year, month=month, day=day)
-        
-        form = EventForm(request.POST)
+            return redirect('day_events_form', year=year, month=month, day=day)
+
+        # Проверяем, редактируем или создаём
+        event_id = request.POST.get('event_id')
+        if event_id:
+            # Редактирование события
+            event = get_object_or_404(Event, id=event_id)
+            form = EventForm(request.POST, instance=event)
+        else:
+            # Создание нового события
+            form = EventForm(request.POST)
+
         if form.is_valid():
             new_event = form.save(commit=False)
-            new_event.date_event = selected_date  # Устанавливаем дату события
-            
+            new_event.date_event = selected_date
+
             # Проверяем, отмечен ли чекбокс 'cycle'
             if 'cycle' in request.POST and request.POST.get('cycleDate'):
                 cycle_date_str = request.POST.get('cycleDate')
                 cycle_end_date = timezone.datetime.strptime(cycle_date_str, '%Y-%m-%d').date()
-
-                weekday = selected_date.weekday()
 
                 current_date = selected_date
                 while current_date <= cycle_end_date:
@@ -103,9 +108,12 @@ def day_events(request, year, month, day):
                 messages.success(request, f'Dodano cykliczne wydarzenie każdy tydzień do {cycle_end_date}.')
             else:
                 new_event.save()
-                messages.success(request, f'Dodano nowe wydarzenie.')
-                
-            return redirect('day_events', year=year, month=month, day=day)
+                if event_id:
+                    messages.success(request, f'Wydarzenie zostało zaktualizowane.')
+                else:
+                    messages.success(request, f'Dodano nowe wydarzenie.')
+                    
+            return redirect('day_events_form', year=year, month=month, day=day)
     else:
         form = EventForm()
 
@@ -115,7 +123,9 @@ def day_events(request, year, month, day):
         'form': form,
         'colors': savedColors
     }
-    return render(request, 'event/day_events.html',  context)
+    return render(request, 'event/day_events_form.html', context)
+
+
 
 def export_events_to_ics(request):
     events = Event.objects.all()
@@ -139,3 +149,17 @@ def export_events_to_ics(request):
     response = HttpResponse(ics_content, content_type='text/calendar')
     response['Content-Disposition'] = 'attachment; filename="events.ics"'
     return response
+
+def day_events(request, year, month, day):
+    selected_date = timezone.datetime(year, month, day).date()
+    events = Event.objects.filter(date_event=selected_date).order_by('start_time')
+
+    context = {
+        'date': selected_date,
+        'selected_day':day,
+        'selected_month': month,
+        'selected_year': year,
+        'events': events
+    }
+
+    return render(request, 'event/day_events.html', context)

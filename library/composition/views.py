@@ -21,7 +21,10 @@ def search_compositions(request):
     compositions = Composition.objects.all()
 
     if query:
-        compositions = compositions.filter(name__icontains=query)
+        compositions = compositions.filter(
+            Q(name__icontains=query) |
+            Q(author__icontains=query)
+        )
 
     if is_actual == '1':
         compositions = compositions.filter(isActual=True)

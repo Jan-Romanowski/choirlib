@@ -1,0 +1,61 @@
+{% extends 'content/template.html' %}
+
+{% block body %}
+
+<style>
+    .colorBox{
+        cursor: pointer;
+        width: 48px;
+        height: 40px;
+    }
+</style>
+
+<h2 class="text-center m-3">Nowe wydarzenie {{ date|date:"d F Y" }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    {% if colors %}
+    <div class="row">
+        <label>Ostatnio użyte kolory:</label>
+        {% for color in colors %}
+        <div class="colorBox m-3" style="background-color: {{ color.colour }};" onclick="setColor(this)"></div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="form-check mt-3 mb-3">
+        <input class="form-check-input" type="checkbox" value="" name="cycle" id="cycle">
+        <label class="form-check-label" for="cycle">
+            Wydarzenie cykliczne w ten dzień tygodnia
+        </label>
+    </div>
+
+    <div class="form-check mt-3 mb-3">
+        <label class="form-check-label" for="cycleDate">
+            Data końcowa
+        </label>
+        <input class="form-control mt-2 w-25" type="date" value="" name="cycleDate" id="cycleDate">
+    </div>
+
+    <input type="submit" class="btn btn-outline-success" value="Dodaj wydarzenie">
+</form>
+
+<script>
+    function setColor(element) {
+        const formPart = document.getElementById('clr');
+        const backgroundColor = window.getComputedStyle(element).backgroundColor;
+        console.log("Background color:", backgroundColor);
+        formPart.value = rgbToHex(backgroundColor);
+    }
+
+    function rgbToHex(rgb) {
+        var rgbArray = rgb.match(/\d+/g);
+        var r = parseInt(rgbArray[0]).toString(16).padStart(2, '0');
+        var g = parseInt(rgbArray[1]).toString(16).padStart(2, '0');
+        var b = parseInt(rgbArray[2]).toString(16).padStart(2, '0');
+        return `#${r}${g}${b}`;
+    }
+</script>
+{% endblock %}

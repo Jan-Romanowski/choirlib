@@ -10,53 +10,32 @@
     }
 </style>
 
-<h2 class="text-center m-3">Wydarzenia na {{ date|date:"d F Y" }}</h2>
+<h2 class="text-center m-3">Wydarzenia {{ date|date:"d F Y" }}</h2>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+<a href="{% url 'day_events_form' selected_year selected_month selected_day %}" class="btn btn-outline-primary">Dodaj wydarzenie</a>
 
-    {% if colors %}
-    <div class="row">
-        <label>Ostatnio użyte kolory:</label>
-        {% for color in colors %}
-        <div class="colorBox m-3" style="background-color: {{ color.colour }};" onclick="setColor(this)"></div>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-    <div class="form-check mt-3 mb-3">
-        <input class="form-check-input" type="checkbox" value="" name="cycle" id="cycle">
-        <label class="form-check-label" for="cycle">
-            Wydarzenie cykliczne w ten dzień tygodnia
-        </label>
-    </div>
-
-    <div class="form-check mt-3 mb-3">
-        <label class="form-check-label" for="cycleDate">
-            Data końcowa
-        </label>
-        <input class="form-control mt-2 w-25" type="date" value="" name="cycleDate" id="cycleDate">
-    </div>
-
-    <input type="submit" class="btn btn-outline-success" value="Dodaj wydarzenie">
-</form>
-<hr>
-
-<ul>
+<div class="container">
     {% for event in events %}
-        <li>
-            <strong>{{ event.title }}</strong> ({{ event.start_time|date:"H:i" }} - {{ event.end_time|date:"H:i" }})
-            <form method="post" style="display:inline;">
-                {% csrf_token %}
+
+    <div class="card mb-3 mx-1">
+        <div class="row g-0 h-100">
+              <div class="card-body">
+                <h5 class="card-title">{{ event.title }}</h5>
+                <p class="card-text text-truncate"> ({{ event.start_time|date:"H:i" }} - {{ event.end_time|date:"H:i" }})</p>
+
                 <input type="hidden" name="event_id" value="{{ event.id }}">
+                {% if perms.event.add_event %}
+                    <a href="{% url 'day_events_form' selected_year selected_month selected_day %}?event_id={{ event.id }}" class="btn btn-outline-primary">Edycja</a>
+                {% endif %}
                 <input type="submit" class="btn btn-outline-danger" name="delete_event" value="Usuń">
-            </form>
-        </li>
+            </div>
+        </div>
+    </div>
+    
     {% empty %}
-        <li>Nie ma nic zaplanowanego na ten dzień</li>
-    {% endfor %}
-</ul>
+    <p class="card-text"><small class="text-body-secondary">Nie ma nic zaplanowanego na ten dzień</small></p>
+{% endfor %}
+</div>
 
 <script>
     function setColor(element) {
@@ -75,3 +54,4 @@
     }
 </script>
 {% endblock %}
+
