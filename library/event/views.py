@@ -49,7 +49,8 @@ def get_month(request, year, month):
 def delete_event(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     event.delete()
-    return redirect('calendar')
+    messages.success(request, f'Wydarzenie pomyślnie usunięte.')
+    return redirect('calendar', year=event.date_event.year, month=event.date_event.month)
 
 def calendar_view(request):
     events = Event.objects.all().order_by('start_time')
@@ -70,6 +71,8 @@ def day_events_form(request, year, month, day):
         if color not in savedColors:
             savedColors.append(color)
 
+    event = None  # Переменная для редактируемого события
+
     if request.method == 'POST':
         # Удаление события
         if 'delete_event' in request.POST:
@@ -77,7 +80,7 @@ def day_events_form(request, year, month, day):
             event = get_object_or_404(Event, id=event_id)
             event.delete()
             messages.success(request, f'Wydarzenie pomyślnie usunięte.')
-            return redirect('day_events_form', year=year, month=month, day=day)
+            return redirect('calendar', year=year, month=month)
 
         # Проверяем, редактируем или создаём
         event_id = request.POST.get('event_id')
@@ -113,18 +116,24 @@ def day_events_form(request, year, month, day):
                 else:
                     messages.success(request, f'Dodano nowe wydarzenie.')
                     
-            return redirect('day_events_form', year=year, month=month, day=day)
+                return redirect('calendar', year=year, month=month)
     else:
-        form = EventForm()
+        # Загружаем событие для редактирования, если оно передано через GET
+        event_id = request.GET.get('event_id')
+        if event_id:
+            event = get_object_or_404(Event, id=event_id)
+            form = EventForm(instance=event)
+        else:
+            form = EventForm()
 
     context = {
         'date': selected_date,
         'events': events,
         'form': form,
-        'colors': savedColors
+        'colors': savedColors,
+        'event': event  # Передаём объект события в контекст
     }
     return render(request, 'event/day_events_form.html', context)
-
 
 
 def export_events_to_ics(request):

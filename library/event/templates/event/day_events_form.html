@@ -16,6 +16,10 @@
     {% csrf_token %}
     {{ form.as_p }}
 
+    {% if event %}
+        <input type="hidden" name="event_id" value="{{ event.id }}">
+    {% endif %}
+
     {% if colors %}
     <div class="row">
         <label>Ostatnio użyte kolory:</label>
@@ -39,7 +43,7 @@
         <input class="form-control mt-2 w-25" type="date" value="" name="cycleDate" id="cycleDate">
     </div>
 
-    <input type="submit" class="btn btn-outline-success" value="Dodaj wydarzenie">
+    <input type="submit" class="btn btn-outline-success" value="Zapisz">
 </form>
 
 <script>

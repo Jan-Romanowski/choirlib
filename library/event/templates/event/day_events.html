@@ -20,18 +20,41 @@
 
     <div class="card mb-3 mx-1">
         <div class="row g-0 h-100">
-            <div class="card-img-top w-100 p-3" style="background-color: {{ event.colour }};">
-                <h5>{{ event.title }}</h5>      
+            <div class="card-img-top w-100 p-2" style="background-color: {{ event.colour }};">
+                <h4>{{ event.title }}</h5>      
             </div>
               <div class="card-body">
+                <p class="card-text text-truncate">{{ event.description }}</p>
+                <strong>({{ event.start_time|date:"H:i" }} - {{ event.end_time|date:"H:i" }})</strong><br>
+                <div class="pt-1">
+                    <input type="hidden" name="event_id" value="{{ event.id }}">
+                    {% if perms.event.add_event %}
+                        <a href="{% url 'day_events_form' selected_year selected_month selected_day %}?event_id={{ event.id }}" class="btn btn-outline-primary">Edycja</a>
+                    {% endif %}
 
-                <p class="card-text text-truncate"> ({{ event.start_time|date:"H:i" }} - {{ event.end_time|date:"H:i" }})</p>
-
-                <input type="hidden" name="event_id" value="{{ event.id }}">
-                {% if perms.event.add_event %}
-                    <a href="{% url 'day_events_form' selected_year selected_month selected_day %}?event_id={{ event.id }}" class="btn btn-outline-primary">Edycja</a>
-                {% endif %}
-                <input type="submit" class="btn btn-outline-danger" name="delete_event" value="Usuń">
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteEvent{{ event.id }}">
+                        Usuń
+                    </button>
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="deleteEvent{{ event.id }}" tabindex="-1" aria-labelledby="deleteEvent{{ event.id }}Label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteEvent{{ event.id }}Label">Potwierdź akcję</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body"> 
+                                    Napewno chcesz usunąć to wydarzenie ?
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="btn btn-outline-danger w-25" href="{% url 'delete_event' event_id=event.id %}">Tak</a>
+                                    <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Nie</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

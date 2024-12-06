@@ -36,8 +36,7 @@ class SignUpForm(forms.ModelForm):
                 'placeholder': 'Wpisz nazwisko'
             }),
             'password': forms.PasswordInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Haslo123'
+                'class': 'form-control'
             }),
         }
 
@@ -76,14 +75,12 @@ class SignInForm(forms.Form):
         label='Email', 
         max_length=100,
         widget=forms.EmailInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'example@example.com'
+            'class': 'form-control'
         })
     )
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Haslo123'
+            'class': 'form-control'
         }),
         label='Hasło'
     )
