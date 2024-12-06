@@ -30,22 +30,20 @@
             </tr>
     </thead>
     <tbody>
-        {% for user in users %}
+        {% for usr in users %}
             <tr>
-                <td>{{ user.id }}</td>
-                <td><a {% if user.is_active == False %} style="color:red;" {% endif %}  href="{% url 'detailsUser' id=user.id %}">{{ user.name }} {{ user.surname }}</a></td>
+                <td>{{ usr.id }}</td>
+                <td><a {% if usr.is_active == False %} style="color:red;" {% endif %}  href="{% url 'detailsUser' id=usr.id %}">{{ usr.name }} {{ usr.surname }}</a></td>
                 
-                {% if user.last_activity|activity_status == 'online' %}
-                    <td class="online">{{ user.last_activity|activity_status }}</td>
-                {% elif user.last_activity|activity_status == 'offline' %}
-                    <td class="offline">{{ user.last_activity|activity_status }}</td>
+                {% if usr.last_activity|activity_status == 'online' %}
+                    <td class="online">{{ usr.last_activity|activity_status }}</td>
+                {% elif usr.last_activity|activity_status == 'offline' %}
+                    <td class="offline">{{ usr.last_activity|activity_status }}</td>
                 {% else %}
-                    <td class="recently">{{ user.last_activity|activity_status }}</td>
-                {% endif %}
+                    <td class="recently">{{ usr.last_activity|activity_status }}</td>
+                {% endif %}                
 
-                
-
-                <td>{{ user.groups.first.name }}</td>
+                <td>{{ usr.groups.first.name }}</td>
             </tr>
         {% endfor %}
     </tbody>

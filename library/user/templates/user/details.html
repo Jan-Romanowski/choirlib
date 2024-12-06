@@ -8,18 +8,18 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'manageUsers' %}">Użytkownicy</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ user.name }} {{ user.surname }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ usr.name }} {{ usr.surname }}</li>
         </ol>
     </nav>
 </div>
 
 <div class="container-fluid">
-    <h2 class="text-center">{{ user.name }} {{ user.surname }}</h2>
+    <h2 class="text-center">{{ usr.name }} {{ usr.surname }}</h2>
     <div class="container">
 
     </div>
-    <p><strong>Email: </strong>{{ user.email }}</p>
-    <p><strong>Online: </strong>{{ user.last_activity|activity_status }}</p>
+    <p><strong>Email: </strong>{{ usr.email }}</p>
+    <p><strong>Online: </strong>{{ usr.last_activity|activity_status }}</p>
 
     <div class="card w-100">
         <div class="card-body">
@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-6">
                     <div class="form-check form-switch float-end">
-                        <input class="form-check-input" type="checkbox" role="switch" id="toggleActive" {% if user.is_active %} checked {% endif %}>
+                        <input class="form-check-input" type="checkbox" role="switch" id="toggleActive" {% if usr.is_active %} checked {% endif %}>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-6">
                     <div class="form-check form-switch float-end">
-                        <input class="form-check-input" type="checkbox" role="switch" id="togglePanel" {% if user.is_staff %} checked {% endif %}>
+                        <input class="form-check-input" type="checkbox" role="switch" id="togglePanel" {% if usr.is_staff %} checked {% endif %}>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="col-6">
                     <div class="form-check form-switch float-end">
-                        <input class="form-check-input" type="checkbox" role="switch" id="toggleSuperAdmin" {% if user.is_superuser %} checked {% endif %}>
+                        <input class="form-check-input" type="checkbox" role="switch" id="toggleSuperAdmin" {% if usr.is_superuser %} checked {% endif %}>
                     </div>
                 </div>
             </div>
@@ -83,9 +83,9 @@
                 <div class="col-6">
                     <div class="float-end">
                         <select class="form-select" aria-label="group" id="selectGroup">
-                            <option value="guest" {% if user.groups.first.name == 'guest' %} selected {% endif %}>guest</option>
-                            <option value="user" {% if user.groups.first.name == 'user' %} selected {% endif %}>user</option>
-                            <option value="admin" {% if user.groups.first.name == 'admin' %} selected {% endif %}>admin</option>
+                            <option value="guest" {% if usr.groups.first.name == 'guest' %} selected {% endif %}>guest</option>
+                            <option value="user" {% if usr.groups.first.name == 'user' %} selected {% endif %}>user</option>
+                            <option value="admin" {% if usr.groups.first.name == 'admin' %} selected {% endif %}>admin</option>
                         </select>
                     </div>
                 </div>
@@ -133,7 +133,7 @@
     <p class="p-1" style="color: gray;">Na razie ta opcja do niczego nie służy. W przyszłości być może będzie powiązana z kalendarzem. </p>
 
 
-    <p><strong>Data rejestracji: </strong> {{ user.date_joined }}</p>
+    <p><strong>Data rejestracji: </strong> {{ usr.date_joined }}</p>
 </div>
 
 <div class="container-fluid">
@@ -150,10 +150,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body"> 
-                    Napewno chcesz usunąć konto <b>{{ user.name }} {{ user.surname }}</b>?
+                    Napewno chcesz usunąć konto <b>{{ usr.name }} {{ usr.surname }}</b>?
                 </div>
                 <div class="modal-footer">
-                    <a href="{% url 'deleteUser' id=user.id %}" class="btn btn-outline-danger w-25">Tak</a>
+                    <a href="{% url 'deleteUser' id=usr.id %}" class="btn btn-outline-danger w-25">Tak</a>
                     <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Nie</button>
                 </div>
             </div>
@@ -175,7 +175,7 @@
         if (checkboxActive) {
             checkboxActive.addEventListener('change', function() {
                 console.log('Checkbox was clicked');
-                window.location.href = "{% url 'changeActive' id=user.id %}";
+                window.location.href = "{% url 'changeActive' id=usr.id %}";
             });
         } else {
             console.error('Checkbox not found!');
@@ -187,7 +187,7 @@
         if (checkboxPanel) {
             checkboxPanel.addEventListener('change', function() {
                 console.log('Checkbox was clicked');
-                window.location.href = "{% url 'changeAccessAdminPanel' id=user.id %}";
+                window.location.href = "{% url 'changeAccessAdminPanel' id=usr.id %}";
             });
         } else {
             console.error('Checkbox not found!');
@@ -199,7 +199,7 @@
         if (checkboxSuperAdmin) {
             checkboxSuperAdmin.addEventListener('change', function() {
                 console.log('Checkbox was clicked');
-                window.location.href = "{% url 'changeSuperadmin' id=user.id %}";
+                window.location.href = "{% url 'changeSuperadmin' id=usr.id %}";
             });
         } else {
             console.error('Checkbox not found!');
@@ -216,13 +216,13 @@
 
             switch(selectedValue) {
                 case 'guest':
-                    url = "{% url 'changeGroup' id=user.id group='guest'%}";
+                    url = "{% url 'changeGroup' id=usr.id group='guest'%}";
                     break;
                 case 'user':
-                url = "{% url 'changeGroup' id=user.id group='user'%}";
+                url = "{% url 'changeGroup' id=usr.id group='user'%}";
                     break;
                 case 'admin':
-                url = "{% url 'changeGroup' id=user.id group='admin'%}";
+                url = "{% url 'changeGroup' id=usr.id group='admin'%}";
                     break;
                 default:
                     console.error('Unknown option selected!');

@@ -11,10 +11,6 @@ from .forms import UserPermissionsForm
 def index(request):
     return render(request, 'user/index.html')
 
-def validateForm(request):
-
-    return 1
-
 def signUp(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -67,7 +63,7 @@ def manageUsers(request):
 @permission_required('user.change_user', raise_exception=True)
 def detailsUser(request, id):
     user = get_object_or_404(User, id=id)
-    return render(request, 'user/details.html', {'user': user})
+    return render(request, 'user/details.html', {'usr': user})
 
 @permission_required('user.delete_user', raise_exception=True)
 def deleteUser(request, id):
