@@ -6,7 +6,7 @@ from .models import Folder
 from .forms import FolderForm
 
 def listFolder(request):
-    folders = Folder.objects.prefetch_related('compositions').all()
+    folders = Folder.objects.prefetch_related('compositions').all().order_by('name')
     return render(request, 'folder/folderList.html', {'folders': folders})
 
 
