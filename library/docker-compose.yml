@@ -25,5 +25,7 @@ services:
       - "443:443"
     depends_on:
       - web
-    networks:
-        - app_network
+
+networks:
+  app_network:
+    driver: bridge
