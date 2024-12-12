@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-2les4q1igpf5c-pt13&)5v!@)bqan=)i!1xn_3&7@xo$9!w-9!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['web', '51.77.58.53', 'chorkatedralnysiedlce.pl', 'www.chorkatedralnysiedlce.pl']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost' '51.77.58.53', 'chorkatedralnysiedlce.pl', 'www.chorkatedralnysiedlce.pl']
 
 # Application definition
 
