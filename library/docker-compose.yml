@@ -10,7 +10,7 @@ services:
     ports:
       - "8000:8001"
     networks:
-      - app_network
+      - library_app_network
 
   nginx:
     image: nginx:latest
@@ -25,7 +25,9 @@ services:
       - "443:443"
     depends_on:
       - web
+    networks:
+      - library_app_network
 
 networks:
-  app_network:
+  library_app_network:
     driver: bridge
