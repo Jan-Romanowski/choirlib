@@ -3,13 +3,11 @@ services:
     build: .
     volumes:
       - .:/app
-    ports:
-      - "80:80"
-      - "443:443"
     command: python manage.py runserver 0.0.0.0:9000  # Django будет слушать на порту 9000 внутри контейнера
     environment:
       - DJANGO_SETTINGS_MODULE=library.settings
-
+    expose:
+      - "9000"
   nginx:
     image: nginx:latest
     volumes:
