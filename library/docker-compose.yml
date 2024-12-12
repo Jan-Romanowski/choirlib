@@ -8,6 +8,11 @@ services:
       - DJANGO_SETTINGS_MODULE=library.settings
     expose:
       - "9000"
+    ports:
+      - "9000:9000"
+    networks:
+      - app_network
+
   nginx:
     image: nginx:latest
     volumes:
@@ -20,3 +25,5 @@ services:
       - "443:443"
     depends_on:
       - web
+    networks:
+        - app_network
