@@ -1,17 +1,7 @@
 services:
   web:
     build: .
-    volumes:
-      - .:/app
     command: gunicorn --bind 0.0.0.0:8001 library.wsgi:application
     container_name: web
-    environment:
-      - DJANGO_SETTINGS_MODULE=library.settings
     ports:
-      - "8000:8001"
-    networks:
-      - library_app_network
-
-networks:
-  library_app_network:
-    driver: bridge
+      - "8001:8001"  # Проброс порта 8001 с контейнера на хост
