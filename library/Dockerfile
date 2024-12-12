@@ -16,5 +16,5 @@ COPY . .
 # Открываем порт 8001
 EXPOSE 8001
 
-# Запускаем сервер Django
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8001"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8001", "library.wsgi:application"]
+
