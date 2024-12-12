@@ -15,11 +15,12 @@ services:
 
   nginx:
     image: nginx:latest
+    container_name: nginx
     volumes:
       - ./nginx.conf:/app/nginx.conf  # Ваш файл конфигурации Nginx
       - ./staticfiles:/app/staticfiles  # Пробросим директорию для статики
       - ./media:/app/media  # Пробросим директорию для медиа
-      - /etc/letsencrypt:/etc/letsencrypt
+      - /etc/letsencrypt:/etc/letsencrypt/live/chorkatedralnysiedlce.pl/
     ports:
       - "80:80"
       - "443:443"
