@@ -37,18 +37,16 @@ def activity_status(last_activity):
         return f"{minutes} minut temu"
     elif time_diff < timedelta(days=1):
         hours = time_diff.seconds // 3600
-        return f"{hours} godziny temu" if hours != 1 else "godzina temu"
+        return f"{hours} godzin temu"
     elif time_diff < timedelta(days=7):
         days = time_diff.days
-        return f"{days} dni temu" if days != 1 else "dzień temu"
+        return f"{days} dni temu"
     elif time_diff < timedelta(days=150):
         weeks = time_diff.days // 7
-        return f"{weeks} tygodni temu" if weeks != 1 else "tydzień temu"
+        return f"{weeks} tygodni temu"
     elif time_diff < timedelta(days=365):
         months = time_diff.days // 30
-        return f"{months} miesięcy temu" if months != 1 else "miesiąc temu"
+        return f"{months} miesięcy temu"
     else:
         years = time_diff.days // 365
-        return f"{years} lat temu" if years != 1 else "rok temu"
-
-
+        return f"{years} rok/lat temu"
