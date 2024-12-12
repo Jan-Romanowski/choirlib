@@ -17,7 +17,7 @@ services:
     image: nginx:latest
     container_name: nginx
     volumes:
-      - ./nginx.conf:/app/nginx.conf  # Ваш файл конфигурации Nginx
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Ваш файл конфигурации Nginx
       - ./staticfiles:/app/staticfiles  # Пробросим директорию для статики
       - ./media:/app/media  # Пробросим директорию для медиа
       - /etc/letsencrypt:/etc/letsencrypt/live/chorkatedralnysiedlce.pl/
