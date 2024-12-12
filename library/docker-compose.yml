@@ -12,7 +12,7 @@ services:
     image: nginx:latest
     volumes:
       - ./nginx.conf:/app/nginx.conf  # Ваш файл конфигурации Nginx
-      - ./static:/app/static  # Пробросим директорию для статики
+      - ./staticfiles:/app/staticfiles  # Пробросим директорию для статики
       - ./media:/app/media  # Пробросим директорию для медиа
       - /etc/letsencrypt:/etc/letsencrypt
     ports:
