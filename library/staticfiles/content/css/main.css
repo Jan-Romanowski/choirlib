@@ -1,0 +1,60 @@
+
+.main-container{
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+h1{
+    font-weight: bold;
+}
+
+.custom-card:hover{
+    cursor: pointer;
+    transition: 1s;
+    transform: scale(1.05);
+}
+
+.rank{
+    font-size: 1.2rem;
+}
+
+.managerName{
+    font-size: 1.15rem;
+}
+
+.voiceGroup{
+    font-size: 1rem;
+}
+
+.sticky-top {
+    position: sticky;
+    top: 0;
+    /* Добавляем свойство scroll-padding-top, чтобы компенсировать высоту заголовка */
+    scroll-padding-top: 108px; /* Замените 60px на высоту вашего заголовка */
+}
+
+.map_section {
+    display: flex;
+    justify-content: center;
+}
+
+a{
+    text-decoration: none;
+}
+
+.toast-success {
+    background-color: #d7ffe1;
+}
+.toast-error {
+    background-color: #f8d7da;
+}
+.toast-warning {
+    background-color: #fff3cd;
+}
+.toast-info {
+    background-color: #d1ecf1;
+}
+
+
