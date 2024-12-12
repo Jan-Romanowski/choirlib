@@ -3,13 +3,13 @@ services:
     build: .
     volumes:
       - .:/app
-    command: python manage.py runserver 0.0.0.0:9000  # Django будет слушать на порту 9000 внутри контейнера
+    command: python manage.py runserver 0.0.0.0:8000  # Django будет слушать на порту 9000 внутри контейнера
     environment:
       - DJANGO_SETTINGS_MODULE=library.settings
     expose:
-      - "9000"
+      - "8000"
     ports:
-      - "9000:9000"
+      - "8000:8000"
     networks:
       - app_network
 
