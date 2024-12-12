@@ -157,4 +157,5 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'  # URL для медиа файлов
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Путь для медиа файлов
 
-
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
