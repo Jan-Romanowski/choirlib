@@ -3,7 +3,7 @@ services:
     build: .
     volumes:
       - .:/app
-    command: python manage.py runserver 0.0.0.0:8001
+    command: gunicorn --bind 0.0.0.0:8001 library.wsgi:application
     container_name: web
     environment:
       - DJANGO_SETTINGS_MODULE=library.settings
