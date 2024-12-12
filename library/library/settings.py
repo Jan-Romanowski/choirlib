@@ -148,6 +148,13 @@ AUTHENTICATION_BACKENDS = [
 
 import os
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Папка для собранных статических файлов
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Если у вас есть другие статические файлы в этой папке
+]
+
+MEDIA_URL = '/media/'  # URL для медиа файлов
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Путь для медиа файлов
+
 
