@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  django:
+    build: ./library
+    container_name: django
+    volumes:
+      - ./library:/app
+      - ./library/staticfiles:/app/staticfiles  # монтирование staticfiles для использования в другом контейнере
+      - ./library/media:/app/media  # монтирование media для использования в другом контейнере
+    expose:
+      - "8001"
+    environment:
+      - DEBUG=${DEBUG}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+    networks:
+      - backend  # добавляем использование сети backend
+
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx
+    volumes:
+      - ./library/staticfiles:/var/www/static
+      - ./library/media:/var/www/media
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    ports:
+      - "8088:80"
+      - "8443:443"
+    depends_on:
+      - django
+    networks:
+      - backend  # добавляем использование сети backend
+
+networks:
+  backend:
+    driver: bridge  # определяем сеть backend
